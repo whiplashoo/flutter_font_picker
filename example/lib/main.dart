@@ -60,6 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: FontPicker(
+            onFontChanged: (font) => {print(font)},
+            pickerFont: 'Source Sans Pro',
             googleFonts:
                 'Alegreya,Boogaloo,Coiny,Dosis,Emilys Candy,Faster One,Lato'
                     .split(',')),
