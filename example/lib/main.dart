@@ -36,10 +36,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: FontPicker(
-            onFontChanged: (font) => {print(font)},
-            pickerFont: 'Source Sans Pro',
+            onFontChanged: (font) => {
+                  print(
+                      "${font.fontFamily} with font weight ${font.fontWeight}")
+                },
+            pickerFontSpec: 'Source Sans Pro',
             googleFonts:
-                'Alegreya,Boogaloo,Coiny,Dosis,Emilys Candy,Faster One,Lato'
+                'Alegreya,Boogaloo,Coiny,Dosis,Emilys Candy,Faster One,Lato:800'
                     .split(',')),
       ),
     );
