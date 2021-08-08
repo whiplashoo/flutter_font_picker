@@ -40,10 +40,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   print(
                       "${font.fontFamily} with font weight ${font.fontWeight}")
                 },
-            pickerFontSpec: 'Source Sans Pro',
+            pickerFont: 'Source Sans Pro',
             googleFonts: [
-              "Roboto",
-              "Roboto",
               "Abril Fatface",
               "Aclonica",
               "Alegreya Sans",

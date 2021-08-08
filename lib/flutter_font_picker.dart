@@ -10,14 +10,14 @@ class FontPicker extends StatefulWidget {
   final List<String> googleFonts;
   final int recentsCount;
   final ValueChanged<PickerFont> onFontChanged;
-  final String pickerFontSpec;
+  final String pickerFont;
 
   const FontPicker(
       {Key? key,
       required this.googleFonts,
       this.recentsCount = 3,
       required this.onFontChanged,
-      required this.pickerFontSpec})
+      required this.pickerFont})
       : super(key: key);
 
   @override
@@ -27,13 +27,14 @@ class FontPicker extends StatefulWidget {
 class _FontPickerState extends State<FontPicker> {
   late PickerFont _currentFont;
   late List<PickerFont> _availableFonts;
+  bool _choosingVariant = false;
 
   @override
   void initState() {
     super.initState();
-    _currentFont = PickerFont.fromString(widget.pickerFontSpec);
+    _currentFont = PickerFont(fontFamily: widget.pickerFont);
     _availableFonts = widget.googleFonts
-        .map((fontSpec) => PickerFont.fromString(fontSpec))
+        .map((fontFamily) => PickerFont(fontFamily: fontFamily))
         .toList();
   }
 
@@ -62,26 +63,49 @@ class _FontPickerState extends State<FontPicker> {
           itemBuilder: (context, index) {
             var f = _availableFonts[index];
             return ListTile(
-              onTap: () => changeFont(f),
+              onTap: () {
+                setState(() {
+                  _choosingVariant = true;
+                });
+              },
               title: Text(f.fontFamily,
                   style: TextStyle(
                       fontFamily: GoogleFonts.getFont(f.fontFamily,
                               fontWeight: FontWeight.w400)
-                          .fontFamily)
-                  // GoogleFonts.getFont(f.fontFamily).copyWith(
-                  //     fontSize: 22.0,
-                  //     fontWeight: f.fontWeight,
-                  //     fontStyle: f.fontStyle)
-                  ),
-              subtitle: Text(fontsList[f.fontFamily]!["variants"] ?? ""),
-              trailing: TextButton(
-                child: Text(
-                  'SELECT',
-                ),
-                onPressed: () {
-                  print("DAS");
-                },
-              ),
+                          .fontFamily)),
+              subtitle: _choosingVariant
+                  ? Wrap(
+                      children: f.variants
+                          .where((element) => !element.contains("i"))
+                          .map((variant) {
+                      return SizedBox(
+                        height: 25.0,
+                        width: 60.0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                textStyle: TextStyle(fontSize: 10.0),
+                                shape: StadiumBorder()),
+                            child: Text(variant),
+                            onPressed: () {
+                              print("VCVC");
+                            },
+                          ),
+                        ),
+                      );
+                    }).toList())
+                  : null,
+              trailing: _choosingVariant
+                  ? TextButton(
+                      child: Text(
+                        'SELECT',
+                      ),
+                      onPressed: () {
+                        changeFont(f);
+                      },
+                    )
+                  : null,
             );
           },
         ))
@@ -94,6 +118,9 @@ class PickerFont {
   final String fontFamily;
   final FontWeight fontWeight;
   final FontStyle fontStyle;
+  List<String> variants;
+  List<String> subsets;
+  String category;
   static const FONT_WEIGHT_VALUES = {
     "100": FontWeight.w100,
     "200": FontWeight.w200,
@@ -106,10 +133,13 @@ class PickerFont {
     "900": FontWeight.w900,
   };
 
-  const PickerFont(
+  PickerFont(
       {required this.fontFamily,
       this.fontWeight = FontWeight.w400,
-      this.fontStyle = FontStyle.normal});
+      this.fontStyle = FontStyle.normal})
+      : variants = fontsList[fontFamily]!["variants"]!.split(","),
+        subsets = fontsList[fontFamily]!["subsets"]!.split(","),
+        category = fontsList[fontFamily]!["category"]!;
 
   factory PickerFont.fromString(String fontSpec) {
     final fontSpecSplit = fontSpec.split(":");
