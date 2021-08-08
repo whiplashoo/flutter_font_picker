@@ -27,7 +27,9 @@ class FontPicker extends StatefulWidget {
 class _FontPickerState extends State<FontPicker> {
   late PickerFont _currentFont;
   late List<PickerFont> _availableFonts;
-  bool _choosingVariant = false;
+  String _fontFamilySelected = "";
+  FontWeight _fontWeightSelected = FontWeight.w400;
+  FontStyle _fontStyleSelected = FontStyle.normal;
 
   @override
   void initState() {
@@ -52,51 +54,79 @@ class _FontPickerState extends State<FontPicker> {
         SizedBox(
             width: 300.0,
             child: TextField(
-              style: GoogleFonts.getFont(_currentFont.fontFamily),
+              style: GoogleFonts.getFont(_currentFont.fontFamily,
+                  fontWeight: _fontWeightSelected,
+                  fontStyle: _fontStyleSelected),
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: 'The quick brown fox jumped over the lazy dog'),
+                  hintText: 'The quick brown fox jumped over the lazy dog',
+                  hintStyle: TextStyle(
+                      fontStyle: _fontStyleSelected,
+                      fontWeight: _fontWeightSelected)),
             )),
         Expanded(
             child: ListView.builder(
           itemCount: _availableFonts.length,
           itemBuilder: (context, index) {
             var f = _availableFonts[index];
+            bool isBeingSelected = _fontFamilySelected == f.fontFamily;
             return ListTile(
+              selected: isBeingSelected,
+              selectedTileColor: Theme.of(context).focusColor,
               onTap: () {
                 setState(() {
-                  _choosingVariant = true;
+                  _fontFamilySelected = f.fontFamily;
+                  _fontWeightSelected = FontWeight.w400;
+                  _fontStyleSelected = FontStyle.normal;
                 });
               },
-              title: Text(f.fontFamily,
-                  style: TextStyle(
-                      fontFamily: GoogleFonts.getFont(f.fontFamily,
-                              fontWeight: FontWeight.w400)
-                          .fontFamily)),
-              subtitle: _choosingVariant
-                  ? Wrap(
-                      children: f.variants
-                          .where((element) => !element.contains("i"))
-                          .map((variant) {
-                      return SizedBox(
-                        height: 25.0,
-                        width: 60.0,
-                        child: Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                textStyle: TextStyle(fontSize: 10.0),
-                                shape: StadiumBorder()),
-                            child: Text(variant),
-                            onPressed: () {
-                              print("VCVC");
-                            },
+              title: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(f.fontFamily,
+                    style: TextStyle(
+                        fontFamily:
+                            GoogleFonts.getFont(f.fontFamily).fontFamily)),
+              ),
+              subtitle: isBeingSelected
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4.0),
+                      child: Wrap(
+                          children: f.variants.map((variant) {
+                        return SizedBox(
+                          height: 30.0,
+                          width: 60.0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                  textStyle: TextStyle(fontSize: 10.0),
+                                  shape: StadiumBorder()),
+                              child: Text(
+                                variant,
+                                style: TextStyle(
+                                    fontStyle: variant == "italic"
+                                        ? FontStyle.italic
+                                        : FontStyle.normal),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  if (variant == "italic") {
+                                    _fontStyleSelected == FontStyle.italic
+                                        ? _fontStyleSelected = FontStyle.normal
+                                        : _fontStyleSelected = FontStyle.italic;
+                                  } else {
+                                    _fontWeightSelected =
+                                        FONT_WEIGHT_VALUES[variant]!;
+                                  }
+                                });
+                              },
+                            ),
                           ),
-                        ),
-                      );
-                    }).toList())
+                        );
+                      }).toList()),
+                    )
                   : null,
-              trailing: _choosingVariant
+              trailing: isBeingSelected
                   ? TextButton(
                       child: Text(
                         'SELECT',
@@ -121,23 +151,12 @@ class PickerFont {
   List<String> variants;
   List<String> subsets;
   String category;
-  static const FONT_WEIGHT_VALUES = {
-    "100": FontWeight.w100,
-    "200": FontWeight.w200,
-    "300": FontWeight.w300,
-    "400": FontWeight.w400,
-    "500": FontWeight.w500,
-    "600": FontWeight.w600,
-    "700": FontWeight.w700,
-    "800": FontWeight.w800,
-    "900": FontWeight.w900,
-  };
 
   PickerFont(
       {required this.fontFamily,
       this.fontWeight = FontWeight.w400,
       this.fontStyle = FontStyle.normal})
-      : variants = fontsList[fontFamily]!["variants"]!.split(","),
+      : variants = parseVariants(fontFamily),
         subsets = fontsList[fontFamily]!["subsets"]!.split(","),
         category = fontsList[fontFamily]!["category"]!;
 
@@ -155,6 +174,15 @@ class PickerFont {
               ? FontStyle.italic
               : FontStyle.normal);
     }
+  }
+
+  static List<String> parseVariants(String fontFamily) {
+    var variants = fontsList[fontFamily]!["variants"]!.split(",");
+    if (variants.any((v) => v.contains("i"))) {
+      variants.add("italic");
+    }
+    variants.removeWhere((v) => v.endsWith("i"));
+    return variants;
   }
 
   static String toFontSpec(PickerFont pickerFont) {
