@@ -8,14 +8,14 @@ import 'constants/constants.dart';
 
 class FontPicker extends StatefulWidget {
   final List<String> googleFonts;
-  final int recentsCount;
+  final int recentCount;
   final ValueChanged<PickerFont> onFontChanged;
   final String pickerFont;
 
   const FontPicker(
       {Key? key,
       required this.googleFonts,
-      this.recentsCount = 3,
+      this.recentCount = 3,
       required this.onFontChanged,
       required this.pickerFont})
       : super(key: key);
@@ -25,16 +25,15 @@ class FontPicker extends StatefulWidget {
 }
 
 class _FontPickerState extends State<FontPicker> {
-  late PickerFont _currentFont;
   late List<PickerFont> _availableFonts;
-  String _fontFamilySelected = "";
+  late String _fontFamilySelected = "";
   FontWeight _fontWeightSelected = FontWeight.w400;
   FontStyle _fontStyleSelected = FontStyle.normal;
 
   @override
   void initState() {
     super.initState();
-    _currentFont = PickerFont(fontFamily: widget.pickerFont);
+    _fontFamilySelected = widget.pickerFont;
     _availableFonts = widget.googleFonts
         .map((fontFamily) => PickerFont(fontFamily: fontFamily))
         .toList();
@@ -42,7 +41,6 @@ class _FontPickerState extends State<FontPicker> {
 
   void changeFont(PickerFont selectedFont) {
     setState(() {
-      _currentFont = selectedFont;
       widget.onFontChanged(selectedFont);
     });
   }
@@ -54,7 +52,7 @@ class _FontPickerState extends State<FontPicker> {
         SizedBox(
             width: 300.0,
             child: TextField(
-              style: GoogleFonts.getFont(_currentFont.fontFamily,
+              style: GoogleFonts.getFont(_fontFamilySelected,
                   fontWeight: _fontWeightSelected,
                   fontStyle: _fontStyleSelected),
               decoration: InputDecoration(
@@ -92,6 +90,14 @@ class _FontPickerState extends State<FontPicker> {
                       padding: const EdgeInsets.symmetric(vertical: 4.0),
                       child: Wrap(
                           children: f.variants.map((variant) {
+                        bool isSelectedVariant;
+                        if (variant == "italic" &&
+                            _fontStyleSelected == FontStyle.italic) {
+                          isSelectedVariant = true;
+                        } else {
+                          isSelectedVariant =
+                              _fontWeightSelected.toString().contains(variant);
+                        }
                         return SizedBox(
                           height: 30.0,
                           width: 60.0,
@@ -99,14 +105,22 @@ class _FontPickerState extends State<FontPicker> {
                             padding: const EdgeInsets.all(2.0),
                             child: OutlinedButton(
                               style: OutlinedButton.styleFrom(
-                                  textStyle: TextStyle(fontSize: 10.0),
+                                  backgroundColor: isSelectedVariant
+                                      ? Theme.of(context).primaryColor
+                                      : null,
+                                  textStyle: TextStyle(
+                                    fontSize: 10.0,
+                                  ),
                                   shape: StadiumBorder()),
                               child: Text(
                                 variant,
                                 style: TextStyle(
                                     fontStyle: variant == "italic"
                                         ? FontStyle.italic
-                                        : FontStyle.normal),
+                                        : FontStyle.normal,
+                                    color: isSelectedVariant
+                                        ? Colors.white
+                                        : null),
                               ),
                               onPressed: () {
                                 setState(() {
@@ -132,7 +146,10 @@ class _FontPickerState extends State<FontPicker> {
                         'SELECT',
                       ),
                       onPressed: () {
-                        changeFont(f);
+                        changeFont(PickerFont(
+                            fontFamily: _fontFamilySelected,
+                            fontWeight: _fontWeightSelected,
+                            fontStyle: _fontStyleSelected));
                       },
                     )
                   : null,

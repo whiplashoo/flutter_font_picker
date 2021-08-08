@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: FontPicker(
             onFontChanged: (font) => {
                   print(
-                      "${font.fontFamily} with font weight ${font.fontWeight}")
+                      "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}")
                 },
             pickerFont: 'Source Sans Pro',
             googleFonts: [
