@@ -6,6 +6,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'constants/constants.dart';
 
+//TODO: Basic fonts option (to be included in assets)
+//TODO: Filter by category
+//TODO: Search option
+//TODO: Show font detailed info (add as option as well)
+//TODO: Implement favorites feature
+
 class FontPicker extends StatefulWidget {
   final List<String> googleFonts;
   final int recentCount;
@@ -14,7 +20,7 @@ class FontPicker extends StatefulWidget {
 
   const FontPicker(
       {Key? key,
-      required this.googleFonts,
+      this.googleFonts = GOOGLE_FONTS_LIST,
       this.recentCount = 3,
       required this.onFontChanged,
       required this.pickerFont})
@@ -33,6 +39,13 @@ class _FontPickerState extends State<FontPicker> {
   @override
   void initState() {
     super.initState();
+    for (String f in GOOGLE_FONTS_LIST) {
+      try {
+        GoogleFonts.getFont(f);
+      } catch (e) {
+        print(e.toString());
+      }
+    }
     _fontFamilySelected = widget.pickerFont;
     _availableFonts = widget.googleFonts
         .map((fontFamily) => PickerFont(fontFamily: fontFamily))
@@ -174,8 +187,8 @@ class PickerFont {
       this.fontWeight = FontWeight.w400,
       this.fontStyle = FontStyle.normal})
       : variants = parseVariants(fontFamily),
-        subsets = fontsList[fontFamily]!["subsets"]!.split(","),
-        category = fontsList[fontFamily]!["category"]!;
+        subsets = GOOGLE_FONTS[fontFamily]!["subsets"]!.split(","),
+        category = GOOGLE_FONTS[fontFamily]!["category"]!;
 
   factory PickerFont.fromString(String fontSpec) {
     final fontSpecSplit = fontSpec.split(":");
@@ -194,7 +207,7 @@ class PickerFont {
   }
 
   static List<String> parseVariants(String fontFamily) {
-    var variants = fontsList[fontFamily]!["variants"]!.split(",");
+    var variants = GOOGLE_FONTS[fontFamily]!["variants"]!.split(",");
     if (variants.any((v) => v.contains("i"))) {
       variants.add("italic");
     }
@@ -202,8 +215,10 @@ class PickerFont {
     return variants;
   }
 
-  static String toFontSpec(PickerFont pickerFont) {
-    String fontSpec = "${pickerFont.fontFamily}:${pickerFont.fontWeight}";
-    return pickerFont.fontStyle == FontStyle.italic ? "${fontSpec}i" : fontSpec;
+  String toFontSpec() {
+    String fontWeightString = this.fontWeight.toString();
+    String fontSpec =
+        "${this.fontFamily}:${fontWeightString.substring(fontWeightString.length - 3)}";
+    return this.fontStyle == FontStyle.italic ? "${fontSpec}i" : fontSpec;
   }
 }
