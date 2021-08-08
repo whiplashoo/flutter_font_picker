@@ -55,21 +55,23 @@ class _FontPickerState extends State<FontPicker> {
                   hintText: 'The quick brown fox jumped over the lazy dog'),
             )),
         Expanded(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: _availableFonts.map((googleFont) {
+            child: ListView.builder(
+          itemCount: _availableFonts.length,
+          itemBuilder: (context, index) {
             return InkWell(
-              onTap: () => changeFont(googleFont),
+              onTap: () => changeFont(_availableFonts[index]),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Text(googleFont.fontFamily,
-                    style: GoogleFonts.getFont(googleFont.fontFamily).copyWith(
-                        fontSize: 22.0,
-                        fontWeight: googleFont.fontWeight,
-                        fontStyle: googleFont.fontStyle)),
+                child: Text(_availableFonts[index].fontFamily,
+                    style:
+                        GoogleFonts.getFont(_availableFonts[index].fontFamily)
+                            .copyWith(
+                                fontSize: 22.0,
+                                fontWeight: _availableFonts[index].fontWeight,
+                                fontStyle: _availableFonts[index].fontStyle)),
               ),
             );
-          }).toList(),
+          },
         ))
       ],
     );
@@ -111,5 +113,10 @@ class PickerFont {
               ? FontStyle.italic
               : FontStyle.normal);
     }
+  }
+
+  static String toFontSpec(PickerFont pickerFont) {
+    String fontSpec = "${pickerFont.fontFamily}:${pickerFont.fontWeight}";
+    return pickerFont.fontStyle == FontStyle.italic ? "${fontSpec}i" : fontSpec;
   }
 }
