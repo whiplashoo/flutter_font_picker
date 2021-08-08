@@ -42,6 +42,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
             pickerFontSpec: 'Source Sans Pro',
             googleFonts: [
+              "Roboto",
+              "Roboto",
               "Abril Fatface",
               "Aclonica",
               "Alegreya Sans",

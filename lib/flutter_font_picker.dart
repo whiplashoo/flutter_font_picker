@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'constants/constants.dart';
+
 class FontPicker extends StatefulWidget {
   final List<String> googleFonts;
   final int recentsCount;
@@ -58,17 +60,27 @@ class _FontPickerState extends State<FontPicker> {
             child: ListView.builder(
           itemCount: _availableFonts.length,
           itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () => changeFont(_availableFonts[index]),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(_availableFonts[index].fontFamily,
-                    style:
-                        GoogleFonts.getFont(_availableFonts[index].fontFamily)
-                            .copyWith(
-                                fontSize: 22.0,
-                                fontWeight: _availableFonts[index].fontWeight,
-                                fontStyle: _availableFonts[index].fontStyle)),
+            var f = _availableFonts[index];
+            return ListTile(
+              onTap: () => changeFont(f),
+              title: Text(f.fontFamily,
+                  style: TextStyle(
+                      fontFamily: GoogleFonts.getFont(f.fontFamily,
+                              fontWeight: FontWeight.w400)
+                          .fontFamily)
+                  // GoogleFonts.getFont(f.fontFamily).copyWith(
+                  //     fontSize: 22.0,
+                  //     fontWeight: f.fontWeight,
+                  //     fontStyle: f.fontStyle)
+                  ),
+              subtitle: Text(fontsList[f.fontFamily]!["variants"] ?? ""),
+              trailing: TextButton(
+                child: Text(
+                  'SELECT',
+                ),
+                onPressed: () {
+                  print("DAS");
+                },
               ),
             );
           },
