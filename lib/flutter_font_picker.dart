@@ -9,7 +9,6 @@ import 'constants/constants.dart';
 //TODO: Basic fonts option (to be included in assets)
 //TODO: Filter by category
 //TODO: Search option
-//TODO: Show font detailed info (add as option as well)
 //TODO: Implement favorites feature
 
 class FontPicker extends StatefulWidget {
@@ -33,10 +32,10 @@ class FontPicker extends StatefulWidget {
 }
 
 class _FontPickerState extends State<FontPicker> {
-  late List<PickerFont> _availableFonts;
-  late String _fontFamilySelected = "";
-  FontWeight _fontWeightSelected = FontWeight.w400;
-  FontStyle _fontStyleSelected = FontStyle.normal;
+  late List<PickerFont> _allFonts;
+  late String _selectedFontFamily = "";
+  FontWeight _selectedFontWeight = FontWeight.w400;
+  FontStyle _selectedFontStyle = FontStyle.normal;
 
   @override
   void initState() {
@@ -48,8 +47,8 @@ class _FontPickerState extends State<FontPicker> {
         print(e.toString());
       }
     }
-    _fontFamilySelected = widget.pickerFont;
-    _availableFonts = widget.googleFonts
+    _selectedFontFamily = widget.pickerFont;
+    _allFonts = widget.googleFonts
         .map((fontFamily) => PickerFont(fontFamily: fontFamily))
         .toList();
   }
@@ -67,22 +66,22 @@ class _FontPickerState extends State<FontPicker> {
         SizedBox(
             width: 300.0,
             child: TextField(
-              style: GoogleFonts.getFont(_fontFamilySelected,
-                  fontWeight: _fontWeightSelected,
-                  fontStyle: _fontStyleSelected),
+              style: GoogleFonts.getFont(_selectedFontFamily,
+                  fontWeight: _selectedFontWeight,
+                  fontStyle: _selectedFontStyle),
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'The quick brown fox jumped over the lazy dog',
                   hintStyle: TextStyle(
-                      fontStyle: _fontStyleSelected,
-                      fontWeight: _fontWeightSelected)),
+                      fontStyle: _selectedFontStyle,
+                      fontWeight: _selectedFontWeight)),
             )),
         Expanded(
             child: ListView.builder(
-          itemCount: _availableFonts.length,
+          itemCount: _allFonts.length,
           itemBuilder: (context, index) {
-            var f = _availableFonts[index];
-            bool isBeingSelected = _fontFamilySelected == f.fontFamily;
+            var f = _allFonts[index];
+            bool isBeingSelected = _selectedFontFamily == f.fontFamily;
             String stylesString = widget.showFontInfo
                 ? f.variants.length > 1
                     ? "  ${f.category}, ${f.variants.length} styles"
@@ -93,9 +92,9 @@ class _FontPickerState extends State<FontPicker> {
               selectedTileColor: Theme.of(context).focusColor,
               onTap: () {
                 setState(() {
-                  _fontFamilySelected = f.fontFamily;
-                  _fontWeightSelected = FontWeight.w400;
-                  _fontStyleSelected = FontStyle.normal;
+                  _selectedFontFamily = f.fontFamily;
+                  _selectedFontWeight = FontWeight.w400;
+                  _selectedFontStyle = FontStyle.normal;
                 });
               },
               title: Padding(
@@ -126,11 +125,11 @@ class _FontPickerState extends State<FontPicker> {
                           children: f.variants.map((variant) {
                         bool isSelectedVariant;
                         if (variant == "italic" &&
-                            _fontStyleSelected == FontStyle.italic) {
+                            _selectedFontStyle == FontStyle.italic) {
                           isSelectedVariant = true;
                         } else {
                           isSelectedVariant =
-                              _fontWeightSelected.toString().contains(variant);
+                              _selectedFontWeight.toString().contains(variant);
                         }
                         return SizedBox(
                           height: 30.0,
@@ -159,11 +158,11 @@ class _FontPickerState extends State<FontPicker> {
                               onPressed: () {
                                 setState(() {
                                   if (variant == "italic") {
-                                    _fontStyleSelected == FontStyle.italic
-                                        ? _fontStyleSelected = FontStyle.normal
-                                        : _fontStyleSelected = FontStyle.italic;
+                                    _selectedFontStyle == FontStyle.italic
+                                        ? _selectedFontStyle = FontStyle.normal
+                                        : _selectedFontStyle = FontStyle.italic;
                                   } else {
-                                    _fontWeightSelected =
+                                    _selectedFontWeight =
                                         FONT_WEIGHT_VALUES[variant]!;
                                   }
                                 });
@@ -181,9 +180,9 @@ class _FontPickerState extends State<FontPicker> {
                       ),
                       onPressed: () {
                         changeFont(PickerFont(
-                            fontFamily: _fontFamilySelected,
-                            fontWeight: _fontWeightSelected,
-                            fontStyle: _fontStyleSelected));
+                            fontFamily: _selectedFontFamily,
+                            fontWeight: _selectedFontWeight,
+                            fontStyle: _selectedFontStyle));
                       },
                     )
                   : null,
