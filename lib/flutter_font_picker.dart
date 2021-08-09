@@ -7,8 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'constants/constants.dart';
 
 //TODO: Basic fonts option (to be included in assets)
-//TODO: Filter by category
-//TODO: Search option
+//TODO: Filter languages according to selected fonts on init
 //TODO: Implement favorites feature
 
 class FontPicker extends StatefulWidget {
@@ -38,6 +37,7 @@ class _FontPickerState extends State<FontPicker> {
   FontWeight _selectedFontWeight = FontWeight.w400;
   FontStyle _selectedFontStyle = FontStyle.normal;
   TextEditingController searchController = new TextEditingController();
+  String _selectedFontLanguage = 'all';
 
   @override
   void initState() {
@@ -88,6 +88,29 @@ class _FontPickerState extends State<FontPicker> {
                 onChanged: onSearchTextChanged,
               ),
             ),
+            DropdownButton<String>(
+              value: _selectedFontLanguage,
+              icon: const Icon(Icons.arrow_drop_down_sharp),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedFontLanguage = newValue!;
+                  if (newValue == 'all') {
+                    _shownFonts = _allFonts;
+                  } else {
+                    _shownFonts = _allFonts
+                        .where((f) => f.subsets.contains(newValue))
+                        .toList();
+                  }
+                });
+              },
+              items: GOOGLE_FONT_LANGS.keys
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(GOOGLE_FONT_LANGS[value]!),
+                );
+              }).toList(),
+            )
           ],
         ),
         SizedBox(

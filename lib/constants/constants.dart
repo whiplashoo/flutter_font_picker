@@ -12,6 +12,38 @@ const FONT_WEIGHT_VALUES = {
   "900": FontWeight.w900,
 };
 
+const GOOGLE_FONT_LANGS = {
+  'all': 'All languages',
+  'arabic': 'Arabic',
+  'bengali': 'Bengali',
+  'chinese-hongkong': 'Chinese (Hong Kong)',
+  'chinese-simplified': 'Chinese (Simplified',
+  'chinese-traditional': 'Chinese (Traditional)',
+  'cyrillic': 'Cyrillic',
+  'cyrillic-ext': 'Cyrillic Extended',
+  'devanagari': 'Devanagari',
+  'greek': 'Greek',
+  'greek-ext': 'Greek Extended',
+  'gujarati': 'Gujarati',
+  'gurmukhi': 'Gurmukhi',
+  'hebrew': 'Hebrew',
+  'japanese': 'Japanese',
+  'kannada': 'Kannada',
+  'khmer': 'Khmer',
+  'korean': 'Korean',
+  'latin': 'Latin',
+  'latin-ext': 'Latin Extended',
+  'malayalam': 'Malayalam',
+  'myanmar': 'Myanmar',
+  'oriya': 'Oriya',
+  'sinhala': 'Sinhala',
+  'tamil': 'Tamil',
+  'telugu': 'Telugu',
+  'thai': 'Thai',
+  'tibetan': 'Tibetan',
+  'vietnamese': 'Vietnamese'
+};
+
 const GOOGLE_FONTS_LIST = [
   "ABeeZee",
   "Abel",
