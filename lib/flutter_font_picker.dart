@@ -17,11 +17,13 @@ class FontPicker extends StatefulWidget {
   final int recentCount;
   final ValueChanged<PickerFont> onFontChanged;
   final String pickerFont;
+  final bool showFontInfo;
 
   const FontPicker(
       {Key? key,
       this.googleFonts = GOOGLE_FONTS_LIST,
       this.recentCount = 3,
+      this.showFontInfo = true,
       required this.onFontChanged,
       required this.pickerFont})
       : super(key: key);
@@ -81,6 +83,11 @@ class _FontPickerState extends State<FontPicker> {
           itemBuilder: (context, index) {
             var f = _availableFonts[index];
             bool isBeingSelected = _fontFamilySelected == f.fontFamily;
+            String stylesString = widget.showFontInfo
+                ? f.variants.length > 1
+                    ? "  ${f.category}, ${f.variants.length} styles"
+                    : "  ${f.category}"
+                : "";
             return ListTile(
               selected: isBeingSelected,
               selectedTileColor: Theme.of(context).focusColor,
@@ -93,10 +100,24 @@ class _FontPickerState extends State<FontPicker> {
               },
               title: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(f.fontFamily,
-                    style: TextStyle(
-                        fontFamily:
-                            GoogleFonts.getFont(f.fontFamily).fontFamily)),
+                child: RichText(
+                    text: TextSpan(
+                        text: f.fontFamily,
+                        style: TextStyle(
+                            fontFamily:
+                                GoogleFonts.getFont(f.fontFamily).fontFamily,
+                            color: Colors.black),
+                        children: [
+                      TextSpan(
+                          text: stylesString,
+                          style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              fontSize: 11.0,
+                              color: Colors.grey,
+                              fontFamily: DefaultTextStyle.of(context)
+                                  .style
+                                  .fontFamily))
+                    ])),
               ),
               subtitle: isBeingSelected
                   ? Padding(
