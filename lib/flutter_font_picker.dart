@@ -36,19 +36,13 @@ class _FontPickerState extends State<FontPicker> {
   late String _selectedFontFamily = "";
   FontWeight _selectedFontWeight = FontWeight.w400;
   FontStyle _selectedFontStyle = FontStyle.normal;
-  TextEditingController searchController = new TextEditingController();
+  TextEditingController searchController = TextEditingController();
   String _selectedFontLanguage = 'all';
+  List<String> _selectedFontCategories = List.from(GOOGLE_FONT_CATS);
 
   @override
   void initState() {
     super.initState();
-    for (String f in GOOGLE_FONTS_LIST) {
-      try {
-        GoogleFonts.getFont(f);
-      } catch (e) {
-        print(e.toString());
-      }
-    }
     _selectedFontFamily = widget.pickerFont;
     _allFonts = widget.googleFonts
         .map((fontFamily) => PickerFont(fontFamily: fontFamily))
@@ -113,6 +107,42 @@ class _FontPickerState extends State<FontPicker> {
             )
           ],
         ),
+        Wrap(
+            children: GOOGLE_FONT_CATS.map((fontCategory) {
+          bool isSelectedCategory =
+              _selectedFontCategories.contains(fontCategory);
+          return SizedBox(
+            height: 30.0,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                    backgroundColor: isSelectedCategory
+                        ? Theme.of(context).primaryColor
+                        : null,
+                    textStyle: TextStyle(
+                      fontSize: 10.0,
+                    ),
+                    shape: StadiumBorder()),
+                child: Text(fontCategory,
+                    style: TextStyle(
+                      color: isSelectedCategory ? Colors.white : null,
+                    )),
+                onPressed: () {
+                  setState(() {
+                    isSelectedCategory
+                        ? _selectedFontCategories.remove(fontCategory)
+                        : _selectedFontCategories.add(fontCategory);
+                    _shownFonts = _allFonts
+                        .where(
+                            (f) => _selectedFontCategories.contains(f.category))
+                        .toList();
+                  });
+                },
+              ),
+            ),
+          );
+        }).toList()),
         SizedBox(
             width: 300.0,
             child: TextField(

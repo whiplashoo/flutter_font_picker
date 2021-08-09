@@ -12,6 +12,8 @@ const FONT_WEIGHT_VALUES = {
   "900": FontWeight.w900,
 };
 
+const GOOGLE_FONT_CATS = ['serif', 'sans-serif', 'display', 'handwriting', 'monospace'];
+
 const GOOGLE_FONT_LANGS = {
   'all': 'All languages',
   'arabic': 'Arabic',
