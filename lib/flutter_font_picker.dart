@@ -33,9 +33,11 @@ class FontPicker extends StatefulWidget {
 
 class _FontPickerState extends State<FontPicker> {
   late List<PickerFont> _allFonts;
+  late List<PickerFont> _shownFonts;
   late String _selectedFontFamily = "";
   FontWeight _selectedFontWeight = FontWeight.w400;
   FontStyle _selectedFontStyle = FontStyle.normal;
+  TextEditingController searchController = new TextEditingController();
 
   @override
   void initState() {
@@ -51,6 +53,7 @@ class _FontPickerState extends State<FontPicker> {
     _allFonts = widget.googleFonts
         .map((fontFamily) => PickerFont(fontFamily: fontFamily))
         .toList();
+    _shownFonts = _allFonts;
   }
 
   void changeFont(PickerFont selectedFont) {
@@ -63,6 +66,30 @@ class _FontPickerState extends State<FontPicker> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Row(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 2,
+              child: TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: IconButton(
+                      iconSize: 16.0,
+                      icon: const Icon(Icons.cancel),
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                        searchController.clear();
+                        onSearchTextChanged('');
+                      },
+                    ),
+                    hintText: 'Search...',
+                    border: InputBorder.none),
+                onChanged: onSearchTextChanged,
+              ),
+            ),
+          ],
+        ),
         SizedBox(
             width: 300.0,
             child: TextField(
@@ -70,7 +97,7 @@ class _FontPickerState extends State<FontPicker> {
                   fontWeight: _selectedFontWeight,
                   fontStyle: _selectedFontStyle),
               decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  border: UnderlineInputBorder(),
                   hintText: 'The quick brown fox jumped over the lazy dog',
                   hintStyle: TextStyle(
                       fontStyle: _selectedFontStyle,
@@ -78,9 +105,9 @@ class _FontPickerState extends State<FontPicker> {
             )),
         Expanded(
             child: ListView.builder(
-          itemCount: _allFonts.length,
+          itemCount: _shownFonts.length,
           itemBuilder: (context, index) {
-            var f = _allFonts[index];
+            var f = _shownFonts[index];
             bool isBeingSelected = _selectedFontFamily == f.fontFamily;
             String stylesString = widget.showFontInfo
                 ? f.variants.length > 1
@@ -191,6 +218,22 @@ class _FontPickerState extends State<FontPicker> {
         ))
       ],
     );
+  }
+
+  void onSearchTextChanged(String text) {
+    if (text.isEmpty) {
+      setState(() {
+        _shownFonts = _allFonts;
+      });
+      return;
+    } else {
+      setState(() {
+        _shownFonts = _allFonts
+            .where(
+                (f) => f.fontFamily.toLowerCase().contains(text.toLowerCase()))
+            .toList();
+      });
+    }
   }
 }
 
