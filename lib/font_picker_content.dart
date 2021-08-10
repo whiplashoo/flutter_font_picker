@@ -273,6 +273,7 @@ class _FontPickerContentState extends State<FontPickerContent> {
                               fontFamily: _selectedFontFamily,
                               fontWeight: _selectedFontWeight,
                               fontStyle: _selectedFontStyle));
+                          Navigator.of(context).pop();
                         },
                       )
                     : null,
@@ -349,5 +350,10 @@ class PickerFont {
     String fontSpec =
         "${this.fontFamily}:${fontWeightString.substring(fontWeightString.length - 3)}";
     return this.fontStyle == FontStyle.italic ? "${fontSpec}i" : fontSpec;
+  }
+
+  TextStyle toTextStyle() {
+    return GoogleFonts.getFont(this.fontFamily,
+        fontWeight: this.fontWeight, fontStyle: this.fontStyle);
   }
 }
