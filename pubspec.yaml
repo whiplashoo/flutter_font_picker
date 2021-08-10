@@ -1,5 +1,5 @@
 name: flutter_font_picker
-description: A custom Flutter widget that lets the user select a Google Font from a custom dropdown.
+description: A Flutter widget that lets the user select a Google Font from a custom dropdown.
 version: 0.0.1
 homepage:
 
@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^2.1.0
+  shared_preferences: ^2.0.3
 
 dev_dependencies:
   flutter_test:
