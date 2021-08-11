@@ -57,11 +57,11 @@ class _FontPickerContentState extends State<FontPickerContent> {
           .map((fontFamily) =>
               PickerFont(fontFamily: fontFamily, isRecent: true))
           .toList();
-      _allFonts = widget.googleFonts
+      _allFonts = _recentFonts + widget.googleFonts
           .where((fontFamily) => !recents.contains(fontFamily))
           .map((fontFamily) => PickerFont(fontFamily: fontFamily))
           .toList();
-      _shownFonts = _recentFonts + _allFonts;
+      _shownFonts = _allFonts;
     });
   }
 
