@@ -1,5 +1,6 @@
 library flutter_font_picker;
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,7 +9,7 @@ import 'constants/constants.dart';
 
 //TODO: Basic fonts option (to be included in assets)
 //TODO: Filter languages according to selected fonts on init
-//TODO: Implement favorites/recents feature
+//TODO: Implement favorites feature
 
 class FontPickerContent extends StatefulWidget {
   final List<String> googleFonts;
@@ -41,6 +42,7 @@ class _FontPickerContentState extends State<FontPickerContent> {
   FontStyle _selectedFontStyle = FontStyle.normal;
   TextEditingController searchController = TextEditingController();
   String _selectedFontLanguage = 'all';
+  bool _isSearchFocused = false;
   List<String> _selectedFontCategories = List.from(GOOGLE_FONT_CATS);
 
   @override
@@ -51,7 +53,7 @@ class _FontPickerContentState extends State<FontPickerContent> {
 
   Future _prepareShownFonts() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var recents = prefs.getStringList(PREFS_RECENTS_KEY) ?? ["Aclonica"];
+    var recents = prefs.getStringList(PREFS_RECENTS_KEY) ?? [];
     setState(() {
       _recentFonts = recents.reversed
           .map((fontFamily) =>
@@ -62,7 +64,7 @@ class _FontPickerContentState extends State<FontPickerContent> {
               .where((fontFamily) => !recents.contains(fontFamily))
               .map((fontFamily) => PickerFont(fontFamily: fontFamily))
               .toList();
-      _shownFonts = _allFonts;
+      _shownFonts = List.from(_allFonts);
     });
   }
 
@@ -78,56 +80,78 @@ class _FontPickerContentState extends State<FontPickerContent> {
       height: MediaQuery.of(context).size.height * 5 / 6,
       child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: searchController,
-                  decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search),
-                      suffixIcon: IconButton(
-                        iconSize: 16.0,
-                        icon: const Icon(Icons.cancel),
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          searchController.clear();
-                          onSearchTextChanged('');
-                        },
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: FocusScope(
+                    child: Focus(
+                      onFocusChange: (focus) {
+                        setState(() {
+                          _isSearchFocused = focus;
+                        });
+                      },
+                      child: TextField(
+                        controller: searchController,
+                        style: const TextStyle(fontSize: 14.0),
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.search,
+                              size: widget.showInDialog ? 12.0 : 18.0,
+                            ),
+                            suffixIcon: _isSearchFocused
+                                ? IconButton(
+                                    iconSize: widget.showInDialog ? 14.0 : 16.0,
+                                    icon: const Icon(Icons.cancel),
+                                    onPressed: () {
+                                      FocusScope.of(context).unfocus();
+                                      searchController.clear();
+                                      onSearchTextChanged('');
+                                    },
+                                  )
+                                : null,
+                            hintText: widget.showInDialog ? "" : "Search...",
+                            hintStyle: const TextStyle(fontSize: 14.0),
+                            border: InputBorder.none),
+                        onChanged: onSearchTextChanged,
                       ),
-                      hintText: 'Search...',
-                      border: InputBorder.none),
-                  onChanged: onSearchTextChanged,
+                    ),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: DropdownButton<String>(
-                  value: _selectedFontLanguage,
-                  isDense: true,
-                  style: TextStyle(fontSize: 12.0, color: Colors.black),
-                  icon: const Icon(Icons.arrow_drop_down_sharp),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedFontLanguage = newValue!;
-                      if (newValue == 'all') {
-                        _shownFonts = _allFonts;
-                      } else {
-                        _shownFonts = _allFonts
-                            .where((f) => f.subsets.contains(newValue))
-                            .toList();
-                        print(_shownFonts.length);
-                      }
-                    });
-                  },
-                  items: GOOGLE_FONT_LANGS.keys
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(GOOGLE_FONT_LANGS[value]!),
-                    );
-                  }).toList(),
-                ),
-              )
-            ],
+                Expanded(
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _selectedFontLanguage,
+                      isDense: true,
+                      style: TextStyle(
+                          fontSize: widget.showInDialog ? 8.0 : 12.0,
+                          color: Colors.black),
+                      icon: const Icon(Icons.arrow_drop_down_sharp),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedFontLanguage = newValue!;
+                          if (newValue == 'all') {
+                            _shownFonts = _allFonts;
+                          } else {
+                            _shownFonts = _allFonts
+                                .where((f) => f.subsets.contains(newValue))
+                                .toList();
+                          }
+                        });
+                      },
+                      items: GOOGLE_FONT_LANGS.keys
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(GOOGLE_FONT_LANGS[value]!),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
           Wrap(
               children: GOOGLE_FONT_CATS.map((fontCategory) {
@@ -165,20 +189,23 @@ class _FontPickerContentState extends State<FontPickerContent> {
               ),
             );
           }).toList()),
-          SizedBox(
-              width: 300.0,
-              child: TextField(
-                style: GoogleFonts.getFont(
-                    _selectedFontFamily ?? widget.initialFontFamily,
-                    fontWeight: _selectedFontWeight,
-                    fontStyle: _selectedFontStyle),
-                decoration: InputDecoration(
-                    border: UnderlineInputBorder(),
-                    hintText: 'The quick brown fox jumped over the lazy dog',
-                    hintStyle: TextStyle(
-                        fontStyle: _selectedFontStyle,
-                        fontWeight: _selectedFontWeight)),
-              )),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: TextField(
+              textAlign: TextAlign.center,
+              style: GoogleFonts.getFont(
+                  _selectedFontFamily ?? widget.initialFontFamily,
+                  fontWeight: _selectedFontWeight,
+                  fontStyle: _selectedFontStyle),
+              decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  hintText: 'The quick brown fox jumped over the lazy dog',
+                  hintStyle: TextStyle(
+                      fontSize: 14.0,
+                      fontStyle: _selectedFontStyle,
+                      fontWeight: _selectedFontWeight)),
+            ),
+          ),
           Expanded(
               child: ListView.builder(
             itemCount: _shownFonts.length,
@@ -195,9 +222,13 @@ class _FontPickerContentState extends State<FontPickerContent> {
                 selectedTileColor: Theme.of(context).focusColor,
                 onTap: () {
                   setState(() {
-                    _selectedFontFamily = f.fontFamily;
-                    _selectedFontWeight = FontWeight.w400;
-                    _selectedFontStyle = FontStyle.normal;
+                    if (!isBeingSelected) {
+                      _selectedFontFamily = f.fontFamily;
+                      _selectedFontWeight = FontWeight.w400;
+                      _selectedFontStyle = FontStyle.normal;
+                    } else {
+                      _selectedFontFamily = null;
+                    }
                   });
                 },
                 title: Padding(

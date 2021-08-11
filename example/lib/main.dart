@@ -91,8 +91,8 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+            child: Wrap(
+          alignment: WrapAlignment.center,
           children: [
             ElevatedButton(
                 child: Text('Pick a font (with a screen)'),
@@ -150,6 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Expanded(
                   child: TextField(
                     readOnly: true,
+                    textAlign: TextAlign.center,
                     decoration: InputDecoration(
                         suffixIcon: const Icon(Icons.arrow_drop_down_sharp),
                         hintText: _selectedFont,
