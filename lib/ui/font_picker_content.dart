@@ -1,11 +1,15 @@
 library flutter_font_picker;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'constants/constants.dart';
+import '../constants/constants.dart';
+import '../models/picker_font.dart';
+import 'font_categories.dart';
+import 'font_language.dart';
+import 'font_preview.dart';
+import 'font_search.dart';
 
 //TODO: Basic fonts option (to be included in assets)
 //TODO: Filter languages according to selected fonts on init
@@ -40,10 +44,7 @@ class _FontPickerContentState extends State<FontPickerContent> {
   String? _selectedFontFamily;
   FontWeight _selectedFontWeight = FontWeight.w400;
   FontStyle _selectedFontStyle = FontStyle.normal;
-  TextEditingController searchController = TextEditingController();
   String _selectedFontLanguage = 'all';
-  bool _isSearchFocused = false;
-  List<String> _selectedFontCategories = List.from(GOOGLE_FONT_CATS);
 
   @override
   void initState() {
@@ -81,131 +82,43 @@ class _FontPickerContentState extends State<FontPickerContent> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: FocusScope(
-                    child: Focus(
-                      onFocusChange: (focus) {
-                        setState(() {
-                          _isSearchFocused = focus;
-                        });
-                      },
-                      child: TextField(
-                        controller: searchController,
-                        style: const TextStyle(fontSize: 14.0),
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.search,
-                              size: widget.showInDialog ? 12.0 : 18.0,
-                            ),
-                            suffixIcon: _isSearchFocused
-                                ? IconButton(
-                                    iconSize: widget.showInDialog ? 14.0 : 16.0,
-                                    icon: const Icon(Icons.cancel),
-                                    onPressed: () {
-                                      FocusScope.of(context).unfocus();
-                                      searchController.clear();
-                                      onSearchTextChanged('');
-                                    },
-                                  )
-                                : null,
-                            hintText: widget.showInDialog ? "" : "Search...",
-                            hintStyle: const TextStyle(fontSize: 14.0),
-                            border: InputBorder.none),
-                        onChanged: onSearchTextChanged,
+            padding:
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
+            child: widget.showInDialog
+                ? ListView(
+                    shrinkWrap: true,
+                    children: [
+                      FontSearch(
+                        onSearchTextChanged: onSearchTextChanged,
                       ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: _selectedFontLanguage,
-                      isDense: true,
-                      style: TextStyle(
-                          fontSize: widget.showInDialog ? 8.0 : 12.0,
-                          color: Colors.black),
-                      icon: const Icon(Icons.arrow_drop_down_sharp),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedFontLanguage = newValue!;
-                          if (newValue == 'all') {
-                            _shownFonts = _allFonts;
-                          } else {
-                            _shownFonts = _allFonts
-                                .where((f) => f.subsets.contains(newValue))
-                                .toList();
-                          }
-                        });
-                      },
-                      items: GOOGLE_FONT_LANGS.keys
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(GOOGLE_FONT_LANGS[value]!),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Wrap(
-              children: GOOGLE_FONT_CATS.map((fontCategory) {
-            bool isSelectedCategory =
-                _selectedFontCategories.contains(fontCategory);
-            return SizedBox(
-              height: 30.0,
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                      backgroundColor: isSelectedCategory
-                          ? Theme.of(context).primaryColor
-                          : null,
-                      textStyle: TextStyle(
-                        fontSize: 10.0,
+                      FontLanguage(
+                        onFontLanguageSelected: onFontLanguageSelected,
+                        selectedFontLanguage: _selectedFontLanguage,
                       ),
-                      shape: StadiumBorder()),
-                  child: Text(fontCategory,
-                      style: TextStyle(
-                        color: isSelectedCategory ? Colors.white : null,
-                      )),
-                  onPressed: () {
-                    setState(() {
-                      isSelectedCategory
-                          ? _selectedFontCategories.remove(fontCategory)
-                          : _selectedFontCategories.add(fontCategory);
-                      _shownFonts = _allFonts
-                          .where((f) =>
-                              _selectedFontCategories.contains(f.category))
-                          .toList();
-                    });
-                  },
-                ),
-              ),
-            );
-          }).toList()),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: TextField(
-              textAlign: TextAlign.center,
-              style: GoogleFonts.getFont(
-                  _selectedFontFamily ?? widget.initialFontFamily,
-                  fontWeight: _selectedFontWeight,
-                  fontStyle: _selectedFontStyle),
-              decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  hintText: 'The quick brown fox jumped over the lazy dog',
-                  hintStyle: TextStyle(
-                      fontSize: 14.0,
-                      fontStyle: _selectedFontStyle,
-                      fontWeight: _selectedFontWeight)),
-            ),
+                      SizedBox(height: 12.0)
+                    ],
+                  )
+                : Row(
+                    children: [
+                      Expanded(
+                        child: FontSearch(
+                          onSearchTextChanged: onSearchTextChanged,
+                        ),
+                      ),
+                      Expanded(
+                        child: FontLanguage(
+                          onFontLanguageSelected: onFontLanguageSelected,
+                          selectedFontLanguage: _selectedFontLanguage,
+                        ),
+                      )
+                    ],
+                  ),
           ),
+          FontCategories(onFontCategoriesUpdated: onFontCategoriesUpdated),
+          FontPreview(
+              fontFamily: _selectedFontFamily ?? widget.initialFontFamily,
+              fontWeight: _selectedFontWeight,
+              fontStyle: _selectedFontStyle),
           Expanded(
               child: ListView.builder(
             itemCount: _shownFonts.length,
@@ -353,6 +266,26 @@ class _FontPickerContentState extends State<FontPickerContent> {
     }
   }
 
+  void onFontLanguageSelected(String? newValue) {
+    setState(() {
+      _selectedFontLanguage = newValue!;
+      if (newValue == 'all') {
+        _shownFonts = _allFonts;
+      } else {
+        _shownFonts =
+            _allFonts.where((f) => f.subsets.contains(newValue)).toList();
+      }
+    });
+  }
+
+  void onFontCategoriesUpdated(List<String> selectedFontCategories) {
+    setState(() {
+      _shownFonts = _allFonts
+          .where((f) => selectedFontCategories.contains(f.category))
+          .toList();
+    });
+  }
+
   void onSearchTextChanged(String text) {
     if (text.isEmpty) {
       setState(() {
@@ -367,61 +300,5 @@ class _FontPickerContentState extends State<FontPickerContent> {
             .toList();
       });
     }
-  }
-}
-
-class PickerFont {
-  final String fontFamily;
-  final FontWeight fontWeight;
-  final FontStyle fontStyle;
-  List<String> variants;
-  List<String> subsets;
-  String category;
-  bool isRecent;
-
-  PickerFont(
-      {required this.fontFamily,
-      this.fontWeight = FontWeight.w400,
-      this.fontStyle = FontStyle.normal,
-      this.isRecent = false})
-      : variants = parseVariants(fontFamily),
-        subsets = GOOGLE_FONTS[fontFamily]!["subsets"]!.split(","),
-        category = GOOGLE_FONTS[fontFamily]!["category"]!;
-
-  factory PickerFont.fromString(String fontSpec) {
-    final fontSpecSplit = fontSpec.split(":");
-    if (fontSpecSplit.length == 1) {
-      return PickerFont(fontFamily: fontSpecSplit[0]);
-    } else {
-      return PickerFont(
-          fontFamily: fontSpecSplit[0],
-          fontWeight:
-              FONT_WEIGHT_VALUES[fontSpecSplit[1].replaceAll("i", "")] ??
-                  FontWeight.w400,
-          fontStyle: fontSpecSplit[1].contains("i")
-              ? FontStyle.italic
-              : FontStyle.normal);
-    }
-  }
-
-  static List<String> parseVariants(String fontFamily) {
-    var variants = GOOGLE_FONTS[fontFamily]!["variants"]!.split(",");
-    if (variants.any((v) => v.contains("i"))) {
-      variants.add("italic");
-    }
-    variants.removeWhere((v) => v.endsWith("i"));
-    return variants;
-  }
-
-  String toFontSpec() {
-    String fontWeightString = this.fontWeight.toString();
-    String fontSpec =
-        "${this.fontFamily}:${fontWeightString.substring(fontWeightString.length - 3)}";
-    return this.fontStyle == FontStyle.italic ? "${fontSpec}i" : fontSpec;
-  }
-
-  TextStyle toTextStyle() {
-    return GoogleFonts.getFont(this.fontFamily,
-        fontWeight: this.fontWeight, fontStyle: this.fontStyle);
   }
 }

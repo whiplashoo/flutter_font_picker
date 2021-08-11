@@ -3,7 +3,8 @@ library flutter_font_picker;
 import 'package:flutter/material.dart';
 
 import 'constants/constants.dart';
-import 'font_picker_content.dart';
+import 'models/picker_font.dart';
+import 'ui/font_picker_content.dart';
 
 //TODO: Basic fonts option (to be included in assets)
 //TODO: Filter languages according to selected fonts on init
