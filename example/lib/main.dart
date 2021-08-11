@@ -101,6 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => FontPicker(
+                            recentsCount: 10,
                             onFontChanged: (font) {
                               setState(() {
                                 _selectedFont = font.fontFamily;
@@ -109,7 +110,6 @@ class _MyHomePageState extends State<MyHomePage> {
                               print(
                                   "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}");
                             },
-                            pickerFont: 'Roboto',
                             googleFonts: _myGoogleFonts)),
                   );
                 }),
@@ -131,7 +131,6 @@ class _MyHomePageState extends State<MyHomePage> {
                               print(
                                   "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}");
                             },
-                            pickerFont: 'Roboto',
                             googleFonts: _myGoogleFonts),
                       ));
                     },
@@ -168,7 +167,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                   print(
                                       "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}");
                                 },
-                                pickerFont: 'Roboto',
                                 googleFonts: _myGoogleFonts)),
                       );
                     },

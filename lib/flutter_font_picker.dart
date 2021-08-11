@@ -12,7 +12,7 @@ import 'font_picker_content.dart';
 class FontPicker extends StatefulWidget {
   final List<String> googleFonts;
   final ValueChanged<PickerFont> onFontChanged;
-  final String pickerFont;
+  final String initialFontFamily;
   final bool showFontInfo;
   final bool showInDialog;
   final int recentsCount;
@@ -24,7 +24,7 @@ class FontPicker extends StatefulWidget {
       this.showInDialog = false,
       this.recentsCount = 3,
       required this.onFontChanged,
-      required this.pickerFont})
+      this.initialFontFamily = 'Roboto'})
       : super(key: key);
 
   @override
@@ -41,7 +41,7 @@ class _FontPickerState extends State<FontPicker> {
         showFontInfo: widget.showFontInfo,
         showInDialog: widget.showInDialog,
         recentsCount: widget.recentsCount,
-        pickerFont: widget.pickerFont,
+        initialFontFamily: widget.initialFontFamily,
       );
     } else {
       return Scaffold(
@@ -54,7 +54,7 @@ class _FontPickerState extends State<FontPicker> {
             showFontInfo: widget.showFontInfo,
             showInDialog: widget.showInDialog,
             recentsCount: widget.recentsCount,
-            pickerFont: widget.pickerFont,
+            initialFontFamily: widget.initialFontFamily,
           ));
     }
   }

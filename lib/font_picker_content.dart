@@ -13,7 +13,7 @@ import 'constants/constants.dart';
 class FontPickerContent extends StatefulWidget {
   final List<String> googleFonts;
   final ValueChanged<PickerFont> onFontChanged;
-  final String pickerFont;
+  final String initialFontFamily;
   final bool showFontInfo;
   final bool showInDialog;
   final int recentsCount;
@@ -25,7 +25,7 @@ class FontPickerContent extends StatefulWidget {
       this.showInDialog = false,
       this.recentsCount = 3,
       required this.onFontChanged,
-      required this.pickerFont})
+      required this.initialFontFamily})
       : super(key: key);
 
   @override
@@ -36,7 +36,7 @@ class _FontPickerContentState extends State<FontPickerContent> {
   late List<PickerFont> _allFonts;
   late List<PickerFont> _shownFonts;
   late List<PickerFont> _recentFonts;
-  late String _selectedFontFamily = "";
+  String? _selectedFontFamily;
   FontWeight _selectedFontWeight = FontWeight.w400;
   FontStyle _selectedFontStyle = FontStyle.normal;
   TextEditingController searchController = TextEditingController();
@@ -46,13 +46,12 @@ class _FontPickerContentState extends State<FontPickerContent> {
   @override
   void initState() {
     super.initState();
-    _selectedFontFamily = widget.pickerFont;
   }
 
   Future<List<PickerFont>> prepareShownFonts() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var recents = prefs.getStringList(PREFS_RECENTS_KEY) ?? ["Aclonica"];
-    _recentFonts = recents
+    _recentFonts = recents.reversed
         .map((fontFamily) => PickerFont(fontFamily: fontFamily, isRecent: true))
         .toList();
     _allFonts = widget.googleFonts
@@ -164,7 +163,8 @@ class _FontPickerContentState extends State<FontPickerContent> {
           SizedBox(
               width: 300.0,
               child: TextField(
-                style: GoogleFonts.getFont(_selectedFontFamily,
+                style: GoogleFonts.getFont(
+                    _selectedFontFamily ?? widget.initialFontFamily,
                     fontWeight: _selectedFontWeight,
                     fontStyle: _selectedFontStyle),
                 decoration: InputDecoration(
@@ -184,7 +184,7 @@ class _FontPickerContentState extends State<FontPickerContent> {
                       return ListView.builder(
                         itemCount: _shownFonts.length,
                         itemBuilder: (context, index) {
-                          var f = _shownFonts[index];
+                          PickerFont f = _shownFonts[index];
                           bool isBeingSelected =
                               _selectedFontFamily == f.fontFamily;
                           String stylesString = widget.showFontInfo
@@ -192,6 +192,7 @@ class _FontPickerContentState extends State<FontPickerContent> {
                                   ? "  ${f.category}, ${f.variants.length} styles"
                                   : "  ${f.category}"
                               : "";
+                          int recentsCount = _recentFonts.length;
                           return ListTile(
                             selected: isBeingSelected,
                             selectedTileColor: Theme.of(context).focusColor,
@@ -296,15 +297,20 @@ class _FontPickerContentState extends State<FontPickerContent> {
                                       'SELECT',
                                     ),
                                     onPressed: () {
-                                      addToRecents(_selectedFontFamily);
+                                      addToRecents(_selectedFontFamily!);
                                       changeFont(PickerFont(
-                                          fontFamily: _selectedFontFamily,
+                                          fontFamily: _selectedFontFamily!,
                                           fontWeight: _selectedFontWeight,
                                           fontStyle: _selectedFontStyle));
                                       Navigator.of(context).pop();
                                     },
                                   )
-                                : null,
+                                : _recentFonts.contains(f)
+                                    ? Icon(
+                                        Icons.history,
+                                        size: 18.0,
+                                      )
+                                    : null,
                           );
                         },
                       );
