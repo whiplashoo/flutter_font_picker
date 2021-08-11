@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'constants/constants.dart';
 import 'models/picker_font.dart';
-import 'ui/font_picker_content.dart';
+import 'ui/font_picker_ui.dart';
 
 //TODO: Basic fonts option (to be included in assets)
 //TODO: Filter languages according to selected fonts on init
@@ -36,7 +36,7 @@ class _FontPickerState extends State<FontPicker> {
   @override
   Widget build(BuildContext context) {
     if (widget.showInDialog) {
-      return FontPickerContent(
+      return FontPickerUI(
         onFontChanged: widget.onFontChanged,
         googleFonts: widget.googleFonts,
         showFontInfo: widget.showFontInfo,
@@ -49,7 +49,7 @@ class _FontPickerState extends State<FontPicker> {
           appBar: AppBar(
             title: Text("Pick a font:"),
           ),
-          body: FontPickerContent(
+          body: FontPickerUI(
             onFontChanged: widget.onFontChanged,
             googleFonts: widget.googleFonts,
             showFontInfo: widget.showFontInfo,

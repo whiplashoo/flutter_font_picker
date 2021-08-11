@@ -15,7 +15,7 @@ import 'font_search.dart';
 //TODO: Filter languages according to selected fonts on init
 //TODO: Implement favorites feature
 
-class FontPickerContent extends StatefulWidget {
+class FontPickerUI extends StatefulWidget {
   final List<String> googleFonts;
   final ValueChanged<PickerFont> onFontChanged;
   final String initialFontFamily;
@@ -23,7 +23,7 @@ class FontPickerContent extends StatefulWidget {
   final bool showInDialog;
   final int recentsCount;
 
-  const FontPickerContent(
+  const FontPickerUI(
       {Key? key,
       this.googleFonts = GOOGLE_FONTS_LIST,
       this.showFontInfo = true,
@@ -34,10 +34,10 @@ class FontPickerContent extends StatefulWidget {
       : super(key: key);
 
   @override
-  _FontPickerContentState createState() => _FontPickerContentState();
+  _FontPickerUIState createState() => _FontPickerUIState();
 }
 
-class _FontPickerContentState extends State<FontPickerContent> {
+class _FontPickerUIState extends State<FontPickerUI> {
   var _shownFonts = <PickerFont>[];
   var _allFonts = <PickerFont>[];
   var _recentFonts = <PickerFont>[];
