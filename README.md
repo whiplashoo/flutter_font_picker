@@ -71,4 +71,6 @@ The user can:
 - Search the fonts by name.
 - See the most recently used fonts at the top of the list.
 
+### Credits
 
+Inspired by the [FontPicker jQuery plugin](https://github.com/av01d/fontpicker-jquery-plugin)
