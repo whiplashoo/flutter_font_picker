@@ -57,10 +57,11 @@ class _FontPickerContentState extends State<FontPickerContent> {
           .map((fontFamily) =>
               PickerFont(fontFamily: fontFamily, isRecent: true))
           .toList();
-      _allFonts = _recentFonts + widget.googleFonts
-          .where((fontFamily) => !recents.contains(fontFamily))
-          .map((fontFamily) => PickerFont(fontFamily: fontFamily))
-          .toList();
+      _allFonts = _recentFonts +
+          widget.googleFonts
+              .where((fontFamily) => !recents.contains(fontFamily))
+              .map((fontFamily) => PickerFont(fontFamily: fontFamily))
+              .toList();
       _shownFonts = _allFonts;
     });
   }
@@ -309,7 +310,7 @@ class _FontPickerContentState extends State<FontPickerContent> {
   Future<void> addToRecents(String fontFamily) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var recents = prefs.getStringList(PREFS_RECENTS_KEY);
-    if (recents != null) {
+    if (recents != null && !recents.contains(fontFamily)) {
       if (recents.length == widget.recentsCount) {
         recents = recents.sublist(1)..add(fontFamily);
       } else {
@@ -319,7 +320,6 @@ class _FontPickerContentState extends State<FontPickerContent> {
     } else {
       prefs.setStringList(PREFS_RECENTS_KEY, [fontFamily]);
     }
-    print(recents);
   }
 
   void onSearchTextChanged(String text) {
