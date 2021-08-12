@@ -150,8 +150,11 @@ class _FontPickerUIState extends State<FontPickerUI> {
                       text: TextSpan(
                           text: f.fontFamily,
                           style: TextStyle(
-                              fontFamily:
-                                  GoogleFonts.getFont(f.fontFamily).fontFamily),
+                                  fontFamily: GoogleFonts.getFont(f.fontFamily)
+                                      .fontFamily)
+                              .copyWith(
+                                  color:
+                                      DefaultTextStyle.of(context).style.color),
                           children: [
                         TextSpan(
                             text: stylesString,
