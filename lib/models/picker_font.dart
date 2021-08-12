@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../constants/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../constants/constants.dart';
 
 class PickerFont {
   final String fontFamily;
@@ -20,7 +21,16 @@ class PickerFont {
         subsets = GOOGLE_FONTS[fontFamily]!["subsets"]!.split(","),
         category = GOOGLE_FONTS[fontFamily]!["category"]!;
 
-  factory PickerFont.fromString(String fontSpec) {
+  static List<String> parseVariants(String fontFamily) {
+    var variants = GOOGLE_FONTS[fontFamily]!["variants"]!.split(",");
+    if (variants.any((v) => v.contains("i"))) {
+      variants.add("italic");
+    }
+    variants.removeWhere((v) => v.endsWith("i"));
+    return variants;
+  }
+
+  factory PickerFont.fromFontSpec(String fontSpec) {
     final fontSpecSplit = fontSpec.split(":");
     if (fontSpecSplit.length == 1) {
       return PickerFont(fontFamily: fontSpecSplit[0]);
@@ -34,15 +44,6 @@ class PickerFont {
               ? FontStyle.italic
               : FontStyle.normal);
     }
-  }
-
-  static List<String> parseVariants(String fontFamily) {
-    var variants = GOOGLE_FONTS[fontFamily]!["variants"]!.split(",");
-    if (variants.any((v) => v.contains("i"))) {
-      variants.add("italic");
-    }
-    variants.removeWhere((v) => v.endsWith("i"));
-    return variants;
   }
 
   String toFontSpec() {
