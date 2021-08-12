@@ -1,3 +1,7 @@
+## 0.2.1
+
+* Fix hardcoded color values for dark themes.
+
 ## 0.2.0
 
 * Expose models and constants to callers.

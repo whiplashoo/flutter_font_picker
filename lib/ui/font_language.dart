@@ -21,7 +21,7 @@ class _FontLanguageState extends State<FontLanguage> {
       child: DropdownButton<String>(
         value: widget.selectedFontLanguage,
         isDense: true,
-        style: TextStyle(fontSize: 12.0, color: Colors.black),
+        style: TextStyle(fontSize: 12.0),
         icon: const Icon(Icons.arrow_drop_down_sharp),
         onChanged: widget.onFontLanguageSelected,
         items: GOOGLE_FONT_LANGS.keys

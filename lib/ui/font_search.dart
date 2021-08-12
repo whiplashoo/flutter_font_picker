@@ -24,22 +24,27 @@ class _FontSearchState extends State<FontSearch> {
         child: TextField(
           controller: searchController,
           decoration: InputDecoration(
-              prefixIcon: Icon(
-                Icons.search,
-              ),
-              suffixIcon: _isSearchFocused
-                  ? IconButton(
-                      icon: const Icon(Icons.cancel),
-                      onPressed: () {
-                        FocusScope.of(context).unfocus();
-                        searchController.clear();
-                        widget.onSearchTextChanged('');
-                      },
-                    )
-                  : null,
-              hintText: "Search...",
-              hintStyle: const TextStyle(fontSize: 14.0),
-              border: InputBorder.none),
+            prefixIcon: Icon(
+              Icons.search,
+            ),
+            suffixIcon: _isSearchFocused
+                ? IconButton(
+                    icon: const Icon(Icons.cancel),
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+                      searchController.clear();
+                      widget.onSearchTextChanged('');
+                    },
+                  )
+                : null,
+            hintText: "Search...",
+            hintStyle: const TextStyle(fontSize: 14.0),
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+          ),
           onChanged: widget.onSearchTextChanged,
         ),
       ),

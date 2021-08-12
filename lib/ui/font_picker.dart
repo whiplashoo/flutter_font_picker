@@ -8,7 +8,7 @@ import 'font_picker_ui.dart';
 
 //TODO: Basic fonts option (to be included in assets)
 //TODO: Filter languages according to selected fonts on init
-//TODO: Implement favorites/recents feature
+//TODO: Implement favorites feature
 
 class FontPicker extends StatefulWidget {
   final List<String> googleFonts;

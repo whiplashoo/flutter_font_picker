@@ -21,7 +21,6 @@ class FontPreview extends StatelessWidget {
         style: GoogleFonts.getFont(fontFamily,
             fontWeight: fontWeight, fontStyle: fontStyle),
         decoration: InputDecoration(
-            border: UnderlineInputBorder(),
             hintText: 'The quick brown fox jumped over the lazy dog',
             hintStyle: TextStyle(
                 fontSize: 14.0, fontStyle: fontStyle, fontWeight: fontWeight)),

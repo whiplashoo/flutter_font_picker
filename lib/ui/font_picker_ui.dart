@@ -151,8 +151,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
                           text: f.fontFamily,
                           style: TextStyle(
                               fontFamily:
-                                  GoogleFonts.getFont(f.fontFamily).fontFamily,
-                              color: Colors.black),
+                                  GoogleFonts.getFont(f.fontFamily).fontFamily),
                           children: [
                         TextSpan(
                             text: stylesString,
