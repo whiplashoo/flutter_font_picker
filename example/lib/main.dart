@@ -123,17 +123,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       builder: (context) {
                         return AlertDialog(
                             content: SingleChildScrollView(
-                          child: FontPicker(
-                              showInDialog: true,
-                              onFontChanged: (font) {
-                                setState(() {
-                                  _selectedFont = font.fontFamily;
-                                  _selectedFontTextStyle = font.toTextStyle();
-                                });
-                                print(
-                                    "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}");
-                              },
-                              googleFonts: _myGoogleFonts),
+                          child: Container(
+                            width: double.maxFinite,
+                            child: FontPicker(
+                                showInDialog: true,
+                                onFontChanged: (font) {
+                                  setState(() {
+                                    _selectedFont = font.fontFamily;
+                                    _selectedFontTextStyle = font.toTextStyle();
+                                  });
+                                  print(
+                                      "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}");
+                                },
+                                googleFonts: _myGoogleFonts),
+                          ),
                         ));
                       },
                     );
