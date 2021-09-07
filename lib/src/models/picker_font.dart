@@ -3,6 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../constants/constants.dart';
 
+/// A wrapper class that contains details about each font in the [FontPicker].
+///
+/// Returned from the [onFontChanged] method of the [FontPicker].
+///
+/// Use the [toTextStyle] method to style any [Text] with the particular font.
 class PickerFont {
   final String fontFamily;
   final FontWeight fontWeight;
@@ -18,11 +23,11 @@ class PickerFont {
       this.fontStyle = FontStyle.normal,
       this.isRecent = false})
       : variants = parseVariants(fontFamily),
-        subsets = GOOGLE_FONTS[fontFamily]!["subsets"]!.split(","),
-        category = GOOGLE_FONTS[fontFamily]!["category"]!;
+        subsets = googleFontsDetails[fontFamily]!["subsets"]!.split(","),
+        category = googleFontsDetails[fontFamily]!["category"]!;
 
   static List<String> parseVariants(String fontFamily) {
-    var variants = GOOGLE_FONTS[fontFamily]!["variants"]!.split(",");
+    var variants = googleFontsDetails[fontFamily]!["variants"]!.split(",");
     if (variants.any((v) => v.contains("i"))) {
       variants.add("italic");
     }
@@ -30,6 +35,7 @@ class PickerFont {
     return variants;
   }
 
+  /// Constructs a [PickerFont] from a font spec description (a shorthand string that can describe a font), e.g. "Roboto:700i".
   factory PickerFont.fromFontSpec(String fontSpec) {
     final fontSpecSplit = fontSpec.split(":");
     if (fontSpecSplit.length == 1) {
@@ -37,15 +43,16 @@ class PickerFont {
     } else {
       return PickerFont(
           fontFamily: fontSpecSplit[0],
-          fontWeight:
-              FONT_WEIGHT_VALUES[fontSpecSplit[1].replaceAll("i", "")] ??
-                  FontWeight.w400,
+          fontWeight: fontWeightValues[fontSpecSplit[1].replaceAll("i", "")] ??
+              FontWeight.w400,
           fontStyle: fontSpecSplit[1].contains("i")
               ? FontStyle.italic
               : FontStyle.normal);
     }
   }
 
+  /// Converts a [PickerFont] to a font spec description, a shorthand string that can describe a font.
+  /// Examples of font specs: "Roboto:400", "Merriweather:700i", "Archivo Narrow:200i".
   String toFontSpec() {
     String fontWeightString = this.fontWeight.toString();
     String fontSpec =
@@ -53,6 +60,7 @@ class PickerFont {
     return this.fontStyle == FontStyle.italic ? "${fontSpec}i" : fontSpec;
   }
 
+  /// Provides a [TextStyle] object that can be used to style any [Text] with the selected Google font.
   TextStyle toTextStyle() {
     return GoogleFonts.getFont(this.fontFamily,
         fontWeight: this.fontWeight, fontStyle: this.fontStyle);

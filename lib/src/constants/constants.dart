@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-const PREFS_RECENTS_KEY = "font_picker_recents";
-const FONT_WEIGHT_VALUES = {
+const prefsRecentsKey = "font_picker_recents";
+const fontWeightValues = {
   "100": FontWeight.w100,
   "200": FontWeight.w200,
   "300": FontWeight.w300,
@@ -13,7 +13,7 @@ const FONT_WEIGHT_VALUES = {
   "900": FontWeight.w900,
 };
 
-const GOOGLE_FONT_CATS = [
+const googleFontCategories = [
   'serif',
   'sans-serif',
   'display',
@@ -21,7 +21,7 @@ const GOOGLE_FONT_CATS = [
   'monospace'
 ];
 
-const GOOGLE_FONT_LANGS = {
+const googleFontLanguages = {
   'all': 'All languages',
   'arabic': 'Arabic',
   'bengali': 'Bengali',
@@ -53,7 +53,7 @@ const GOOGLE_FONT_LANGS = {
   'vietnamese': 'Vietnamese'
 };
 
-const GOOGLE_FONTS_LIST = [
+const googleFontsList = [
   "ABeeZee",
   "Abel",
   "Abhaya Libre",
@@ -1032,7 +1032,7 @@ const GOOGLE_FONTS_LIST = [
   "Zilla Slab Highlight"
 ];
 
-const GOOGLE_FONTS = {
+const googleFontsDetails = {
   "ABeeZee": {
     "category": "sans-serif",
     "variants": "400,400i",

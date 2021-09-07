@@ -1,3 +1,9 @@
+## 0.3.0
+
+* Refactor implementation files in /src.
+* Fix issue in example in iOS not rendering the FontPicker in the AlertDialog.
+* Add library-level and API documentation. 
+
 ## 0.2.1
 
 * Fix hardcoded color values for dark themes.
@@ -14,3 +20,7 @@
 ## 0.1.0
 
 * First working version.
+
+- TODO: Basic fonts option (to be included in assets).
+- TODO: Filter languages according to selected fonts on initialization.
+- TODO: Implement favorites feature.

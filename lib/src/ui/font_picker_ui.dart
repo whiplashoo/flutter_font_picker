@@ -11,10 +11,6 @@ import 'font_language.dart';
 import 'font_preview.dart';
 import 'font_search.dart';
 
-//TODO: Basic fonts option (to be included in assets)
-//TODO: Filter languages according to selected fonts on init
-//TODO: Implement favorites feature
-
 class FontPickerUI extends StatefulWidget {
   final List<String> googleFonts;
   final ValueChanged<PickerFont> onFontChanged;
@@ -25,7 +21,7 @@ class FontPickerUI extends StatefulWidget {
 
   const FontPickerUI(
       {Key? key,
-      this.googleFonts = GOOGLE_FONTS_LIST,
+      this.googleFonts = googleFontsList,
       this.showFontInfo = true,
       this.showInDialog = false,
       this.recentsCount = 3,
@@ -54,7 +50,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
 
   Future _prepareShownFonts() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var recents = prefs.getStringList(PREFS_RECENTS_KEY) ?? [];
+    var recents = prefs.getStringList(prefsRecentsKey) ?? [];
     setState(() {
       _recentFonts = recents.reversed
           .map((fontFamily) =>
@@ -215,7 +211,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
                                               FontStyle.italic;
                                     } else {
                                       _selectedFontWeight =
-                                          FONT_WEIGHT_VALUES[variant]!;
+                                          fontWeightValues[variant]!;
                                     }
                                   });
                                 },
@@ -255,16 +251,16 @@ class _FontPickerUIState extends State<FontPickerUI> {
 
   Future<void> addToRecents(String fontFamily) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var recents = prefs.getStringList(PREFS_RECENTS_KEY);
+    var recents = prefs.getStringList(prefsRecentsKey);
     if (recents != null && !recents.contains(fontFamily)) {
       if (recents.length == widget.recentsCount) {
         recents = recents.sublist(1)..add(fontFamily);
       } else {
         recents.add(fontFamily);
       }
-      prefs.setStringList(PREFS_RECENTS_KEY, recents);
+      prefs.setStringList(prefsRecentsKey, recents);
     } else {
-      prefs.setStringList(PREFS_RECENTS_KEY, [fontFamily]);
+      prefs.setStringList(prefsRecentsKey, [fontFamily]);
     }
   }
 

@@ -11,12 +11,12 @@ class FontCategories extends StatefulWidget {
 }
 
 class _FontCategoriesState extends State<FontCategories> {
-  List<String> _selectedFontCategories = List.from(GOOGLE_FONT_CATS);
+  List<String> _selectedFontCategories = List.from(googleFontCategories);
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
-        children: GOOGLE_FONT_CATS.map((fontCategory) {
+        children: googleFontCategories.map((fontCategory) {
       bool isSelectedCategory = _selectedFontCategories.contains(fontCategory);
       return SizedBox(
         height: 30.0,

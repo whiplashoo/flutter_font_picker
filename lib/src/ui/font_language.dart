@@ -25,11 +25,11 @@ class _FontLanguageState extends State<FontLanguage> {
             fontSize: 12.0, color: DefaultTextStyle.of(context).style.color),
         icon: const Icon(Icons.arrow_drop_down_sharp),
         onChanged: widget.onFontLanguageSelected,
-        items: GOOGLE_FONT_LANGS.keys
+        items: googleFontLanguages.keys
             .map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
-            child: Text(GOOGLE_FONT_LANGS[value]!),
+            child: Text(googleFontLanguages[value]!),
           );
         }).toList(),
       ),

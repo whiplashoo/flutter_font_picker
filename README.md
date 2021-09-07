@@ -1,6 +1,6 @@
 # flutter_font_picker [![Pub Version](https://img.shields.io/pub/v/flutter_font_picker?label=flutter_font_picker&labelColor=333940&logo=dart)](https://pub.dev/packages/flutter_font_picker)
 
-## A custom Flutter widget that lets the user select a Google Font from a custom dropdown.
+## A Flutter widget that lets the user select and apply a Google Font from a custom dropdown.
 
 
 <p align="center">
