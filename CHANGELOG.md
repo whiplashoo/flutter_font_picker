@@ -1,3 +1,7 @@
+## 0.3.1
+
+* Fix: Font categories' text color is now set to derive from Theme's onPrimary color (closes #1).
+
 ## 0.3.0
 
 * Refactor implementation files in /src.

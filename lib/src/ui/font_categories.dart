@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../constants/constants.dart';
 
 class FontCategories extends StatefulWidget {
@@ -32,7 +33,9 @@ class _FontCategoriesState extends State<FontCategories> {
                 shape: StadiumBorder()),
             child: Text(fontCategory,
                 style: TextStyle(
-                  color: isSelectedCategory ? Colors.white : null,
+                  color: isSelectedCategory
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : null,
                 )),
             onPressed: () {
               _selectedFontCategories.contains(fontCategory)
