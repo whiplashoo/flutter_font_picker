@@ -1,3 +1,7 @@
+## 0.3.2
+
+* Fix: Font variants' text color is now set to derive from Theme's onPrimary color.
+
 ## 0.3.1
 
 * Fix: Font categories' text color is now set to derive from Theme's onPrimary color (closes #1).

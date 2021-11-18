@@ -198,8 +198,17 @@ class _FontPickerUIState extends State<FontPickerUI> {
                                           ? FontStyle.italic
                                           : FontStyle.normal,
                                       color: isSelectedVariant
-                                          ? Colors.white
-                                          : null),
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary
+                                          : Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary ==
+                                                  Colors.white
+                                              ? null
+                                              : Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary),
                                 ),
                                 onPressed: () {
                                   setState(() {
