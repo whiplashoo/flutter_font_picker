@@ -53,7 +53,7 @@ class FontPicker extends StatefulWidget {
   final ValueChanged<PickerFont> onFontChanged;
 
   /// The font family to use initially in the font picker. Defaults to 'Roboto'.
-  final String initialFontFamily;
+  final String? initialFontFamily;
 
   /// Set whether to show font details (category, number of variants) next to each font tile in the list.
   final bool showFontInfo;
@@ -69,15 +69,15 @@ class FontPicker extends StatefulWidget {
   /// The [onFontChanged] function retrieves the font that the user selects with an object containing details like the font's name, weight, style, etc.
   ///
   /// You can then use its [toTextStyle] method to style any text with the selected font.
-  const FontPicker(
-      {Key? key,
-      this.googleFonts = googleFontsList,
-      this.showFontInfo = true,
-      this.showInDialog = false,
-      this.recentsCount = 3,
-      required this.onFontChanged,
-      this.initialFontFamily = 'Roboto'})
-      : super(key: key);
+  const FontPicker({
+    Key? key,
+    this.googleFonts = googleFontsList,
+    this.showFontInfo = true,
+    this.showInDialog = false,
+    this.recentsCount = 3,
+    required this.onFontChanged,
+    this.initialFontFamily,
+  }) : super(key: key);
 
   @override
   _FontPickerState createState() => _FontPickerState();
@@ -93,7 +93,7 @@ class _FontPickerState extends State<FontPicker> {
         showFontInfo: widget.showFontInfo,
         showInDialog: widget.showInDialog,
         recentsCount: widget.recentsCount,
-        initialFontFamily: widget.initialFontFamily,
+        initialFontFamily: widget.initialFontFamily ?? 'Roboto',
       );
     } else {
       return Scaffold(
@@ -106,7 +106,7 @@ class _FontPickerState extends State<FontPicker> {
             showFontInfo: widget.showFontInfo,
             showInDialog: widget.showInDialog,
             recentsCount: widget.recentsCount,
-            initialFontFamily: widget.initialFontFamily,
+            initialFontFamily: widget.initialFontFamily ?? 'Roboto',
           ));
     }
   }

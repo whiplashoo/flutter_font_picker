@@ -1,3 +1,7 @@
+## 0.3.3
+
+* Fix: Setting `initialFontFamily` now works (defaulted always to Roboto before).
+
 ## 0.3.2
 
 * Fix: Font variants' text color is now set to derive from Theme's onPrimary color.
