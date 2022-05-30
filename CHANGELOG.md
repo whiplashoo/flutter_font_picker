@@ -1,3 +1,7 @@
+## 0.4.0
+
+* Fix: Update dependencies to be compatible with Flutter 3.
+
 ## 0.3.3
 
 * Fix: Setting `initialFontFamily` now works (defaulted always to Roboto before).
