@@ -129,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             width: double.maxFinite,
                             child: FontPicker(
                                 showInDialog: true,
-                                initialFontFamily: 'Andada',
+                                initialFontFamily: 'Anton',
                                 onFontChanged: (font) {
                                   setState(() {
                                     _selectedFont = font.fontFamily;

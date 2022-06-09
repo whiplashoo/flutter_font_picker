@@ -14,19 +14,20 @@ import 'font_search.dart';
 class FontPickerUI extends StatefulWidget {
   final List<String> googleFonts;
   final ValueChanged<PickerFont> onFontChanged;
-  final String initialFontFamily;
+  String initialFontFamily;
   final bool showFontInfo;
   final bool showInDialog;
   final int recentsCount;
 
-  const FontPickerUI(
-      {super.key,
-      this.googleFonts = googleFontsList,
-      this.showFontInfo = true,
-      this.showInDialog = false,
-      this.recentsCount = 3,
-      required this.onFontChanged,
-      this.initialFontFamily = 'Roboto'});
+  FontPickerUI({
+    super.key,
+    this.googleFonts = googleFontsList,
+    this.showFontInfo = true,
+    this.showInDialog = false,
+    this.recentsCount = 3,
+    required this.onFontChanged,
+    required this.initialFontFamily,
+  });
 
   @override
   _FontPickerUIState createState() => _FontPickerUIState();
@@ -50,17 +51,25 @@ class _FontPickerUIState extends State<FontPickerUI> {
   Future _prepareShownFonts() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var recents = prefs.getStringList(prefsRecentsKey) ?? [];
+    final supportedFonts = GoogleFonts.asMap()
+        .keys
+        .where((e) => googleFontsList.contains(e))
+        .toList();
     setState(() {
       _recentFonts = recents.reversed
           .map((fontFamily) =>
               PickerFont(fontFamily: fontFamily, isRecent: true))
           .toList();
       _allFonts = _recentFonts +
-          widget.googleFonts
+          supportedFonts
               .where((fontFamily) => !recents.contains(fontFamily))
               .map((fontFamily) => PickerFont(fontFamily: fontFamily))
               .toList();
       _shownFonts = List.from(_allFonts);
+      if (!supportedFonts.contains(widget.initialFontFamily)) {
+        widget.initialFontFamily = 'Roboto';
+      }
+      _selectedFontFamily = widget.initialFontFamily;
     });
   }
 
@@ -111,9 +120,10 @@ class _FontPickerUIState extends State<FontPickerUI> {
           ),
           FontCategories(onFontCategoriesUpdated: onFontCategoriesUpdated),
           FontPreview(
-              fontFamily: _selectedFontFamily ?? widget.initialFontFamily,
-              fontWeight: _selectedFontWeight,
-              fontStyle: _selectedFontStyle),
+            fontFamily: _selectedFontFamily ?? 'Roboto',
+            fontWeight: _selectedFontWeight,
+            fontStyle: _selectedFontStyle,
+          ),
           Expanded(
               child: ListView.builder(
             itemCount: _shownFonts.length,

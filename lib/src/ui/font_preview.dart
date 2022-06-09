@@ -17,12 +17,19 @@ class FontPreview extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: TextField(
         textAlign: TextAlign.center,
-        style: GoogleFonts.getFont(fontFamily,
-            fontWeight: fontWeight, fontStyle: fontStyle),
+        style: GoogleFonts.getFont(
+          fontFamily,
+          fontWeight: fontWeight,
+          fontStyle: fontStyle,
+        ),
         decoration: InputDecoration(
-            hintText: 'The quick brown fox jumped over the lazy dog',
-            hintStyle: TextStyle(
-                fontSize: 14.0, fontStyle: fontStyle, fontWeight: fontWeight)),
+          hintText: 'The quick brown fox jumped over the lazy dog',
+          hintStyle: TextStyle(
+            fontSize: 14.0,
+            fontStyle: fontStyle,
+            fontWeight: fontWeight,
+          ),
+        ),
       ),
     );
   }

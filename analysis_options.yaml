@@ -7,7 +7,6 @@ linter:
     library_private_types_in_public_api: false
     use_build_context_synchronously: false
 
-
 analyzer:
   plugins:
     - dart_code_metrics
@@ -19,11 +18,13 @@ dart_code_metrics:
     maximum-nesting-level: 5
   metrics-exclude:
     - test/**
-    - example/test/**
   rules:
+    - newline-before-return
+    - no-boolean-literal-compare
+    - no-empty-block
     - prefer-trailing-comma
-    - member-ordering:
-        alphabetize: false
-        order:
-          - constructors
-          - public_fields
+    - prefer-conditional-expressions
+    - no-equal-then-else
+  anti-patterns:
+    - long-method
+    - long-parameter-list
