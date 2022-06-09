@@ -4,15 +4,14 @@ import '../constants/constants.dart';
 
 class FontCategories extends StatefulWidget {
   final ValueChanged<List<String>> onFontCategoriesUpdated;
-  const FontCategories({Key? key, required this.onFontCategoriesUpdated})
-      : super(key: key);
+  const FontCategories({super.key, required this.onFontCategoriesUpdated});
 
   @override
   _FontCategoriesState createState() => _FontCategoriesState();
 }
 
 class _FontCategoriesState extends State<FontCategories> {
-  List<String> _selectedFontCategories = List.from(googleFontCategories);
+  final List<String> _selectedFontCategories = List.from(googleFontCategories);
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +26,10 @@ class _FontCategoriesState extends State<FontCategories> {
             style: OutlinedButton.styleFrom(
                 backgroundColor:
                     isSelectedCategory ? Theme.of(context).primaryColor : null,
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                   fontSize: 10.0,
                 ),
-                shape: StadiumBorder()),
+                shape: const StadiumBorder()),
             child: Text(fontCategory,
                 style: TextStyle(
                   color: isSelectedCategory

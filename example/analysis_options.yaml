@@ -1,0 +1,29 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    constant_identifier_names: false
+    use_super_parameters: true
+    library_private_types_in_public_api: false
+    use_build_context_synchronously: false
+
+
+analyzer:
+  plugins:
+    - dart_code_metrics
+    
+dart_code_metrics:
+  metrics:
+    cyclomatic-complexity: 20
+    number-of-parameters: 4
+    maximum-nesting-level: 5
+  metrics-exclude:
+    - test/**
+    - example/test/**
+  rules:
+    - prefer-trailing-comma
+    - member-ordering:
+        alphabetize: false
+        order:
+          - constructors
+          - public_fields

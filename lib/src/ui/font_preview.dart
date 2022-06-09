@@ -6,11 +6,10 @@ class FontPreview extends StatelessWidget {
   final FontWeight fontWeight;
   final FontStyle fontStyle;
   const FontPreview(
-      {Key? key,
+      {super.key,
       required this.fontFamily,
       required this.fontWeight,
-      required this.fontStyle})
-      : super(key: key);
+      required this.fontStyle});
 
   @override
   Widget build(BuildContext context) {

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+
 import '../constants/constants.dart';
 
 class FontLanguage extends StatefulWidget {
   final ValueChanged<String?> onFontLanguageSelected;
   final String selectedFontLanguage;
   const FontLanguage(
-      {Key? key,
+      {super.key,
       required this.selectedFontLanguage,
-      required this.onFontLanguageSelected})
-      : super(key: key);
+      required this.onFontLanguageSelected});
 
   @override
   _FontLanguageState createState() => _FontLanguageState();

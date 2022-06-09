@@ -20,14 +20,13 @@ class FontPickerUI extends StatefulWidget {
   final int recentsCount;
 
   const FontPickerUI(
-      {Key? key,
+      {super.key,
       this.googleFonts = googleFontsList,
       this.showFontInfo = true,
       this.showInDialog = false,
       this.recentsCount = 3,
       required this.onFontChanged,
-      required this.initialFontFamily})
-      : super(key: key);
+      this.initialFontFamily = 'Roboto'});
 
   @override
   _FontPickerUIState createState() => _FontPickerUIState();
@@ -91,7 +90,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
                         onFontLanguageSelected: onFontLanguageSelected,
                         selectedFontLanguage: _selectedFontLanguage,
                       ),
-                      SizedBox(height: 12.0)
+                      const SizedBox(height: 12.0)
                     ],
                   )
                 : Row(
@@ -187,10 +186,10 @@ class _FontPickerUIState extends State<FontPickerUI> {
                                     backgroundColor: isSelectedVariant
                                         ? Theme.of(context).primaryColor
                                         : null,
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                       fontSize: 10.0,
                                     ),
-                                    shape: StadiumBorder()),
+                                    shape: const StadiumBorder()),
                                 child: Text(
                                   variant,
                                   style: TextStyle(
@@ -232,7 +231,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
                     : null,
                 trailing: isBeingSelected
                     ? TextButton(
-                        child: Text(
+                        child: const Text(
                           'SELECT',
                         ),
                         onPressed: () {
@@ -245,7 +244,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
                         },
                       )
                     : _recentFonts.contains(f)
-                        ? Icon(
+                        ? const Icon(
                             Icons.history,
                             size: 18.0,
                           )

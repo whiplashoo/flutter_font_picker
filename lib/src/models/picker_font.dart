@@ -54,15 +54,15 @@ class PickerFont {
   /// Converts a [PickerFont] to a font spec description, a shorthand string that can describe a font.
   /// Examples of font specs: "Roboto:400", "Merriweather:700i", "Archivo Narrow:200i".
   String toFontSpec() {
-    String fontWeightString = this.fontWeight.toString();
+    String fontWeightString = fontWeight.toString();
     String fontSpec =
-        "${this.fontFamily}:${fontWeightString.substring(fontWeightString.length - 3)}";
-    return this.fontStyle == FontStyle.italic ? "${fontSpec}i" : fontSpec;
+        "$fontFamily:${fontWeightString.substring(fontWeightString.length - 3)}";
+    return fontStyle == FontStyle.italic ? "${fontSpec}i" : fontSpec;
   }
 
   /// Provides a [TextStyle] object that can be used to style any [Text] with the selected Google font.
   TextStyle toTextStyle() {
-    return GoogleFonts.getFont(this.fontFamily,
-        fontWeight: this.fontWeight, fontStyle: this.fontStyle);
+    return GoogleFonts.getFont(fontFamily,
+        fontWeight: fontWeight, fontStyle: fontStyle);
   }
 }

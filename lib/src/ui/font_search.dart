@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 class FontSearch extends StatefulWidget {
   final ValueChanged<String> onSearchTextChanged;
-  const FontSearch({Key? key, required this.onSearchTextChanged})
-      : super(key: key);
+  const FontSearch({super.key, required this.onSearchTextChanged});
 
   @override
   _FontSearchState createState() => _FontSearchState();
@@ -24,7 +23,7 @@ class _FontSearchState extends State<FontSearch> {
         child: TextField(
           controller: searchController,
           decoration: InputDecoration(
-            prefixIcon: Icon(
+            prefixIcon: const Icon(
               Icons.search,
             ),
             suffixIcon: _isSearchFocused

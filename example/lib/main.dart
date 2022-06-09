@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_font_picker/flutter_font_picker.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,13 +15,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      home: MyHomePage(title: 'Font Picker Demo'),
+      home: const MyHomePage(title: 'Font Picker Demo'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -30,7 +32,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String _selectedFont = "Roboto";
   TextStyle? _selectedFontTextStyle;
-  List<String> _myGoogleFonts = [
+  final List<String> _myGoogleFonts = [
     "Abril Fatface",
     "Aclonica",
     "Alegreya Sans",
@@ -97,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                  child: Text('Pick a font (with a screen)'),
+                  child: const Text('Pick a font (with a screen)'),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -109,31 +111,31 @@ class _MyHomePageState extends State<MyHomePage> {
                                   _selectedFont = font.fontFamily;
                                   _selectedFontTextStyle = font.toTextStyle();
                                 });
-                                print(
+                                debugPrint(
                                     "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}");
                               },
                               googleFonts: _myGoogleFonts)),
                     );
                   }),
               ElevatedButton(
-                  child: Text('Pick a font (with a dialog)'),
+                  child: const Text('Pick a font (with a dialog)'),
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (context) {
                         return AlertDialog(
                             content: SingleChildScrollView(
-                          child: Container(
+                          child: SizedBox(
                             width: double.maxFinite,
                             child: FontPicker(
                                 showInDialog: true,
-                                initialFontFamily: 'Ubuntu',
+                                initialFontFamily: 'Andada',
                                 onFontChanged: (font) {
                                   setState(() {
                                     _selectedFont = font.fontFamily;
                                     _selectedFontTextStyle = font.toTextStyle();
                                   });
-                                  print(
+                                  debugPrint(
                                       "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}");
                                 },
                                 googleFonts: _myGoogleFonts),
@@ -146,9 +148,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
+                  const Expanded(
                       child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0),
                     child: Text('Pick a font: ',
                         textAlign: TextAlign.right,
                         style: TextStyle(fontWeight: FontWeight.w700)),
@@ -172,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       _selectedFontTextStyle =
                                           font.toTextStyle();
                                     });
-                                    print(
+                                    debugPrint(
                                         "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}");
                                   },
                                   googleFonts: _myGoogleFonts)),
