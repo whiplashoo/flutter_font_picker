@@ -1,5 +1,9 @@
 ## 0.4.0
 
+* Fix: Issue with non-supported by Google Fonts initialFontFamily (closed #4).
+
+## 0.4.0
+
 * Fix: Update dependencies to be compatible with Flutter 3.
 
 ## 0.3.3
