@@ -17,12 +17,12 @@ class PickerFont {
   String category;
   bool isRecent;
 
-  PickerFont(
-      {required this.fontFamily,
-      this.fontWeight = FontWeight.w400,
-      this.fontStyle = FontStyle.normal,
-      this.isRecent = false})
-      : variants = parseVariants(fontFamily),
+  PickerFont({
+    required this.fontFamily,
+    this.fontWeight = FontWeight.w400,
+    this.fontStyle = FontStyle.normal,
+    this.isRecent = false,
+  })  : variants = parseVariants(fontFamily),
         subsets = googleFontsDetails[fontFamily]!["subsets"]!.split(","),
         category = googleFontsDetails[fontFamily]!["category"]!;
 
@@ -32,23 +32,25 @@ class PickerFont {
       variants.add("italic");
     }
     variants.removeWhere((v) => v.endsWith("i"));
+
     return variants;
   }
 
   /// Constructs a [PickerFont] from a font spec description (a shorthand string that can describe a font), e.g. "Roboto:700i".
   factory PickerFont.fromFontSpec(String fontSpec) {
     final fontSpecSplit = fontSpec.split(":");
-    if (fontSpecSplit.length == 1) {
-      return PickerFont(fontFamily: fontSpecSplit[0]);
-    } else {
-      return PickerFont(
-          fontFamily: fontSpecSplit[0],
-          fontWeight: fontWeightValues[fontSpecSplit[1].replaceAll("i", "")] ??
-              FontWeight.w400,
-          fontStyle: fontSpecSplit[1].contains("i")
-              ? FontStyle.italic
-              : FontStyle.normal);
-    }
+
+    return fontSpecSplit.length == 1
+        ? PickerFont(fontFamily: fontSpecSplit[0])
+        : PickerFont(
+            fontFamily: fontSpecSplit[0],
+            fontWeight:
+                fontWeightValues[fontSpecSplit[1].replaceAll("i", "")] ??
+                    FontWeight.w400,
+            fontStyle: fontSpecSplit[1].contains("i")
+                ? FontStyle.italic
+                : FontStyle.normal,
+          );
   }
 
   /// Converts a [PickerFont] to a font spec description, a shorthand string that can describe a font.
@@ -57,12 +59,16 @@ class PickerFont {
     String fontWeightString = fontWeight.toString();
     String fontSpec =
         "$fontFamily:${fontWeightString.substring(fontWeightString.length - 3)}";
+
     return fontStyle == FontStyle.italic ? "${fontSpec}i" : fontSpec;
   }
 
   /// Provides a [TextStyle] object that can be used to style any [Text] with the selected Google font.
   TextStyle toTextStyle() {
-    return GoogleFonts.getFont(fontFamily,
-        fontWeight: fontWeight, fontStyle: fontStyle);
+    return GoogleFonts.getFont(
+      fontFamily,
+      fontWeight: fontWeight,
+      fontStyle: fontStyle,
+    );
   }
 }

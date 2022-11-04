@@ -86,28 +86,25 @@ class FontPicker extends StatefulWidget {
 class _FontPickerState extends State<FontPicker> {
   @override
   Widget build(BuildContext context) {
-    if (widget.showInDialog) {
-      return FontPickerUI(
-        onFontChanged: widget.onFontChanged,
-        googleFonts: widget.googleFonts,
-        showFontInfo: widget.showFontInfo,
-        showInDialog: widget.showInDialog,
-        recentsCount: widget.recentsCount,
-        initialFontFamily: widget.initialFontFamily ?? 'Roboto',
-      );
-    } else {
-      return Scaffold(
-          appBar: AppBar(
-            title: const Text("Pick a font:"),
-          ),
-          body: FontPickerUI(
+    return widget.showInDialog
+        ? FontPickerUI(
             onFontChanged: widget.onFontChanged,
             googleFonts: widget.googleFonts,
             showFontInfo: widget.showFontInfo,
             showInDialog: widget.showInDialog,
             recentsCount: widget.recentsCount,
             initialFontFamily: widget.initialFontFamily ?? 'Roboto',
-          ));
-    }
+          )
+        : Scaffold(
+            appBar: AppBar(title: const Text("Pick a font:")),
+            body: FontPickerUI(
+              onFontChanged: widget.onFontChanged,
+              googleFonts: widget.googleFonts,
+              showFontInfo: widget.showFontInfo,
+              showInDialog: widget.showInDialog,
+              recentsCount: widget.recentsCount,
+              initialFontFamily: widget.initialFontFamily ?? 'Roboto',
+            ),
+          );
   }
 }
