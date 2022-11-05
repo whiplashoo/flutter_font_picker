@@ -133,10 +133,11 @@ class _FontPickerUIState extends State<FontPickerUI> {
               itemBuilder: (context, index) {
                 PickerFont f = _shownFonts[index];
                 bool isBeingSelected = _selectedFontFamily == f.fontFamily;
+                String category = translations.d[f.category]!;
                 String stylesString = widget.showFontInfo
                     ? f.variants.length > 1
-                        ? "  ${f.category}, ${f.variants.length} ${translations.d['styles']}"
-                        : "  ${f.category}"
+                        ? "  $category, ${f.variants.length} ${translations.d['styles']}"
+                        : "  $category"
                     : "";
 
                 return ListTile(

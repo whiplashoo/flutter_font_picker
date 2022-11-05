@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_font_picker/src/constants/translations.dart';
 
 import '../constants/constants.dart';
 
@@ -34,7 +35,7 @@ class _FontCategoriesState extends State<FontCategories> {
                 shape: const StadiumBorder(),
               ),
               child: Text(
-                fontCategory,
+                translations.d[fontCategory]!,
                 style: TextStyle(
                   color: isSelectedCategory
                       ? Theme.of(context).colorScheme.onPrimary
