@@ -11,6 +11,8 @@ Provides a `FontPicker` widget that can be used in a route or dialog as a UI for
 
 Depends on the [google_fonts](https://pub.dev/packages/google_fonts) package for loading and displaying the fonts.
 
+Localizations available for 🇪🇸🇩🇪🇮🇹🇵🇹🇫🇷. 
+
 ## Simple Example
 
 Inside your build method, use a button that when pressed, will navigate to the font picker screen:
@@ -60,6 +62,7 @@ Check the example project for more usages.
 - `showFontInfo`: Whether to show font details (category, number of variants) next to each font tile in the list.
 - `showInDialog`: Set this to true if you want to use the font picker inside an AlertDialog (check examples).
 - `recentsCount`: Fonts that the user selected before are saved to be shown at the start of the list. Sets how many you want saved as recents.
+- `'lang'`: The language in which to show the UI. Defaults to English (`'en'`). Other options are 🇪🇸🇩🇪🇮🇹🇵🇹🇫🇷 (`'es'`, `'de'`, `'it'`, `'pt'`, `'fr'`). If you need a translation in another language: take a look at the `dictionary` variable in `translations.dart`, and send me (or fix) the translations for your language . 
 
 ## FontPicker features
 

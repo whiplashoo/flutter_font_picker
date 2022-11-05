@@ -1,3 +1,7 @@
+## 1.0.0
+
+* Feat: Added the ability to set the language for the UI. Translations are available for 🇪🇸🇩🇪🇮🇹🇵🇹🇫🇷. Use the `lang` option when initializing `FontPicker`. Fixes #5.
+
 ## 0.4.0
 
 * Fix: Issue with non-supported by Google Fonts initialFontFamily (closed #4).
