@@ -3,6 +3,7 @@ library flutter_font_picker;
 import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
+import '../constants/translations.dart';
 import '../models/picker_font.dart';
 import 'font_picker_ui.dart';
 
@@ -64,6 +65,11 @@ class FontPicker extends StatefulWidget {
   /// Fonts that the user selected before can be saved in [SharedPreferences] and shown at the start of the list. Sets how many you want saved as recents.
   final int recentsCount;
 
+  /// The language in which to show the UI. Defaults to English.
+  ///
+  /// If you need a translation in another language: take a look at the dictionaries variable in constants.dart, and send me the translations for your language.
+  final String lang;
+
   /// Creates a widget that lets the user select a Google font from a provided list.
   ///
   /// The [onFontChanged] function retrieves the font that the user selects with an object containing details like the font's name, weight, style, etc.
@@ -77,6 +83,7 @@ class FontPicker extends StatefulWidget {
     this.recentsCount = 3,
     required this.onFontChanged,
     this.initialFontFamily,
+    this.lang = "en",
   });
 
   @override
@@ -84,6 +91,12 @@ class FontPicker extends StatefulWidget {
 }
 
 class _FontPickerState extends State<FontPicker> {
+  @override
+  void initState() {
+    super.initState();
+    translations.language = widget.lang;
+  }
+
   @override
   Widget build(BuildContext context) {
     return widget.showInDialog
@@ -94,6 +107,7 @@ class _FontPickerState extends State<FontPicker> {
             showInDialog: widget.showInDialog,
             recentsCount: widget.recentsCount,
             initialFontFamily: widget.initialFontFamily ?? 'Roboto',
+            lang: widget.lang,
           )
         : Scaffold(
             appBar: AppBar(title: const Text("Pick a font:")),
@@ -104,6 +118,7 @@ class _FontPickerState extends State<FontPicker> {
               showInDialog: widget.showInDialog,
               recentsCount: widget.recentsCount,
               initialFontFamily: widget.initialFontFamily ?? 'Roboto',
+              lang: widget.lang,
             ),
           );
   }

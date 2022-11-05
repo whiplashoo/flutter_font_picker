@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_font_picker/src/constants/translations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FontPreview extends StatelessWidget {
@@ -24,7 +25,7 @@ class FontPreview extends StatelessWidget {
           fontStyle: fontStyle,
         ),
         decoration: InputDecoration(
-          hintText: 'The quick brown fox jumped over the lazy dog',
+          hintText: translations.d['sampleText'],
           hintStyle: TextStyle(
             fontSize: 14.0,
             fontStyle: fontStyle,

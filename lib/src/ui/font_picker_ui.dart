@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/constants.dart';
+import '../constants/translations.dart';
 import '../models/picker_font.dart';
 import 'font_categories.dart';
 import 'font_language.dart';
@@ -18,6 +19,7 @@ class FontPickerUI extends StatefulWidget {
   final bool showFontInfo;
   final bool showInDialog;
   final int recentsCount;
+  final String lang;
 
   FontPickerUI({
     super.key,
@@ -27,6 +29,7 @@ class FontPickerUI extends StatefulWidget {
     this.recentsCount = 3,
     required this.onFontChanged,
     required this.initialFontFamily,
+    required this.lang,
   });
 
   @override
@@ -132,7 +135,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
                 bool isBeingSelected = _selectedFontFamily == f.fontFamily;
                 String stylesString = widget.showFontInfo
                     ? f.variants.length > 1
-                        ? "  ${f.category}, ${f.variants.length} styles"
+                        ? "  ${f.category}, ${f.variants.length} ${translations.d['styles']}"
                         : "  ${f.category}"
                     : "";
 
@@ -247,8 +250,8 @@ class _FontPickerUIState extends State<FontPickerUI> {
                       : null,
                   trailing: isBeingSelected
                       ? TextButton(
-                          child: const Text(
-                            'SELECT',
+                          child: Text(
+                            translations.d["select"]!,
                           ),
                           onPressed: () {
                             addToRecents(_selectedFontFamily!);

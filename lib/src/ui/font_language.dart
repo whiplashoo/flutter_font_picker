@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
+import '../constants/translations.dart';
 
 class FontLanguage extends StatefulWidget {
   final ValueChanged<String?> onFontLanguageSelected;
@@ -28,11 +29,11 @@ class _FontLanguageState extends State<FontLanguage> {
         ),
         icon: const Icon(Icons.arrow_drop_down_sharp),
         onChanged: widget.onFontLanguageSelected,
-        items: googleFontLanguages.keys
-            .map<DropdownMenuItem<String>>((String value) {
+        items:
+            googleFontLanguages.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
-            child: Text(googleFontLanguages[value]!),
+            child: Text(translations.d[value]!),
           );
         }).toList(),
       ),
