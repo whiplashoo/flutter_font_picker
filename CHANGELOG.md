@@ -1,3 +1,7 @@
+## 1.1.0
+
+* Fix: Setting the `googleFonts` parameter didn't have any effect. Fixes #6.
+
 ## 1.0.0
 
 * Feat: Added the ability to set the language for the UI. Translations are available for 🇪🇸🇩🇪🇮🇹🇵🇹🇫🇷. Use the `lang` option when initializing `FontPicker`. Fixes #5.
