@@ -56,7 +56,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
     var recents = prefs.getStringList(prefsRecentsKey) ?? [];
     final supportedFonts = GoogleFonts.asMap()
         .keys
-        .where((e) => googleFontsList.contains(e))
+        .where((e) => widget.googleFonts.contains(e))
         .toList();
     setState(() {
       _recentFonts = recents.reversed
