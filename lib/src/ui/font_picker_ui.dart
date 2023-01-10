@@ -20,6 +20,7 @@ class FontPickerUI extends StatefulWidget {
   final bool showInDialog;
   final int recentsCount;
   final String lang;
+  final bool showFontVariants;
 
   FontPickerUI({
     super.key,
@@ -30,6 +31,7 @@ class FontPickerUI extends StatefulWidget {
     required this.onFontChanged,
     required this.initialFontFamily,
     required this.lang,
+    this.showFontVariants = true,
   });
 
   @override
@@ -134,11 +136,14 @@ class _FontPickerUIState extends State<FontPickerUI> {
                 PickerFont f = _shownFonts[index];
                 bool isBeingSelected = _selectedFontFamily == f.fontFamily;
                 String category = translations.d[f.category]!;
-                String stylesString = widget.showFontInfo
-                    ? f.variants.length > 1
-                        ? "  $category, ${f.variants.length} ${translations.d['styles']}"
-                        : "  $category"
-                    : "";
+                String stylesString = "";
+                if (widget.showFontInfo) {
+                  stylesString += "  $category";
+                  if (widget.showFontVariants) {
+                    stylesString +=
+                        ", ${f.variants.length} ${translations.d['styles']}";
+                  }
+                }
 
                 return ListTile(
                   selected: isBeingSelected,
@@ -180,7 +185,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
                       ),
                     ),
                   ),
-                  subtitle: isBeingSelected
+                  subtitle: isBeingSelected && widget.showFontVariants
                       ? Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),
                           child: Wrap(

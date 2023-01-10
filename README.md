@@ -60,6 +60,7 @@ Check the example project for more usages.
 - `googleFonts`: A list of Google fonts to use in the font picker. By default it contains all 975 fonts included in constants.dart. **You should only use a limited number of them for performance and data saving**, as each font is downloaded and stored to the app's storage when it comes into view. Using up to 100-200 fonts should work fine.
 - `initialFontFamily`: The font family to use initially in the font picker. Defaults to 'Roboto'.
 - `showFontInfo`: Whether to show font details (category, number of variants) next to each font tile in the list.
+- `showFontVariants`: Whether to show font variants (weights and styles) in the font picker. If set to false, user will only be able to select the default variant of each font.
 - `showInDialog`: Set this to true if you want to use the font picker inside an AlertDialog (check examples).
 - `recentsCount`: Fonts that the user selected before are saved to be shown at the start of the list. Sets how many you want saved as recents.
 - `'lang'`: The language in which to show the UI. Defaults to English (`'en'`). Other options are 🇪🇸🇩🇪🇮🇹🇵🇹🇫🇷🇵🇱 (`'es'`, `'de'`, `'it'`, `'pt'`, `'fr', 'pl'`). If you need a translation in another language: take a look at the `dictionary` variable in `translations.dart`, and send me (or fix) the translations for your language . 
