@@ -1,3 +1,7 @@
+## 1.1.2
+
+* Feat: Added `showFontVariants` option to hide font variants in the font picker. If set to false, user will only be able to select the default variant of each font. Closes #7.
+
 ## 1.1.1
 
 * Feat: Added translations for Polish 🇵🇱. Thanks to @szymekTS for providing these!
