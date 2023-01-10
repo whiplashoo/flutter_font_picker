@@ -1,3 +1,7 @@
+## 1.1.1
+
+* Feat: Added translations for Polish 🇵🇱. Thanks to @szymekTS for providing these!
+
 ## 1.1.0
 
 * Fix: Setting the `googleFonts` parameter didn't have any effect. Fixes #6.
