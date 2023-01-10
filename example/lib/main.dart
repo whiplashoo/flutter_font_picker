@@ -84,100 +84,115 @@ class _MyHomePageState extends State<MyHomePage> {
     "Varela",
     "Vollkorn",
     "Work Sans",
-    "Zilla Slab"
+    "Zilla Slab",
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Center(
-            child: Padding(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                  child: const Text('Pick a font (with a screen)'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FontPicker(
-                              recentsCount: 10,
+                child: const Text('Pick a font (with a screen)'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FontPicker(
+                        lang: "pt",
+                        recentsCount: 10,
+                        onFontChanged: (font) {
+                          setState(() {
+                            _selectedFont = font.fontFamily;
+                            _selectedFontTextStyle = font.toTextStyle();
+                          });
+                          debugPrint(
+                            "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}",
+                          );
+                        },
+                        googleFonts: _myGoogleFonts,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              ElevatedButton(
+                child: const Text('Pick a font (with a dialog)'),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: SingleChildScrollView(
+                          child: SizedBox(
+                            width: double.maxFinite,
+                            child: FontPicker(
+                              showInDialog: true,
+                              initialFontFamily: 'Anton',
                               onFontChanged: (font) {
                                 setState(() {
                                   _selectedFont = font.fontFamily;
                                   _selectedFontTextStyle = font.toTextStyle();
                                 });
                                 debugPrint(
-                                    "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}");
+                                  "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}",
+                                );
                               },
-                              googleFonts: _myGoogleFonts)),
-                    );
-                  }),
-              ElevatedButton(
-                  child: const Text('Pick a font (with a dialog)'),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                            content: SingleChildScrollView(
-                          child: SizedBox(
-                            width: double.maxFinite,
-                            child: FontPicker(
-                                showInDialog: true,
-                                initialFontFamily: 'Anton',
-                                onFontChanged: (font) {
-                                  setState(() {
-                                    _selectedFont = font.fontFamily;
-                                    _selectedFontTextStyle = font.toTextStyle();
-                                  });
-                                  debugPrint(
-                                      "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}");
-                                },
-                                googleFonts: _myGoogleFonts),
+                              googleFonts: _myGoogleFonts,
+                            ),
                           ),
-                        ));
-                      },
-                    );
-                  }),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Expanded(
-                      child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text('Pick a font: ',
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Pick a font: ',
                         textAlign: TextAlign.right,
-                        style: TextStyle(fontWeight: FontWeight.w700)),
-                  )),
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  ),
                   Expanded(
                     child: TextField(
                       readOnly: true,
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
-                          suffixIcon: const Icon(Icons.arrow_drop_down_sharp),
-                          hintText: _selectedFont,
-                          border: InputBorder.none),
+                        suffixIcon: const Icon(Icons.arrow_drop_down_sharp),
+                        hintText: _selectedFont,
+                        border: InputBorder.none,
+                      ),
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => FontPicker(
-                                  onFontChanged: (font) {
-                                    setState(() {
-                                      _selectedFont = font.fontFamily;
-                                      _selectedFontTextStyle =
-                                          font.toTextStyle();
-                                    });
-                                    debugPrint(
-                                        "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}");
-                                  },
-                                  googleFonts: _myGoogleFonts)),
+                            builder: (context) => FontPicker(
+                              onFontChanged: (font) {
+                                setState(() {
+                                  _selectedFont = font.fontFamily;
+                                  _selectedFontTextStyle = font.toTextStyle();
+                                });
+                                debugPrint(
+                                  "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}",
+                                );
+                              },
+                              googleFonts: _myGoogleFonts,
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -189,26 +204,40 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: const EdgeInsets.all(12.0),
                   child: Container(
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blueGrey, width: 2.0)),
+                      border: Border.all(
+                        color: Colors.blueGrey,
+                        width: 2.0,
+                      ),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Center(
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                            Text('Font: $_selectedFont',
-                                style: _selectedFontTextStyle),
-                            Text('The quick brown fox jumped',
-                                style: _selectedFontTextStyle),
-                            Text('over the lazy dog',
-                                style: _selectedFontTextStyle),
-                          ])),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Font: $_selectedFont',
+                              style: _selectedFontTextStyle,
+                            ),
+                            Text(
+                              'The quick brown fox jumped',
+                              style: _selectedFontTextStyle,
+                            ),
+                            Text(
+                              'over the lazy dog',
+                              style: _selectedFontTextStyle,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
-        )));
+        ),
+      ),
+    );
   }
 }

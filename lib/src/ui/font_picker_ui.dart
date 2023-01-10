@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/constants.dart';
+import '../constants/translations.dart';
 import '../models/picker_font.dart';
 import 'font_categories.dart';
 import 'font_language.dart';
@@ -18,6 +19,7 @@ class FontPickerUI extends StatefulWidget {
   final bool showFontInfo;
   final bool showInDialog;
   final int recentsCount;
+  final String lang;
 
   FontPickerUI({
     super.key,
@@ -27,6 +29,7 @@ class FontPickerUI extends StatefulWidget {
     this.recentsCount = 3,
     required this.onFontChanged,
     required this.initialFontFamily,
+    required this.lang,
   });
 
   @override
@@ -53,7 +56,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
     var recents = prefs.getStringList(prefsRecentsKey) ?? [];
     final supportedFonts = GoogleFonts.asMap()
         .keys
-        .where((e) => googleFontsList.contains(e))
+        .where((e) => widget.googleFonts.contains(e))
         .toList();
     setState(() {
       _recentFonts = recents.reversed
@@ -99,7 +102,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
                         onFontLanguageSelected: onFontLanguageSelected,
                         selectedFontLanguage: _selectedFontLanguage,
                       ),
-                      const SizedBox(height: 12.0)
+                      const SizedBox(height: 12.0),
                     ],
                   )
                 : Row(
@@ -114,7 +117,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
                           onFontLanguageSelected: onFontLanguageSelected,
                           selectedFontLanguage: _selectedFontLanguage,
                         ),
-                      )
+                      ),
                     ],
                   ),
           ),
@@ -125,143 +128,154 @@ class _FontPickerUIState extends State<FontPickerUI> {
             fontStyle: _selectedFontStyle,
           ),
           Expanded(
-              child: ListView.builder(
-            itemCount: _shownFonts.length,
-            itemBuilder: (context, index) {
-              PickerFont f = _shownFonts[index];
-              bool isBeingSelected = _selectedFontFamily == f.fontFamily;
-              String stylesString = widget.showFontInfo
-                  ? f.variants.length > 1
-                      ? "  ${f.category}, ${f.variants.length} styles"
-                      : "  ${f.category}"
-                  : "";
-              return ListTile(
-                selected: isBeingSelected,
-                selectedTileColor: Theme.of(context).focusColor,
-                onTap: () {
-                  setState(() {
-                    if (!isBeingSelected) {
-                      _selectedFontFamily = f.fontFamily;
-                      _selectedFontWeight = FontWeight.w400;
-                      _selectedFontStyle = FontStyle.normal;
-                    } else {
-                      _selectedFontFamily = null;
-                    }
-                  });
-                },
-                title: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: RichText(
+            child: ListView.builder(
+              itemCount: _shownFonts.length,
+              itemBuilder: (context, index) {
+                PickerFont f = _shownFonts[index];
+                bool isBeingSelected = _selectedFontFamily == f.fontFamily;
+                String category = translations.d[f.category]!;
+                String stylesString = widget.showFontInfo
+                    ? f.variants.length > 1
+                        ? "  $category, ${f.variants.length} ${translations.d['styles']}"
+                        : "  $category"
+                    : "";
+
+                return ListTile(
+                  selected: isBeingSelected,
+                  selectedTileColor: Theme.of(context).focusColor,
+                  onTap: () {
+                    setState(() {
+                      if (!isBeingSelected) {
+                        _selectedFontFamily = f.fontFamily;
+                        _selectedFontWeight = FontWeight.w400;
+                        _selectedFontStyle = FontStyle.normal;
+                      } else {
+                        _selectedFontFamily = null;
+                      }
+                    });
+                  },
+                  title: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: RichText(
                       text: TextSpan(
-                          text: f.fontFamily,
-                          style: TextStyle(
-                                  fontFamily: GoogleFonts.getFont(f.fontFamily)
-                                      .fontFamily)
-                              .copyWith(
-                                  color:
-                                      DefaultTextStyle.of(context).style.color),
-                          children: [
-                        TextSpan(
+                        text: f.fontFamily,
+                        style: TextStyle(
+                          fontFamily:
+                              GoogleFonts.getFont(f.fontFamily).fontFamily,
+                        ).copyWith(
+                          color: DefaultTextStyle.of(context).style.color,
+                        ),
+                        children: [
+                          TextSpan(
                             text: stylesString,
                             style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                fontSize: 11.0,
-                                color: Colors.grey,
-                                fontFamily: DefaultTextStyle.of(context)
-                                    .style
-                                    .fontFamily))
-                      ])),
-                ),
-                subtitle: isBeingSelected
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
-                        child: Wrap(
-                            children: f.variants.map((variant) {
-                          bool isSelectedVariant;
-                          if (variant == "italic" &&
-                              _selectedFontStyle == FontStyle.italic) {
-                            isSelectedVariant = true;
-                          } else {
-                            isSelectedVariant = _selectedFontWeight
-                                .toString()
-                                .contains(variant);
-                          }
-                          return SizedBox(
-                            height: 30.0,
-                            width: 60.0,
-                            child: Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    backgroundColor: isSelectedVariant
-                                        ? Theme.of(context).primaryColor
-                                        : null,
-                                    textStyle: const TextStyle(
-                                      fontSize: 10.0,
-                                    ),
-                                    shape: const StadiumBorder()),
-                                child: Text(
-                                  variant,
-                                  style: TextStyle(
-                                      fontStyle: variant == "italic"
-                                          ? FontStyle.italic
-                                          : FontStyle.normal,
-                                      color: isSelectedVariant
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary
-                                          : Theme.of(context)
-                                                      .colorScheme
-                                                      .onPrimary ==
-                                                  Colors.white
-                                              ? null
-                                              : Theme.of(context)
-                                                  .colorScheme
-                                                  .onPrimary),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    if (variant == "italic") {
-                                      _selectedFontStyle == FontStyle.italic
-                                          ? _selectedFontStyle =
-                                              FontStyle.normal
-                                          : _selectedFontStyle =
-                                              FontStyle.italic;
-                                    } else {
-                                      _selectedFontWeight =
-                                          fontWeightValues[variant]!;
-                                    }
-                                  });
-                                },
-                              ),
+                              fontStyle: FontStyle.italic,
+                              fontSize: 11.0,
+                              color: Colors.grey,
+                              fontFamily:
+                                  DefaultTextStyle.of(context).style.fontFamily,
                             ),
-                          );
-                        }).toList()),
-                      )
-                    : null,
-                trailing: isBeingSelected
-                    ? TextButton(
-                        child: const Text(
-                          'SELECT',
-                        ),
-                        onPressed: () {
-                          addToRecents(_selectedFontFamily!);
-                          changeFont(PickerFont(
-                              fontFamily: _selectedFontFamily!,
-                              fontWeight: _selectedFontWeight,
-                              fontStyle: _selectedFontStyle));
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    : _recentFonts.contains(f)
-                        ? const Icon(
-                            Icons.history,
-                            size: 18.0,
-                          )
-                        : null,
-              );
-            },
-          ))
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  subtitle: isBeingSelected
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: Wrap(
+                            children: f.variants.map((variant) {
+                              bool isSelectedVariant;
+                              isSelectedVariant = variant == "italic" &&
+                                      _selectedFontStyle == FontStyle.italic
+                                  ? true
+                                  : _selectedFontWeight
+                                      .toString()
+                                      .contains(variant);
+
+                              return SizedBox(
+                                height: 30.0,
+                                width: 60.0,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      backgroundColor: isSelectedVariant
+                                          ? Theme.of(context).primaryColor
+                                          : null,
+                                      textStyle: const TextStyle(
+                                        fontSize: 10.0,
+                                      ),
+                                      shape: const StadiumBorder(),
+                                    ),
+                                    child: Text(
+                                      variant,
+                                      style: TextStyle(
+                                        fontStyle: variant == "italic"
+                                            ? FontStyle.italic
+                                            : FontStyle.normal,
+                                        color: isSelectedVariant
+                                            ? Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary
+                                            : Theme.of(context)
+                                                        .colorScheme
+                                                        .onPrimary ==
+                                                    Colors.white
+                                                ? null
+                                                : Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimary,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        if (variant == "italic") {
+                                          _selectedFontStyle == FontStyle.italic
+                                              ? _selectedFontStyle =
+                                                  FontStyle.normal
+                                              : _selectedFontStyle =
+                                                  FontStyle.italic;
+                                        } else {
+                                          _selectedFontWeight =
+                                              fontWeightValues[variant]!;
+                                        }
+                                      });
+                                    },
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        )
+                      : null,
+                  trailing: isBeingSelected
+                      ? TextButton(
+                          child: Text(
+                            translations.d["select"]!,
+                          ),
+                          onPressed: () {
+                            addToRecents(_selectedFontFamily!);
+                            changeFont(
+                              PickerFont(
+                                fontFamily: _selectedFontFamily!,
+                                fontWeight: _selectedFontWeight,
+                                fontStyle: _selectedFontStyle,
+                              ),
+                            );
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      : _recentFonts.contains(f)
+                          ? const Icon(
+                              Icons.history,
+                              size: 18.0,
+                            )
+                          : null,
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -285,12 +299,9 @@ class _FontPickerUIState extends State<FontPickerUI> {
   void onFontLanguageSelected(String? newValue) {
     setState(() {
       _selectedFontLanguage = newValue!;
-      if (newValue == 'all') {
-        _shownFonts = _allFonts;
-      } else {
-        _shownFonts =
-            _allFonts.where((f) => f.subsets.contains(newValue)).toList();
-      }
+      _shownFonts = newValue == 'all'
+          ? _allFonts
+          : _allFonts.where((f) => f.subsets.contains(newValue)).toList();
     });
   }
 
@@ -307,12 +318,16 @@ class _FontPickerUIState extends State<FontPickerUI> {
       setState(() {
         _shownFonts = _allFonts;
       });
+
       return;
     } else {
       setState(() {
         _shownFonts = _allFonts
             .where(
-                (f) => f.fontFamily.toLowerCase().contains(text.toLowerCase()))
+              (f) => f.fontFamily.toLowerCase().contains(
+                    text.toLowerCase(),
+                  ),
+            )
             .toList();
       });
     }

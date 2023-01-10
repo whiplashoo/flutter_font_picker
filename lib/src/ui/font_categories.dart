@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_font_picker/src/constants/translations.dart';
 
 import '../constants/constants.dart';
 
@@ -16,35 +17,41 @@ class _FontCategoriesState extends State<FontCategories> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-        children: googleFontCategories.map((fontCategory) {
-      bool isSelectedCategory = _selectedFontCategories.contains(fontCategory);
-      return SizedBox(
-        height: 30.0,
-        child: Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: OutlinedButton(
-            style: OutlinedButton.styleFrom(
+      children: googleFontCategories.map((fontCategory) {
+        bool isSelectedCategory =
+            _selectedFontCategories.contains(fontCategory);
+
+        return SizedBox(
+          height: 30.0,
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
                 backgroundColor:
                     isSelectedCategory ? Theme.of(context).primaryColor : null,
                 textStyle: const TextStyle(
                   fontSize: 10.0,
                 ),
-                shape: const StadiumBorder()),
-            child: Text(fontCategory,
+                shape: const StadiumBorder(),
+              ),
+              child: Text(
+                translations.d[fontCategory]!,
                 style: TextStyle(
                   color: isSelectedCategory
                       ? Theme.of(context).colorScheme.onPrimary
                       : null,
-                )),
-            onPressed: () {
-              _selectedFontCategories.contains(fontCategory)
-                  ? _selectedFontCategories.remove(fontCategory)
-                  : _selectedFontCategories.add(fontCategory);
-              widget.onFontCategoriesUpdated(_selectedFontCategories);
-            },
+                ),
+              ),
+              onPressed: () {
+                _selectedFontCategories.contains(fontCategory)
+                    ? _selectedFontCategories.remove(fontCategory)
+                    : _selectedFontCategories.add(fontCategory);
+                widget.onFontCategoriesUpdated(_selectedFontCategories);
+              },
+            ),
           ),
-        ),
-      );
-    }).toList());
+        );
+      }).toList(),
+    );
   }
 }
