@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/translations.dart';
+
 class FontSearch extends StatefulWidget {
   final ValueChanged<String> onSearchTextChanged;
   const FontSearch({super.key, required this.onSearchTextChanged});
@@ -36,7 +38,7 @@ class _FontSearchState extends State<FontSearch> {
                     },
                   )
                 : null,
-            hintText: "Search...",
+            hintText: translations.d["search"],
             hintStyle: const TextStyle(fontSize: 14.0),
             border: InputBorder.none,
             focusedBorder: InputBorder.none,
