@@ -105,7 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => FontPicker(
-                        lang: "pt",
                         recentsCount: 10,
                         onFontChanged: (font) {
                           setState(() {
