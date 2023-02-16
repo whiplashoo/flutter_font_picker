@@ -1,3 +1,7 @@
+## 1.1.3
+
+* Fix: Protect null `googleFontsDetails[]` references within `picker_font.dart` when newer GoogleFonts than those used to generate the `constants.dart` are used. Fixes #9.
+
 ## 1.1.2
 
 * Feat: Added `showFontVariants` option to hide font variants in the font picker. If set to false, user will only be able to select the default variant of each font. Closes #7.

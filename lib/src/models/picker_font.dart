@@ -23,11 +23,14 @@ class PickerFont {
     this.fontStyle = FontStyle.normal,
     this.isRecent = false,
   })  : variants = parseVariants(fontFamily),
-        subsets = googleFontsDetails[fontFamily]!["subsets"]!.split(","),
-        category = googleFontsDetails[fontFamily]!["category"]!;
+        subsets = googleFontsDetails[fontFamily]!=null ? googleFontsDetails[fontFamily]!["subsets"]!.split(",") :
+                        <String>[],
+        category = googleFontsDetails[fontFamily]!=null ? googleFontsDetails[fontFamily]!["category"]!
+                      : 'serif';
 
   static List<String> parseVariants(String fontFamily) {
-    var variants = googleFontsDetails[fontFamily]!["variants"]!.split(",");
+    var variants = googleFontsDetails[fontFamily]!=null ? googleFontsDetails[fontFamily]!["variants"]!.split(",")
+                      : <String>[];
     if (variants.any((v) => v.contains("i"))) {
       variants.add("italic");
     }
