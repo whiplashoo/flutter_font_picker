@@ -1,3 +1,12 @@
+## 1.1.5
+
+* Feat: The `example\main.dart` example program has been enhanced to include a control panel that allows all possible options to `FontPicker()` to be played with and adjusted.  It also now includes a `useDevicePreview` constant that can be set to true to enable previewing `FontPicker()`'s behavior on a wide variety of possible flutter platforms, screensizes and device orientations.
+* Feat:  Added ability to set font sizes and list preview text. 
+   - `previewSampleTextFontSize` - Font size used for preview sample text above list.
+    - `fontSizeForListPreview`: Font size to use for each font name within font picker list.  (Optional list preview sample text also uses this size). Defaults to 14 (previously hardcoded).
+    - `showListPreviewSampleTextInput` - Set whether to include form field to allow user to change the list preview sample text.
+    - `listPreviewSampleText` - Optional sample text include to right of each font within picker list.
+
 ## 1.1.3
 
 * Fix: Protect null `googleFontsDetails[]` references within `picker_font.dart` when newer GoogleFonts than those used to generate the `constants.dart` are used. Fixes #9.

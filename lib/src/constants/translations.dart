@@ -39,6 +39,7 @@ const dictionary = {
     'display': 'display',
     'handwriting': 'handwriting',
     'monospace': 'monospace',
+    'List preview sample text': 'List preview sample text',
   },
   "es": {
     'search': 'Buscar...',
@@ -80,6 +81,7 @@ const dictionary = {
     'display': 'mostrar',
     'handwriting': 'escritura',
     'monospace': 'monoespacio',
+    'List preview sample text': 'Texto de ejemplo de vista previa de lista',
   },
   "de": {
     'search': 'Suche...',
@@ -121,6 +123,7 @@ const dictionary = {
     'display': 'anzeige',
     'handwriting': 'handschrift',
     'monospace': 'monospace',
+    'List preview sample text': 'Listenvorschau-Beispieltext',
   },
   "fr": {
     'search': 'Chercher...',
@@ -162,6 +165,7 @@ const dictionary = {
     'display': 'affichage',
     'handwriting': 'écriture',
     'monospace': 'monospace',
+    'List preview sample text': "Répertorier l'exemple de texte d'aperçu",
   },
   "it": {
     'search': 'Ricerca...',
@@ -203,6 +207,7 @@ const dictionary = {
     'display': 'visualizzazione',
     'handwriting': 'grafia',
     'monospace': 'monospazio',
+    'List preview sample text': "Testo di esempio dell'anteprima dell'elenco",
   },
   "pt": {
     'search': 'Procurar...',
@@ -244,6 +249,7 @@ const dictionary = {
     'display': 'exibição',
     'handwriting': 'caligrafia',
     'monospace': 'monoespaço',
+    'List preview sample text': 'Texto de amostra de visualização da lista',
   },
   "pl": {
     'search': 'Szukaj...',
@@ -285,6 +291,7 @@ const dictionary = {
     'display': 'plakatowe',
     'handwriting': 'ręcznie pisane',
     'monospace': 'monospace',
+    'List preview sample text': "Przykładowy tekst podglądu listy",
   },
 };
 

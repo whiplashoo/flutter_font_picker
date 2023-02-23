@@ -5,11 +5,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/constants.dart';
+import '../constants/fontweights_map.dart';
 import '../constants/translations.dart';
 import '../models/picker_font.dart';
 import 'font_categories.dart';
 import 'font_language.dart';
 import 'font_preview.dart';
+import 'font_sample.dart';
 import 'font_search.dart';
 
 class FontPickerUI extends StatefulWidget {
@@ -21,6 +23,10 @@ class FontPickerUI extends StatefulWidget {
   final int recentsCount;
   final String lang;
   final bool showFontVariants;
+  final bool showListPreviewSampleTextInput;
+  final String? listPreviewSampleText;
+  final double fontSizeForListPreview;
+  final double previewSampleTextFontSize;
 
   FontPickerUI({
     super.key,
@@ -32,6 +38,10 @@ class FontPickerUI extends StatefulWidget {
     required this.initialFontFamily,
     required this.lang,
     this.showFontVariants = true,
+    this.showListPreviewSampleTextInput = false,
+    this.listPreviewSampleText,
+    this.fontSizeForListPreview = 16.0,
+    this.previewSampleTextFontSize = 14.0,
   });
 
   @override
@@ -39,6 +49,9 @@ class FontPickerUI extends StatefulWidget {
 }
 
 class _FontPickerUIState extends State<FontPickerUI> {
+
+  _FontPickerUIState();
+
   var _shownFonts = <PickerFont>[];
   var _allFonts = <PickerFont>[];
   var _recentFonts = <PickerFont>[];
@@ -46,11 +59,13 @@ class _FontPickerUIState extends State<FontPickerUI> {
   FontWeight _selectedFontWeight = FontWeight.w400;
   FontStyle _selectedFontStyle = FontStyle.normal;
   String _selectedFontLanguage = 'all';
+  String? listPreviewSampleText;
 
   @override
   void initState() {
     _prepareShownFonts();
     super.initState();
+    if(widget.listPreviewSampleText!=null) listPreviewSampleText = widget.listPreviewSampleText;
   }
 
   Future _prepareShownFonts() async {
@@ -86,8 +101,10 @@ class _FontPickerUIState extends State<FontPickerUI> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 5 / 6,
+      height: size.height * 5 / 6,
       child: Column(
         children: [
           Padding(
@@ -124,10 +141,19 @@ class _FontPickerUIState extends State<FontPickerUI> {
                   ),
           ),
           FontCategories(onFontCategoriesUpdated: onFontCategoriesUpdated),
+          if(widget.showListPreviewSampleTextInput)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
+              child: FontSample(
+                initialSampleText: listPreviewSampleText ?? widget.listPreviewSampleText ?? '',
+                onSampleTextChanged: onSampleTextChanged,
+              ),
+          ),
           FontPreview(
             fontFamily: _selectedFontFamily ?? 'Roboto',
             fontWeight: _selectedFontWeight,
             fontStyle: _selectedFontStyle,
+            fontSize: widget.previewSampleTextFontSize,
           ),
           Expanded(
             child: ListView.builder(
@@ -167,6 +193,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
                         style: TextStyle(
                           fontFamily:
                               GoogleFonts.getFont(f.fontFamily).fontFamily,
+                          fontSize: widget.fontSizeForListPreview,
                         ).copyWith(
                           color: DefaultTextStyle.of(context).style.color,
                         ),
@@ -254,7 +281,28 @@ class _FontPickerUIState extends State<FontPickerUI> {
                           ),
                         )
                       : null,
-                  trailing: isBeingSelected
+                  trailing: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      listPreviewSampleText!=null && !isBeingSelected 
+                      ? ConstrainedBox( 
+                          constraints: BoxConstraints(maxWidth: size.width/3),
+                          child:Text(
+                            listPreviewSampleText!,
+                            overflow: TextOverflow.clip,
+                            style: TextStyle(
+                                fontFamily:
+                                    GoogleFonts.getFont(f.fontFamily).fontFamily,
+                                fontSize: widget.fontSizeForListPreview,
+                            ).copyWith(
+                              color: DefaultTextStyle.of(context).style.color,
+                            ),
+                          ), 
+                        )
+                        : Container(),
+                      isBeingSelected
                       ? TextButton(
                           child: Text(
                             translations.d["select"]!,
@@ -272,11 +320,14 @@ class _FontPickerUIState extends State<FontPickerUI> {
                           },
                         )
                       : _recentFonts.contains(f)
-                          ? const Icon(
-                              Icons.history,
-                              size: 18.0,
+                          ? const SizedBox(width: 40, child: Icon(
+                                Icons.history,
+                                size: 18.0,
+                              ),
                             )
-                          : null,
+                          : const SizedBox(width: 40),
+                      ],
+                    ),
                 );
               },
             ),
@@ -336,5 +387,11 @@ class _FontPickerUIState extends State<FontPickerUI> {
             .toList();
       });
     }
+  }
+
+  void onSampleTextChanged(String sampleText) {
+      setState(() {
+        listPreviewSampleText = sampleText;
+      });
   }
 }
