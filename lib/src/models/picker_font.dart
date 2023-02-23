@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../constants/constants.dart';
+import '../constants/fontweights_map.dart';
 
 /// A wrapper class that contains details about each font in the [FontPicker].
 ///
