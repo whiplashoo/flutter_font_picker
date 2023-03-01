@@ -1,5 +1,3 @@
-const prefsRecentsKey = "font_picker_recents";
-
 const googleFontCategories = [
   'serif',
   'sans-serif',
@@ -8,7 +6,7 @@ const googleFontCategories = [
   'monospace',
 ];
 
-const googleFontLanguages = [
+const possibleGoogleFontLanguagesWeWillDisplay = [
   'all',
   'arabic',
   'bengali',

@@ -55,6 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool _showFontInfo = true;
 
+  bool _showFavoriteButtons = true;
+
   bool _showListPreviewSampleTextInput = false;
 
   String _listPreviewSampleText = '';
@@ -232,6 +234,30 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                   ),
                 ],
+              ),
+              ...Splittable.splittableRow(
+                context: context,
+                splitEveryN: 4,
+                splitWidgetBehavior:SplitWidgetBehavior.exclude,
+                mainAxisAlignment: mainAxisAlignment,
+                children: <Widget>[
+                  const Text(
+                    'Support favorite fonts :',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Checkbox(
+                    value: _showFavoriteButtons,
+                    onChanged: (checked) {
+                      setState(() {
+                        _showFavoriteButtons = checked ?? false;
+                      });
+                    },
+                  ),
+                 ],
               ),
              ...Splittable.splittableRow(
                 context: context,
@@ -447,7 +473,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               listPreviewSampleText: _listPreviewSampleText,
                               previewSampleTextFontSize: _sampleTextFontSize,
                               fontSizeForListPreview: _fontPickerListFontSize,
-
+                              showFavoriteButtons: _showFavoriteButtons,
                             ),
                           ),
                         );
@@ -483,6 +509,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     listPreviewSampleText: _listPreviewSampleText,
                                     previewSampleTextFontSize: _sampleTextFontSize,
                                     fontSizeForListPreview: _fontPickerListFontSize,
+                                    showFavoriteButtons : _showFavoriteButtons,
                                   ),
                                 ),
                               ),
@@ -540,6 +567,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       listPreviewSampleText: _listPreviewSampleText,
                                       previewSampleTextFontSize: _sampleTextFontSize,
                                       fontSizeForListPreview: _fontPickerListFontSize,
+                                      showFavoriteButtons : _showFavoriteButtons,
                                     ),
                                   ),
                                 );

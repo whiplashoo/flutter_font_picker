@@ -65,6 +65,8 @@ Check the example project for more usages.
 - `showFontVariants`: Whether to show font variants (weights and styles) in the font picker. If set to false, user will only be able to select the default variant of each font.
 - `showInDialog`: Set this to true if you want to use the font picker inside an AlertDialog (check examples).
 - `recentsCount`: Fonts that the user selected before are saved to be shown at the start of the list. Sets how many you want saved as recents.
+- `showFavoriteButtons`: Whether or not to add a 'favorites' star to each font in the picker list and allow the user to selected favorites that will be saved and displayed at the top of the picker list after the most recent selections and before the rest of the fonts.
+- `favoritesCount`: Sets the maximum number of user picked favorites to allow and save in the users preferences.
 - `previewSampleTextFontSize` - Font size used for preview sample text above list.
 - `fontSizeForListPreview`: Font size to use for each font name within font picker list.  (Optional list preview sample text also uses this size). Defaults to 14.
 - `showListPreviewSampleTextInput` - Set whether to include form field to allow user to change the list preview sample text.
