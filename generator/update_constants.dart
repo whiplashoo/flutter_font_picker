@@ -16,6 +16,7 @@ import '../lib/src/constants/constants.dart';
 
 /// URL for Google Fonts's API.  
 const _googleFontsAPIJsonRawUrl = 'https://www.googleapis.com/webfonts/v1/webfonts?key=';
+const _googleFontsGithubUrlForFontList = 'https://raw.githubusercontent.com/material-foundation/flutter-packages/main/packages/google_fonts/generator/families_supported';
 
 /// Path to our output constants.dart file.
 const _constantsFileName = 'constants.dart';
@@ -79,6 +80,11 @@ Future<void> main(List<String> args) async {
         negatable: false,
         help: 'Print help text and exit.',
     )
+    ..addFlag('verbose',
+        abbr: 'v',
+        negatable: false,
+        help: 'Print extra info during processing.',
+    )
     ..addFlag('legacylanguages',
         abbr: 'l',
         negatable: false,
@@ -114,6 +120,7 @@ Future<void> main(List<String> args) async {
   }
 
   final legacyLanguageFlag = results['legacylanguages'] as bool;
+  final verboseFlag = results['verbose'] as bool;
   final googleFontsListFile = results['googlefontslist'];
   final suppliedFontList = (googleFontsListFile != 'missing');
   final inputJsonFilename = results['inputjsonfile'];
@@ -128,7 +135,31 @@ Future<void> main(List<String> args) async {
 
   final List<String> googleFontsPackageFontList = [];
   if(!suppliedFontList) {
-    print('No list of fonts included in the current googlefonts package was specified.  ALL FONTS output by the google fonts api will be included within constants.dart.');
+    print('Attempting to retrieve current google_fonts font list from `$_googleFontsGithubUrlForFontList`');
+
+    final client = HttpClient();
+    final request = await client.getUrl(Uri.parse(_googleFontsGithubUrlForFontList));
+    final response = await request.close();
+
+    if(response.statusCode != HttpStatus.ok) {
+      // Unexpected status returned.
+      print('Request to retrieve font list from ${_googleFontsGithubUrlForFontList} returned UNEXPECTED status code ${response.statusCode}');
+      print('Because Automatic retreival of font list FAILED, and no list of fonts included on command line (--googlefontslist)');
+      print('ALL FONTS output by the google fonts api will be included within constants.dart.');
+    } else {
+      String rawFontListData = await response.transform(utf8.decoder).join();
+
+      if(verboseFlag) print('Font list retrieved from _googleFontsGithubUrlForFontList:\n$rawFontListData');
+
+      LineSplitter.split(rawFontListData).forEach(
+        (line) {
+          final fname = line.trim();
+          if(fname.isNotEmpty) {
+            googleFontsPackageFontList.add(fname);
+          }
+        },);
+      print('Read ${googleFontsPackageFontList.length} fonts from `$_googleFontsGithubUrlForFontList`');
+    }
   } else {
     try {
       // get the list
@@ -267,9 +298,7 @@ Future<void> main(List<String> args) async {
   final List<String> newLanguageSubsets = [];
   final List<String> removedLanguageSubsets = [];
 
-  if(googleFontsPackageFontList.isNotEmpty) {
-    print('Font 0 is ${googleFontsPackageFontList[0]}');
-  } else {
+  if(googleFontsPackageFontList.isEmpty) {
     print('No font list supplied, dumping info for ALL fonts');
   }
 
@@ -334,8 +363,7 @@ Future<void> main(List<String> args) async {
 
   // Sort arrays we want sorted
   allEncountedLanguageSubsets.sort();
-  print('allEncountedLanguageSubsets = $allEncountedLanguageSubsets');
-
+  if(verboseFlag) print('allEncountedLanguageSubsets = $allEncountedLanguageSubsets');
 
   // get sorted list of font keys
   final sortedFontMapFonts = fontMap.keys.toList()..sort();
@@ -373,14 +401,14 @@ Future<void> main(List<String> args) async {
   
   // Display summary info of whats been found/changes from previous version.
   print('${allEncountedCategories.length} categories found - ${newCategories.length} new categories detected:');
-  print('$newCategories');
+  if(verboseFlag) print('$newCategories');
   if(removedCategories.isNotEmpty) {
     print('${removedCategories.length} removed categories:');
     print('$removedCategories');
   }
   if(!legacyLanguageFlag) {
     print('${allEncountedLanguageSubsets.length} language subsets found - ${newLanguageSubsets.length} new language subsets detected:');
-    print('$newLanguageSubsets');
+    if(verboseFlag) print('$newLanguageSubsets');
     if(removedLanguageSubsets.isNotEmpty) {
       print('${removedLanguageSubsets.length} removed language subsets:');
       print('$removedLanguageSubsets');
@@ -389,8 +417,8 @@ Future<void> main(List<String> args) async {
     print('The --legacylanguages flag has been specified and only legacy languages from');
     print('existing constants.dart will be included.');
   }
-  print('${fontMap.length} fonts found - {newFonts.length} new fonts detected:');
-  print('$newFonts');
+  print('${fontMap.length} fonts found - ${newFonts.length} new fonts detected:');
+  if(verboseFlag) print('$newFonts');
   if(removedFonts.isNotEmpty) {
     print('${removedFonts.length} removed fonts:');
     print('$removedFonts');
@@ -400,7 +428,7 @@ Future<void> main(List<String> args) async {
   if(googleFontsPackageFontList.isEmpty) {
     print('No googlefonts package font list was supplied so including all fonts from API json.');
   } else {
-    print('Skipped $skippedFonts that were not included in the supplied googlefonts package font list file.');
+    print('Skipped $skippedFonts that were not included in the supplied googlefonts package font list.');
   }
 
   // Write out constants.dart file here
