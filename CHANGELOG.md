@@ -1,8 +1,4 @@
-## 1.2.0
-
-* Updated to depend on google_fonts package v4.0.3. It now includes the latest supported Google Fonts, their variants, weights, and categories. 
-
-## 1.1.5
+## 1.2.1
 
 * Feat: Filter display languages according to the active list of supported fonts. This eliminates languages from the list which there are no fonts supporting fonts present.
 * Feat: Implemented option favorites feature which can be enabled by setting `showFavoriteButtons` to true.
@@ -12,6 +8,10 @@
     - `fontSizeForListPreview`: Font size to use for each font name within font picker list.  (Optional list preview sample text also uses this size). Defaults to 14 (previously hardcoded).
     - `showListPreviewSampleTextInput` - Set whether to include form field to allow user to change the list preview sample text.
     - `listPreviewSampleText` - Optional sample text include to right of each font within picker list.
+
+## 1.2.0
+
+* Updated to depend on google_fonts package v4.0.3. It now includes the latest supported Google Fonts, their variants, weights, and categories. 
 
 ## 1.1.4
 

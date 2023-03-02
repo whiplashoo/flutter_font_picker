@@ -367,7 +367,7 @@ Future<void> main(List<String> args) async {
       for (final subset in subsets) {
         if (!allEncountedLanguageSubsets.contains(subset)) {
           allEncountedLanguageSubsets.add(subset);
-          if (!googleFontLanguages.contains(subset)) {
+          if (!possibleGoogleFontLanguagesWeWillDisplay.contains(subset)) {
             newLanguageSubsets.add(subset);
           }
         }
@@ -431,7 +431,7 @@ Future<void> main(List<String> args) async {
       removedCategories.add(category);
     }
   }
-  for (final subset in googleFontLanguages) {
+  for (final subset in possibleGoogleFontLanguagesWeWillDisplay) {
     if (!allEncountedLanguageSubsets.contains(subset)) {
       removedLanguageSubsets.add(subset);
     }
@@ -515,9 +515,9 @@ Future<void> main(List<String> args) async {
   constantsContent.writeln('];');
   constantsContent.writeln();
 
-  constantsContent.writeln('const googleFontLanguages = [');
+  constantsContent.writeln('const possibleGoogleFontLanguagesWeWillDisplay = [');
   if (legacyLanguageFlag) {
-    for (final language in googleFontLanguages) {
+    for (final language in possibleGoogleFontLanguagesWeWillDisplay) {
       constantsContent.writeln("\t'$language',");
     }
     constantsContent.writeln('];');
