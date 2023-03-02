@@ -34,7 +34,7 @@ packages:
     source: hosted
     version: "2.0.1"
   args:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: args
       sha256: "4cab82a83ffef80b262ddedf47a0a8e56ee6fbf7fe21e6e768b02792034dd440"
@@ -180,10 +180,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_fonts
-      sha256: "8f099045e2f2a30e4d4d0a35f40c6bc941a8f2ca0e10ad9d214ee9edd3f37483"
+      sha256: "927573f2e8a8d65c17931e21918ad0ab0666b1b636537de7c4932bdb487b190f"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.1"
+    version: "4.0.3"
   html:
     dependency: transitive
     description:
