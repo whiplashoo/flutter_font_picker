@@ -11,6 +11,8 @@ Provides a `FontPicker` widget that can be used in a route or dialog as a UI for
 
 Depends on the [google_fonts](https://pub.dev/packages/google_fonts) package for loading and displaying the fonts.
 
+A 'live' example of the `FontPicker` `example\main.dart` example program, running on the web platform (with additional device preview capabilities enabled) can be found [here](https://timmaffett.github.io/flutter_font_picker/).
+
 Localizations available for 🇪🇸🇩🇪🇮🇹🇵🇹🇫🇷🇵🇱. 
 
 ## Simple Example
@@ -63,6 +65,12 @@ Check the example project for more usages.
 - `showFontVariants`: Whether to show font variants (weights and styles) in the font picker. If set to false, user will only be able to select the default variant of each font.
 - `showInDialog`: Set this to true if you want to use the font picker inside an AlertDialog (check examples).
 - `recentsCount`: Fonts that the user selected before are saved to be shown at the start of the list. Sets how many you want saved as recents.
+- `showFavoriteButtons`: Whether or not to add a 'favorites' star to each font in the picker list and allow the user to selected favorites that will be saved and displayed at the top of the picker list after the most recent selections and before the rest of the fonts.
+- `favoritesCount`: Sets the maximum number of user picked favorites to allow and save in the users preferences.
+- `previewSampleTextFontSize` - Font size used for preview sample text above list.
+- `fontSizeForListPreview`: Font size to use for each font name within font picker list.  (Optional list preview sample text also uses this size). Defaults to 14.
+- `showListPreviewSampleTextInput` - Set whether to include form field to allow user to change the list preview sample text.
+- `listPreviewSampleText` - Optional sample text include to right of each font within picker list. Defaults to 16.
 - `lang`: The language in which to show the UI. Defaults to English (`'en'`). Other options are 🇪🇸🇩🇪🇮🇹🇵🇹🇫🇷🇵🇱 (`'es'`, `'de'`, `'it'`, `'pt'`, `'fr', 'pl'`). If you need a translation in another language: take a look at the `dictionary` variable in `translations.dart`, and send me (or fix) the translations for your language . 
 
 ## FontPicker features

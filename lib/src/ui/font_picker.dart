@@ -8,8 +8,6 @@ import '../models/picker_font.dart';
 import 'font_picker_ui.dart';
 
 //TODO: Basic fonts option (to be included in assets)
-//TODO: Filter languages according to selected fonts on init
-//TODO: Implement favorites feature
 
 /// Creates a widget that lets the user select a Google font from a provided list.
 ///
@@ -65,6 +63,14 @@ class FontPicker extends StatefulWidget {
   /// Set to true if the font picker will be used in an [AlertDialog] (check examples for usage).
   final bool showInDialog;
 
+  /// Set to true to add 'favorite' button to each font in font list.  Favorites will be shown at top of list after recent fonts and before other fonts.
+  /// The users favorite font list is saved in [SharedPreferences]. [favoritesCount] sets the
+  /// maximum number of favorite fonts the user will be allowed to choose.
+  final bool showFavoriteButtons;
+
+  /// Maximum number of user picked favorites to allow and saved in [SharedPreferences].
+  final int favoritesCount;
+
   /// Fonts that the user selected before can be saved in [SharedPreferences] and shown at the start of the list. Sets how many you want saved as recents.
   final int recentsCount;
 
@@ -72,6 +78,18 @@ class FontPicker extends StatefulWidget {
   ///
   /// If you need a translation in another language: take a look at the dictionaries variable in constants.dart, and send me the translations for your language.
   final String lang;
+
+  /// Set whether to include form field to allow user to change the list preview sample text.
+  final bool showListPreviewSampleTextInput;
+
+  /// Optional sample text include to right of each font within picker list.
+  final String? listPreviewSampleText;
+
+  /// Font size to use for each font name within font picker list.  (Optional list preview sample text also uses this size).
+  final double fontSizeForListPreview;
+
+  /// Font size used for preview sample text above list.
+  final double previewSampleTextFontSize;
 
   /// Creates a widget that lets the user select a Google font from a provided list.
   ///
@@ -85,9 +103,15 @@ class FontPicker extends StatefulWidget {
     this.showFontVariants = true,
     this.showInDialog = false,
     this.recentsCount = 3,
+    this.showFavoriteButtons = false,
+    this.favoritesCount = 15,
     required this.onFontChanged,
     this.initialFontFamily,
     this.lang = "en",
+    this.showListPreviewSampleTextInput = false,
+    this.listPreviewSampleText,
+    this.fontSizeForListPreview = 16.0,
+    this.previewSampleTextFontSize = 14.0,
   });
 
   @override
@@ -113,6 +137,13 @@ class _FontPickerState extends State<FontPicker> {
             initialFontFamily: widget.initialFontFamily ?? 'Roboto',
             lang: widget.lang,
             showFontVariants: widget.showFontVariants,
+            showListPreviewSampleTextInput:
+                widget.showListPreviewSampleTextInput,
+            listPreviewSampleText: widget.listPreviewSampleText,
+            fontSizeForListPreview: widget.fontSizeForListPreview,
+            previewSampleTextFontSize: widget.previewSampleTextFontSize,
+            showFavoriteButtons: widget.showFavoriteButtons,
+            favoritesCount: widget.favoritesCount,
           )
         : Scaffold(
             appBar: AppBar(title: const Text("Pick a font:")),
@@ -125,6 +156,13 @@ class _FontPickerState extends State<FontPicker> {
               initialFontFamily: widget.initialFontFamily ?? 'Roboto',
               lang: widget.lang,
               showFontVariants: widget.showFontVariants,
+              showListPreviewSampleTextInput:
+                  widget.showListPreviewSampleTextInput,
+              listPreviewSampleText: widget.listPreviewSampleText,
+              fontSizeForListPreview: widget.fontSizeForListPreview,
+              previewSampleTextFontSize: widget.previewSampleTextFontSize,
+              showFavoriteButtons: widget.showFavoriteButtons,
+              favoritesCount: widget.favoritesCount,
             ),
           );
   }

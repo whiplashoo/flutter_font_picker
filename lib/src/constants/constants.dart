@@ -17,7 +17,7 @@ const googleFontCategories = [
   'monospace',
 ];
 
-const googleFontLanguages = [
+const possibleGoogleFontLanguagesWeWillDisplay = [
   'all',
   'arabic',
   'bengali',
