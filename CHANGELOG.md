@@ -1,3 +1,8 @@
+## 1.1.4
+
+* Add `constants.dart` generator tool found in generator directory.  Addresses #11.
+* Add `display_googlefonts_fontlist.dart` tool to examples directory.  This is used as part of generator process.
+
 ## 1.1.3
 
 * Fix: Protect null `googleFontsDetails[]` references within `picker_font.dart` when newer GoogleFonts than those used to generate the `constants.dart` are used. Fixes #9.

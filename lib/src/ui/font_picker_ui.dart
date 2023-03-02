@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/constants.dart';
+import '../constants/fontweights_map.dart';
 import '../constants/translations.dart';
 import '../models/picker_font.dart';
 import 'font_categories.dart';
