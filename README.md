@@ -71,7 +71,7 @@ Check the example project for more usages.
 - `fontSizeForListPreview`: Font size to use for each font name within font picker list.  (Optional list preview sample text also uses this size). Defaults to 14.
 - `showListPreviewSampleTextInput` - Set whether to include form field to allow user to change the list preview sample text.
 - `listPreviewSampleText` - Optional sample text include to right of each font within picker list. Defaults to 16.
-- `'lang'`: The language in which to show the UI. Defaults to English (`'en'`). Other options are 🇪🇸🇩🇪🇮🇹🇵🇹🇫🇷🇵🇱 (`'es'`, `'de'`, `'it'`, `'pt'`, `'fr', 'pl'`). If you need a translation in another language: take a look at the `dictionary` variable in `translations.dart`, and send me (or fix) the translations for your language . 
+- `lang`: The language in which to show the UI. Defaults to English (`'en'`). Other options are 🇪🇸🇩🇪🇮🇹🇵🇹🇫🇷🇵🇱 (`'es'`, `'de'`, `'it'`, `'pt'`, `'fr', 'pl'`). If you need a translation in another language: take a look at the `dictionary` variable in `translations.dart`, and send me (or fix) the translations for your language . 
 
 ## FontPicker features
 
