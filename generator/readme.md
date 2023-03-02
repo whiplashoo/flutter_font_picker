@@ -19,7 +19,7 @@ B) Execute the `update_constants.dart` generator tool. This will create a new `c
 
 C) Copy the new `constants.dart` file into the `\lib\src\constants\` directory to overwrite the previous version.
 
-**Each time we update the Google Fonts list, we should publish a new major version of the flutter_font_picker package.**
+**Each time we update the Google Fonts list, we should publish a new minor version of the flutter_font_picker package.**
 
 ## Examples:
 
