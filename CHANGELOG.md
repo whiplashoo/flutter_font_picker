@@ -1,7 +1,10 @@
+## 1.2.0
+
+* Updated to depend on google_fonts package v4.0.3. It now includes the latest supported Google Fonts, their variants, weights, and categories. 
+
 ## 1.1.4
 
-* Add `constants.dart` generator tool found in generator directory.  Addresses #11.
-* Add `display_googlefonts_fontlist.dart` tool to examples directory.  This is used as part of generator process.
+* Add `constants.dart` generator tool found in generator directory.  Addresses #11. Thanks to @timmaffett for providing this!
 
 ## 1.1.3
 
