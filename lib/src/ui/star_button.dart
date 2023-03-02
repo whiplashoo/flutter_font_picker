@@ -44,47 +44,48 @@ class _StarButtonState extends State<StarButton> with TickerProviderStateMixin {
   bool _isAnimationCompleted = false;
 
   @override
-
   void initState() {
     super.initState();
 
     _isStarred = widget._isStarred;
-    _maxIconSize = (widget._iconSize < 20.0) ? 
-                          20.0
-                        : (widget._iconSize > 100.0) ? 
-                                100.0
-                              : widget._iconSize;
+    _maxIconSize = (widget._iconSize < 20.0)
+        ? 20.0
+        : (widget._iconSize > 100.0)
+            ? 100.0
+            : widget._iconSize;
     final double sizeDifference = _maxIconSize * 0.30;
     _minIconSize = _maxIconSize - sizeDifference;
 
-    _controller = AnimationController( vsync: this,
-                                      duration: Duration(milliseconds: _animationTime),
-                                     );
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: _animationTime),
+    );
 
     _curve = CurvedAnimation(curve: Curves.slowMiddle, parent: _controller);
 
-    _colorAnimation = ColorTween( begin: _isStarred ? widget._iconColor         : widget._iconDisabledColor,
-                                  end:   _isStarred ? widget._iconDisabledColor : widget._iconColor,
-                                ).animate(_curve);
+    _colorAnimation = ColorTween(
+      begin: _isStarred ? widget._iconColor : widget._iconDisabledColor,
+      end: _isStarred ? widget._iconDisabledColor : widget._iconColor,
+    ).animate(_curve);
 
     _sizeAnimation = TweenSequence(
-                        [
-                          TweenSequenceItem<double>(
-                            tween: Tween<double>(
-                              begin: _minIconSize,
-                              end: _maxIconSize,
-                            ),
-                            weight: 50,
-                          ),
-                          TweenSequenceItem<double>(
-                            tween: Tween<double>(
-                              begin: _maxIconSize,
-                              end: _minIconSize,
-                            ),
-                            weight: 50,
-                          ),
-                        ],
-                      ).animate(_curve);
+      [
+        TweenSequenceItem<double>(
+          tween: Tween<double>(
+            begin: _minIconSize,
+            end: _maxIconSize,
+          ),
+          weight: 50,
+        ),
+        TweenSequenceItem<double>(
+          tween: Tween<double>(
+            begin: _maxIconSize,
+            end: _minIconSize,
+          ),
+          weight: 50,
+        ),
+      ],
+    ).animate(_curve);
 
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {

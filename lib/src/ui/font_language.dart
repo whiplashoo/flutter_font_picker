@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants/constants.dart';
 import '../constants/translations.dart';
 
 class FontLanguage extends StatefulWidget {
@@ -32,12 +31,13 @@ class _FontLanguageState extends State<FontLanguage> {
         ),
         icon: const Icon(Icons.arrow_drop_down_sharp),
         onChanged: widget.onFontLanguageSelected,
-        items:
-            widget.languagesToDisplay.map<DropdownMenuItem<String>>((String value) {
+        items: widget.languagesToDisplay
+            .map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
-            child: Text(translations.d[value] ?? value),  // Provide language translation IF we have one,
-                                                          // otherwise the language subset as it is. 
+            child: Text(translations.d[value] ??
+                value), // Provide language translation IF we have one,
+            // otherwise the language subset as it is.
           );
         }).toList(),
       ),

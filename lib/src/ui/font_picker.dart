@@ -137,7 +137,8 @@ class _FontPickerState extends State<FontPicker> {
             initialFontFamily: widget.initialFontFamily ?? 'Roboto',
             lang: widget.lang,
             showFontVariants: widget.showFontVariants,
-            showListPreviewSampleTextInput: widget.showListPreviewSampleTextInput,
+            showListPreviewSampleTextInput:
+                widget.showListPreviewSampleTextInput,
             listPreviewSampleText: widget.listPreviewSampleText,
             fontSizeForListPreview: widget.fontSizeForListPreview,
             previewSampleTextFontSize: widget.previewSampleTextFontSize,
@@ -155,7 +156,8 @@ class _FontPickerState extends State<FontPicker> {
               initialFontFamily: widget.initialFontFamily ?? 'Roboto',
               lang: widget.lang,
               showFontVariants: widget.showFontVariants,
-              showListPreviewSampleTextInput: widget.showListPreviewSampleTextInput,
+              showListPreviewSampleTextInput:
+                  widget.showListPreviewSampleTextInput,
               listPreviewSampleText: widget.listPreviewSampleText,
               fontSizeForListPreview: widget.fontSizeForListPreview,
               previewSampleTextFontSize: widget.previewSampleTextFontSize,

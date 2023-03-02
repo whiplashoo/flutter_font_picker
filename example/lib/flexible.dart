@@ -14,15 +14,15 @@ enum SplitWidgetBehavior {
 /// `...Splittable.splittableRow(`.
 /// The spread operator ('...') is required because more than a single row can
 /// now be returned if the row is split.
-/// 
-/// [Splittable.splitWidth] can be set to whatever width you would like to 
-/// start splitting rows at, any time the screen width is <= to this 
+///
+/// [Splittable.splitWidth] can be set to whatever width you would like to
+/// start splitting rows at, any time the screen width is <= to this
 /// value the rows will be split.
-/// 
+///
 /// The [splitOn], [splitEveryN], [splitAtIndices], [splitWidgetBehavior]
 /// are defined as needed depending on how you want to split the row on
 /// a narrow screen.
-/// 
+///
 /// Example splitting on a certain widget type in the row and including that
 /// widget on the next row using [SplitWidgetBehavior.includeInNextRow] :
 /// ```
@@ -57,71 +57,86 @@ class Splittable {
   static int splitWidth = 500;
 
   static bool willSplitRows(BuildContext context) {
-    Size size = MediaQuery.of(context).size;                            
-    return size.width<=splitWidth;
+    Size size = MediaQuery.of(context).size;
+    return size.width <= splitWidth;
   }
 
   /// [splitAtIndices] supply an array of the index numbers of split widgets
   /// [splitEveryN] supply if you want to split on every Nth widget.
   /// [splitWidgetBehavior] what to do with the split widget SplitWidgetBehavior.(exclude, includeInThisRow or includeInNextRow)
   /// [splitOn] SplitOn instance which holds type of widget to split on, ie. SplitOn<SizedBox>
-  static List<Widget> splittableRow( { 
-                          required BuildContext context,
-                          required List<Widget>children,
-                          Type? splitOn,
-                          int? splitEveryN,
-                          List<int>? splitAtIndices,
-                          SplitWidgetBehavior splitWidgetBehavior = SplitWidgetBehavior.exclude,
-                          bool forceSplit=false,
-                          // the following are the standard Row() arguments we pass on
-                          MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
-                          MainAxisSize mainAxisSize = MainAxisSize.max,
-                          CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
-                          TextDirection? textDirection,
-                          VerticalDirection verticalDirection = VerticalDirection.down,
-                          TextBaseline? textBaseline,
-                        } ) {
-    assert( splitOn!=null || splitEveryN!=null || splitAtIndices!=null, 'Must supply either splitOn<T>, splitEveryN or splitAtIndices');
+  static List<Widget> splittableRow({
+    required BuildContext context,
+    required List<Widget> children,
+    Type? splitOn,
+    int? splitEveryN,
+    List<int>? splitAtIndices,
+    SplitWidgetBehavior splitWidgetBehavior = SplitWidgetBehavior.exclude,
+    bool forceSplit = false,
+    // the following are the standard Row() arguments we pass on
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start,
+    MainAxisSize mainAxisSize = MainAxisSize.max,
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.center,
+    TextDirection? textDirection,
+    VerticalDirection verticalDirection = VerticalDirection.down,
+    TextBaseline? textBaseline,
+  }) {
+    assert(splitOn != null || splitEveryN != null || splitAtIndices != null,
+        'Must supply either splitOn<T>, splitEveryN or splitAtIndices');
     bool splitting = willSplitRows(context) || forceSplit;
 
     // if now splitting the row then just return a Row() widget with all these children
-    if(!splitting) {
-      return [ Row( mainAxisAlignment:mainAxisAlignment,
-                                    mainAxisSize:mainAxisSize,crossAxisAlignment:crossAxisAlignment,
-                                    textDirection:textDirection,verticalDirection:verticalDirection,
-                                    textBaseline:textBaseline,
-                                    children: children,
-                    ),
-              ];
+    if (!splitting) {
+      return [
+        Row(
+          mainAxisAlignment: mainAxisAlignment,
+          mainAxisSize: mainAxisSize,
+          crossAxisAlignment: crossAxisAlignment,
+          textDirection: textDirection,
+          verticalDirection: verticalDirection,
+          textBaseline: textBaseline,
+          children: children,
+        ),
+      ];
     }
     List<Widget> curRowWidgets = [];
     List<Widget> splitRows = [];
-    for(int i=0;i<children.length;i++) {
+    for (int i = 0; i < children.length; i++) {
       final item = children[i];
-      if( (splitOn!=null && item.runtimeType==splitOn) ||
-            (splitEveryN!=null && (i+1)%splitEveryN==0) ||
-            (splitAtIndices!=null && splitAtIndices.contains(i)) ) {
+      if ((splitOn != null && item.runtimeType == splitOn) ||
+          (splitEveryN != null && (i + 1) % splitEveryN == 0) ||
+          (splitAtIndices != null && splitAtIndices.contains(i))) {
         // splitting here
-        if(splitWidgetBehavior==SplitWidgetBehavior.includeInThisRow) curRowWidgets.add(item);
-        splitRows.add( Row( mainAxisAlignment:mainAxisAlignment,
-                                    mainAxisSize:mainAxisSize,crossAxisAlignment:crossAxisAlignment,
-                                    textDirection:textDirection,verticalDirection:verticalDirection,
-                                    textBaseline:textBaseline,
-                                    children: [ ...curRowWidgets ],
-                    ) );
+        if (splitWidgetBehavior == SplitWidgetBehavior.includeInThisRow) {
+          curRowWidgets.add(item);
+        }
+        splitRows.add(Row(
+          mainAxisAlignment: mainAxisAlignment,
+          mainAxisSize: mainAxisSize,
+          crossAxisAlignment: crossAxisAlignment,
+          textDirection: textDirection,
+          verticalDirection: verticalDirection,
+          textBaseline: textBaseline,
+          children: [...curRowWidgets],
+        ));
         curRowWidgets.clear();
-        if(splitWidgetBehavior==SplitWidgetBehavior.includeInNextRow) curRowWidgets.add(item);
+        if (splitWidgetBehavior == SplitWidgetBehavior.includeInNextRow) {
+          curRowWidgets.add(item);
+        }
       } else {
         curRowWidgets.add(item);
       }
     }
-    if(curRowWidgets.isNotEmpty) {
-      splitRows.add( Row( mainAxisAlignment:mainAxisAlignment,
-                                    mainAxisSize:mainAxisSize,crossAxisAlignment:crossAxisAlignment,
-                                    textDirection:textDirection,verticalDirection:verticalDirection,
-                                    textBaseline:textBaseline,
-                                    children: [ ...curRowWidgets ],
-                    ) );
+    if (curRowWidgets.isNotEmpty) {
+      splitRows.add(Row(
+        mainAxisAlignment: mainAxisAlignment,
+        mainAxisSize: mainAxisSize,
+        crossAxisAlignment: crossAxisAlignment,
+        textDirection: textDirection,
+        verticalDirection: verticalDirection,
+        textBaseline: textBaseline,
+        children: [...curRowWidgets],
+      ));
     }
     return splitRows;
   }

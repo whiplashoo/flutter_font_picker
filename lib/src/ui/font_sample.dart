@@ -5,7 +5,10 @@ import '../constants/translations.dart';
 class FontSample extends StatefulWidget {
   final String initialSampleText;
   final ValueChanged<String> onSampleTextChanged;
-  const FontSample({super.key, this.initialSampleText = '', required this.onSampleTextChanged});
+  const FontSample(
+      {super.key,
+      this.initialSampleText = '',
+      required this.onSampleTextChanged});
 
   @override
   _FontSampleState createState() => _FontSampleState();
@@ -18,7 +21,7 @@ class _FontSampleState extends State<FontSample> {
   @override
   void initState() {
     super.initState();
-    sampleController = TextEditingController(text:widget.initialSampleText);
+    sampleController = TextEditingController(text: widget.initialSampleText);
   }
 
   @override
