@@ -1,3 +1,9 @@
+## 1.3.0
+
+* Added Dutch translations 🇳🇱. Thanks to @tkortekaas for providing these!
+* Updated to depend on google_fonts package version ^5.0.0. It now includes the latest supported Google Fonts, their variants, weights, and categories. 
+* Updated Dart SDK constraint to >=3.0.0 <4.0.0.
+
 ## 1.2.0
 
 * Updated to depend on google_fonts package v4.0.3. It now includes the latest supported Google Fonts, their variants, weights, and categories. 
