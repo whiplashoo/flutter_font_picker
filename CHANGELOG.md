@@ -1,3 +1,7 @@
+## 1.4.0
+
+* Added Japanese translations 🇯🇵. Thanks to @Npepperlinux for providing these!
+
 ## 1.3.0
 
 * Added Dutch translations 🇳🇱. Thanks to @tkortekaas for providing these!
