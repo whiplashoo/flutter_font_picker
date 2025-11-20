@@ -1,3 +1,8 @@
+## 2.0.0
+
+* Updated to depend on google_fonts package v6.3.2. It now includes the latest supported Google Fonts, their variants, weights, and categories. 
+* Bumped Dart SDK to 3.0.0.
+
 ## 1.2.0
 
 * Updated to depend on google_fonts package v4.0.3. It now includes the latest supported Google Fonts, their variants, weights, and categories. 
