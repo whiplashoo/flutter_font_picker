@@ -1,5 +1,6 @@
 ## 2.0.0
 
+* Updated font variant buttons to always fit inside their container.
 * Updated to depend on google_fonts package v6.3.2. It now includes the latest supported Google Fonts, their variants, weights, and categories. 
 * Bumped Dart SDK to 3.0.0.
 
