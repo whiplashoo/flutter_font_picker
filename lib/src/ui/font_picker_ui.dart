@@ -1,4 +1,4 @@
-library flutter_font_picker;
+library;
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -209,29 +209,32 @@ class _FontPickerUIState extends State<FontPickerUI> {
                                       backgroundColor: isSelectedVariant
                                           ? Theme.of(context).primaryColor
                                           : null,
-                                      textStyle: const TextStyle(
-                                        fontSize: 10.0,
-                                      ),
                                       shape: const StadiumBorder(),
+                                      padding: EdgeInsets.zero,
                                     ),
-                                    child: Text(
-                                      variant,
-                                      style: TextStyle(
-                                        fontStyle: variant == "italic"
-                                            ? FontStyle.italic
-                                            : FontStyle.normal,
-                                        color: isSelectedVariant
-                                            ? Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary
-                                            : Theme.of(context)
-                                                        .colorScheme
-                                                        .onPrimary ==
-                                                    Colors.white
-                                                ? null
-                                                : Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimary,
+                                    child: Center(
+                                      child: Text(
+                                        variant,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.clip,
+                                        style: TextStyle(
+                                          fontSize: 10.0,
+                                          fontStyle: variant == "italic"
+                                              ? FontStyle.italic
+                                              : FontStyle.normal,
+                                          color: isSelectedVariant
+                                              ? Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary
+                                              : Theme.of(context)
+                                                          .colorScheme
+                                                          .onPrimary ==
+                                                      Colors.white
+                                                  ? null
+                                                  : Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimary,
+                                        ),
                                       ),
                                     ),
                                     onPressed: () {
