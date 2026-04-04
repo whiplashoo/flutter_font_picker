@@ -19,7 +19,7 @@ class FontPreview extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: TextField(
         textAlign: TextAlign.center,
-        style: GoogleFonts.getFont(
+        style: GoogleFontsLite.getFont(
           fontFamily,
           fontWeight: fontWeight,
           fontStyle: fontStyle,

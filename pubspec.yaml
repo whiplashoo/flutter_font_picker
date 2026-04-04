@@ -10,7 +10,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: ^6.3.2
+  google_fonts:
+    git:
+      url: https://github.com/TheCarpetMerchant/google_fonts_lite
+      path: packages/google_fonts
+      ref: 62941e979ed3f89fd166979bf1ac8852f4bba270
   shared_preferences: ^2.5.3
 
 dev_dependencies:
