@@ -63,6 +63,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
         .toList();
     setState(() {
       _recentFonts = recents.reversed
+          .where((fontFamily) => supportedFonts.contains(fontFamily))
           .map((fontFamily) =>
               PickerFont(fontFamily: fontFamily, isRecent: true))
           .toList();
