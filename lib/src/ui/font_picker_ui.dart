@@ -57,12 +57,13 @@ class _FontPickerUIState extends State<FontPickerUI> {
   Future _prepareShownFonts() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var recents = prefs.getStringList(prefsRecentsKey) ?? [];
-    final supportedFonts = GoogleFonts.asMap()
+    final supportedFonts = GoogleFontsLite.fontsMap
         .keys
         .where((e) => widget.googleFonts.contains(e))
         .toList();
     setState(() {
       _recentFonts = recents.reversed
+          .where((fontFamily) => supportedFonts.contains(fontFamily))
           .map((fontFamily) =>
               PickerFont(fontFamily: fontFamily, isRecent: true))
           .toList();
@@ -167,7 +168,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
                         text: f.fontFamily,
                         style: TextStyle(
                           fontFamily:
-                              GoogleFonts.getFont(f.fontFamily).fontFamily,
+                              GoogleFontsLite.getFont(f.fontFamily).fontFamily,
                         ).copyWith(
                           color: DefaultTextStyle.of(context).style.color,
                         ),
