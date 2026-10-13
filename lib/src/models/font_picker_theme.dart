@@ -47,10 +47,10 @@ class FontPickerTheme extends ThemeExtension<FontPickerTheme> {
   /// Defaults to the ambient body text color.
   final Color? inactiveChipForegroundColor;
 
-  /// Font size for category and variant chip labels. Defaults to `10`.
+  /// Font size for category and variant chip labels. Defaults to `12`.
   final double? chipFontSize;
 
-  /// Height of category and variant chips. Defaults to `30`.
+  /// Height of category and variant chips. Defaults to `32`.
   final double? chipHeight;
 
   /// Style for each font family name in the list (family is still applied
@@ -102,8 +102,8 @@ class FontPickerTheme extends ThemeExtension<FontPickerTheme> {
       activeChipForegroundColor:
           activeChipForegroundColor ?? theme.colorScheme.onPrimary,
       inactiveChipForegroundColor: inactiveChipForegroundColor ?? bodyColor,
-      chipFontSize: chipFontSize ?? 10.0,
-      chipHeight: chipHeight ?? 30.0,
+      chipFontSize: chipFontSize ?? 12.0,
+      chipHeight: chipHeight ?? 32.0,
       fontListItemStyle: TextStyle(color: bodyColor).merge(fontListItemStyle),
       fontListItemInfoStyle: TextStyle(
         fontStyle: FontStyle.italic,

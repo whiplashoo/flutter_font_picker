@@ -97,44 +97,48 @@ class _FontPickerUIState extends State<FontPickerUI> {
       child: Column(
         children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12.0),
-            child: widget.showInDialog
-                ? ListView(
-                    shrinkWrap: true,
-                    children: [
-                      FontSearch(
+            padding: EdgeInsets.fromLTRB(
+              16.0,
+              widget.showInDialog ? 4.0 : 12.0,
+              16.0,
+              0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: FontSearch(
                         onSearchTextChanged: onSearchTextChanged,
                       ),
-                      FontLanguage(
-                        onFontLanguageSelected: onFontLanguageSelected,
-                        selectedFontLanguage: _selectedFontLanguage,
-                      ),
-                      const SizedBox(height: 12.0),
-                    ],
-                  )
-                : Row(
-                    children: [
-                      Expanded(
-                        child: FontSearch(
-                          onSearchTextChanged: onSearchTextChanged,
-                        ),
-                      ),
-                      Expanded(
-                        child: FontLanguage(
-                          onFontLanguageSelected: onFontLanguageSelected,
-                          selectedFontLanguage: _selectedFontLanguage,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(width: 8.0),
+                    FontLanguage(
+                      onFontLanguageSelected: onFontLanguageSelected,
+                      selectedFontLanguage: _selectedFontLanguage,
+                      compact: widget.showInDialog,
+                    ),
+                  ],
+                ),
+                SizedBox(height: widget.showInDialog ? 8.0 : 12.0),
+                FontCategories(
+                  onFontCategoriesUpdated: onFontCategoriesUpdated,
+                  scrollable: widget.showInDialog,
+                ),
+                SizedBox(height: widget.showInDialog ? 8.0 : 12.0),
+                FontPreview(
+                  fontFamily: _selectedFontFamily ?? 'Roboto',
+                  fontWeight: _selectedFontWeight,
+                  fontStyle: _selectedFontStyle,
+                  compact: widget.showInDialog,
+                ),
+                SizedBox(height: widget.showInDialog ? 4.0 : 8.0),
+              ],
+            ),
           ),
-          FontCategories(onFontCategoriesUpdated: onFontCategoriesUpdated),
-          FontPreview(
-            fontFamily: _selectedFontFamily ?? 'Roboto',
-            fontWeight: _selectedFontWeight,
-            fontStyle: _selectedFontStyle,
-          ),
+          const Divider(height: 1.0),
           Expanded(
             child: _shownFonts.isEmpty
                 ? Center(

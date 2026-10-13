@@ -6,7 +6,15 @@ import '../models/font_picker_theme.dart';
 
 class FontCategories extends StatefulWidget {
   final ValueChanged<List<String>> onFontCategoriesUpdated;
-  const FontCategories({super.key, required this.onFontCategoriesUpdated});
+
+  /// Keep chips on one horizontally scrollable row (better in dialogs).
+  final bool scrollable;
+
+  const FontCategories({
+    super.key,
+    required this.onFontCategoriesUpdated,
+    this.scrollable = false,
+  });
 
   @override
   _FontCategoriesState createState() => _FontCategoriesState();
@@ -18,51 +26,67 @@ class _FontCategoriesState extends State<FontCategories> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = FontPickerTheme.of(context);
+    final pickerTheme = FontPickerTheme.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
+
+    final chips = googleFontCategories.map((fontCategory) {
+      final isSelected = _selectedFontCategories.contains(fontCategory);
+
+      return FilterChip(
+        label: Text(translations.d[fontCategory]!),
+        selected: isSelected,
+        showCheckmark: false,
+        visualDensity: VisualDensity.compact,
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        labelStyle: TextStyle(
+          fontSize: pickerTheme.chipFontSize,
+          color: isSelected
+              ? pickerTheme.activeChipForegroundColor
+              : pickerTheme.inactiveChipForegroundColor,
+        ),
+        selectedColor: pickerTheme.activeChipBackgroundColor,
+        backgroundColor: colorScheme.surfaceContainerHighest.withValues(
+          alpha: 0.4,
+        ),
+        side: BorderSide(
+          color: isSelected
+              ? pickerTheme.activeChipBackgroundColor!
+              : colorScheme.outlineVariant,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        onSelected: (selected) {
+          setState(() {
+            if (selected) {
+              _selectedFontCategories.add(fontCategory);
+            } else {
+              _selectedFontCategories.remove(fontCategory);
+            }
+          });
+          widget.onFontCategoriesUpdated(
+            List.from(_selectedFontCategories),
+          );
+        },
+      );
+    }).toList();
+
+    if (widget.scrollable) {
+      return SizedBox(
+        height: 36.0,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemCount: chips.length,
+          separatorBuilder: (_, __) => const SizedBox(width: 8.0),
+          itemBuilder: (context, index) => chips[index],
+        ),
+      );
+    }
 
     return Wrap(
-      children: googleFontCategories.map((fontCategory) {
-        bool isSelectedCategory =
-            _selectedFontCategories.contains(fontCategory);
-
-        return SizedBox(
-          height: theme.chipHeight,
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                backgroundColor: isSelectedCategory
-                    ? theme.activeChipBackgroundColor
-                    : null,
-                textStyle: TextStyle(
-                  fontSize: theme.chipFontSize,
-                ),
-                shape: const StadiumBorder(),
-              ),
-              child: Text(
-                translations.d[fontCategory]!,
-                style: TextStyle(
-                  color: isSelectedCategory
-                      ? theme.activeChipForegroundColor
-                      : theme.inactiveChipForegroundColor,
-                ),
-              ),
-              onPressed: () {
-                setState(() {
-                  if (_selectedFontCategories.contains(fontCategory)) {
-                    _selectedFontCategories.remove(fontCategory);
-                  } else {
-                    _selectedFontCategories.add(fontCategory);
-                  }
-                });
-                widget.onFontCategoriesUpdated(
-                  List.from(_selectedFontCategories),
-                );
-              },
-            ),
-          ),
-        );
-      }).toList(),
+      spacing: 8.0,
+      runSpacing: 8.0,
+      children: chips,
     );
   }
 }
