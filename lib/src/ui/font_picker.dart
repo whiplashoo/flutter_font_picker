@@ -1,4 +1,4 @@
-library flutter_font_picker;
+library;
 
 import 'package:flutter/material.dart';
 
@@ -115,7 +115,7 @@ class _FontPickerState extends State<FontPicker> {
             showFontVariants: widget.showFontVariants,
           )
         : Scaffold(
-            appBar: AppBar(title: const Text("Pick a font:")),
+            appBar: AppBar(title: Text(translations.d['pickFont']!)),
             body: FontPickerUI(
               onFontChanged: widget.onFontChanged,
               googleFonts: widget.googleFonts,
