@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/constants.dart';
 import '../constants/fontweights_map.dart';
 import '../constants/translations.dart';
+import '../models/font_picker_theme.dart';
 import '../models/picker_font.dart';
 import 'font_categories.dart';
 import 'font_language.dart';
@@ -89,6 +90,8 @@ class _FontPickerUIState extends State<FontPickerUI> {
 
   @override
   Widget build(BuildContext context) {
+    final pickerTheme = FontPickerTheme.of(context);
+
     return SizedBox(
       height: MediaQuery.of(context).size.height * 5 / 6,
       child: Column(
@@ -137,9 +140,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
                 ? Center(
                     child: Text(
                       translations.d['noFontsFound']!,
-                      style: TextStyle(
-                        color: Theme.of(context).hintColor,
-                      ),
+                      style: pickerTheme.emptyStateStyle,
                     ),
                   )
                 : ListView.builder(
@@ -160,7 +161,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
 
                       return ListTile(
                         selected: isBeingSelected,
-                        selectedTileColor: Theme.of(context).focusColor,
+                        selectedTileColor: pickerTheme.selectedTileColor,
                         onTap: () {
                           setState(() {
                             if (!isBeingSelected) {
@@ -177,23 +178,14 @@ class _FontPickerUIState extends State<FontPickerUI> {
                           child: RichText(
                             text: TextSpan(
                               text: f.fontFamily,
-                              style: TextStyle(
+                              style: pickerTheme.fontListItemStyle?.copyWith(
                                 fontFamily: GoogleFonts.getFont(f.fontFamily)
                                     .fontFamily,
-                              ).copyWith(
-                                color: DefaultTextStyle.of(context).style.color,
                               ),
                               children: [
                                 TextSpan(
                                   text: stylesString,
-                                  style: TextStyle(
-                                    fontStyle: FontStyle.italic,
-                                    fontSize: 11.0,
-                                    color: Colors.grey,
-                                    fontFamily: DefaultTextStyle.of(context)
-                                        .style
-                                        .fontFamily,
-                                  ),
+                                  style: pickerTheme.fontListItemInfoStyle,
                                 ),
                               ],
                             ),
@@ -215,14 +207,15 @@ class _FontPickerUIState extends State<FontPickerUI> {
                                             .contains(variant);
 
                                     return SizedBox(
-                                      height: 30.0,
+                                      height: pickerTheme.chipHeight,
                                       width: 60.0,
                                       child: Padding(
                                         padding: const EdgeInsets.all(2.0),
                                         child: OutlinedButton(
                                           style: OutlinedButton.styleFrom(
                                             backgroundColor: isSelectedVariant
-                                                ? Theme.of(context).primaryColor
+                                                ? pickerTheme
+                                                    .activeChipBackgroundColor
                                                 : null,
                                             shape: const StadiumBorder(),
                                             padding: EdgeInsets.zero,
@@ -233,22 +226,16 @@ class _FontPickerUIState extends State<FontPickerUI> {
                                               maxLines: 1,
                                               overflow: TextOverflow.clip,
                                               style: TextStyle(
-                                                fontSize: 10.0,
+                                                fontSize:
+                                                    pickerTheme.chipFontSize,
                                                 fontStyle: variant == "italic"
                                                     ? FontStyle.italic
                                                     : FontStyle.normal,
                                                 color: isSelectedVariant
-                                                    ? Theme.of(context)
-                                                        .colorScheme
-                                                        .onPrimary
-                                                    : Theme.of(context)
-                                                                .colorScheme
-                                                                .onPrimary ==
-                                                            Colors.white
-                                                        ? null
-                                                        : Theme.of(context)
-                                                            .colorScheme
-                                                            .onPrimary,
+                                                    ? pickerTheme
+                                                        .activeChipForegroundColor
+                                                    : pickerTheme
+                                                        .inactiveChipForegroundColor,
                                               ),
                                             ),
                                           ),
@@ -276,6 +263,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
                             : null,
                         trailing: isBeingSelected
                             ? TextButton(
+                                style: pickerTheme.selectButtonStyle,
                                 child: Text(
                                   translations.d["select"]!,
                                 ),

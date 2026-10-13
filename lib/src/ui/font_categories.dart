@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_font_picker/src/constants/translations.dart';
 
 import '../constants/constants.dart';
+import '../models/font_picker_theme.dart';
 
 class FontCategories extends StatefulWidget {
   final ValueChanged<List<String>> onFontCategoriesUpdated;
@@ -17,21 +18,24 @@ class _FontCategoriesState extends State<FontCategories> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = FontPickerTheme.of(context);
+
     return Wrap(
       children: googleFontCategories.map((fontCategory) {
         bool isSelectedCategory =
             _selectedFontCategories.contains(fontCategory);
 
         return SizedBox(
-          height: 30.0,
+          height: theme.chipHeight,
           child: Padding(
             padding: const EdgeInsets.all(2.0),
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
-                backgroundColor:
-                    isSelectedCategory ? Theme.of(context).primaryColor : null,
-                textStyle: const TextStyle(
-                  fontSize: 10.0,
+                backgroundColor: isSelectedCategory
+                    ? theme.activeChipBackgroundColor
+                    : null,
+                textStyle: TextStyle(
+                  fontSize: theme.chipFontSize,
                 ),
                 shape: const StadiumBorder(),
               ),
@@ -39,8 +43,8 @@ class _FontCategoriesState extends State<FontCategories> {
                 translations.d[fontCategory]!,
                 style: TextStyle(
                   color: isSelectedCategory
-                      ? Theme.of(context).colorScheme.onPrimary
-                      : null,
+                      ? theme.activeChipForegroundColor
+                      : theme.inactiveChipForegroundColor,
                 ),
               ),
               onPressed: () {

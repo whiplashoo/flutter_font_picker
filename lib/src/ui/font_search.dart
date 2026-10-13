@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/translations.dart';
+import '../models/font_picker_theme.dart';
 
 class FontSearch extends StatefulWidget {
   final ValueChanged<String> onSearchTextChanged;
@@ -16,6 +17,8 @@ class _FontSearchState extends State<FontSearch> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = FontPickerTheme.of(context);
+
     return FocusScope(
       child: Focus(
         onFocusChange: (focus) {
@@ -40,7 +43,7 @@ class _FontSearchState extends State<FontSearch> {
                   )
                 : null,
             hintText: translations.d["search"],
-            hintStyle: const TextStyle(fontSize: 14.0),
+            hintStyle: theme.searchHintStyle,
             border: InputBorder.none,
             focusedBorder: InputBorder.none,
             enabledBorder: InputBorder.none,

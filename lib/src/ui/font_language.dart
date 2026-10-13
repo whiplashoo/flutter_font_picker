@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
 import '../constants/translations.dart';
+import '../models/font_picker_theme.dart';
 
 class FontLanguage extends StatefulWidget {
   final ValueChanged<String?> onFontLanguageSelected;
@@ -19,14 +20,13 @@ class FontLanguage extends StatefulWidget {
 class _FontLanguageState extends State<FontLanguage> {
   @override
   Widget build(BuildContext context) {
+    final theme = FontPickerTheme.of(context);
+
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
         value: widget.selectedFontLanguage,
         isDense: true,
-        style: TextStyle(
-          fontSize: 12.0,
-          color: DefaultTextStyle.of(context).style.color,
-        ),
+        style: theme.languageDropdownStyle,
         icon: const Icon(Icons.arrow_drop_down_sharp),
         onChanged: widget.onFontLanguageSelected,
         items:

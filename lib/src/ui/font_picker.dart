@@ -4,12 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../constants/constants.dart';
 import '../constants/translations.dart';
+import '../models/font_picker_theme.dart';
 import '../models/picker_font.dart';
 import 'font_picker_ui.dart';
-
-//TODO: Basic fonts option (to be included in assets)
-//TODO: Filter languages according to selected fonts on init
-//TODO: Implement favorites feature
 
 /// Creates a widget that lets the user select a Google font from a provided list.
 ///
@@ -73,6 +70,10 @@ class FontPicker extends StatefulWidget {
   /// If you need a translation in another language: take a look at the dictionaries variable in constants.dart, and send me the translations for your language.
   final String lang;
 
+  /// Optional visual overrides for this picker. Merged on top of any
+  /// [FontPickerTheme] registered in the ambient [ThemeData.extensions].
+  final FontPickerTheme? theme;
+
   /// Creates a widget that lets the user select a Google font from a provided list.
   ///
   /// The [onFontChanged] function retrieves the font that the user selects with an object containing details like the font's name, weight, style, etc.
@@ -88,6 +89,7 @@ class FontPicker extends StatefulWidget {
     required this.onFontChanged,
     this.initialFontFamily,
     this.lang = "en",
+    this.theme,
   });
 
   @override
@@ -103,29 +105,29 @@ class _FontPickerState extends State<FontPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.showInDialog
-        ? FontPickerUI(
-            onFontChanged: widget.onFontChanged,
-            googleFonts: widget.googleFonts,
-            showFontInfo: widget.showFontInfo,
-            showInDialog: widget.showInDialog,
-            recentsCount: widget.recentsCount,
-            initialFontFamily: widget.initialFontFamily ?? 'Roboto',
-            lang: widget.lang,
-            showFontVariants: widget.showFontVariants,
-          )
+    final ui = FontPickerUI(
+      onFontChanged: widget.onFontChanged,
+      googleFonts: widget.googleFonts,
+      showFontInfo: widget.showFontInfo,
+      showInDialog: widget.showInDialog,
+      recentsCount: widget.recentsCount,
+      initialFontFamily: widget.initialFontFamily ?? 'Roboto',
+      lang: widget.lang,
+      showFontVariants: widget.showFontVariants,
+    );
+
+    final body = widget.showInDialog
+        ? ui
         : Scaffold(
             appBar: AppBar(title: Text(translations.d['pickFont']!)),
-            body: FontPickerUI(
-              onFontChanged: widget.onFontChanged,
-              googleFonts: widget.googleFonts,
-              showFontInfo: widget.showFontInfo,
-              showInDialog: widget.showInDialog,
-              recentsCount: widget.recentsCount,
-              initialFontFamily: widget.initialFontFamily ?? 'Roboto',
-              lang: widget.lang,
-              showFontVariants: widget.showFontVariants,
-            ),
+            body: ui,
           );
+
+    if (widget.theme == null) return body;
+
+    return FontPickerThemeScope(
+      theme: widget.theme!,
+      child: body,
+    );
   }
 }

@@ -103,6 +103,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(
                       builder: (context) => FontPicker(
                         recentsCount: 10,
+                        theme: const FontPickerTheme(
+                          activeChipBackgroundColor: Colors.teal,
+                          chipFontSize: 12,
+                          previewFontSize: 18,
+                        ),
                         onFontChanged: (font) {
                           setState(() {
                             _selectedFont = font.fontFamily;
@@ -157,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
-                        'Pick a font: ',
+                        'Pick a font (dark): ',
                         textAlign: TextAlign.right,
                         style: TextStyle(fontWeight: FontWeight.w700),
                       ),
@@ -176,17 +181,38 @@ class _MyHomePageState extends State<MyHomePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => FontPicker(
-                              onFontChanged: (font) {
-                                setState(() {
-                                  _selectedFont = font.fontFamily;
-                                  _selectedFontTextStyle = font.toTextStyle();
-                                });
-                                debugPrint(
-                                  "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}",
-                                );
-                              },
-                              googleFonts: _myGoogleFonts,
+                            builder: (context) => Theme(
+                              data: ThemeData.dark().copyWith(
+                                colorScheme: const ColorScheme.dark(
+                                  primary: Colors.amber,
+                                  onPrimary: Colors.black,
+                                ),
+                                extensions: const [
+                                  FontPickerTheme(
+                                    activeChipBackgroundColor: Colors.amber,
+                                    activeChipForegroundColor: Colors.black,
+                                    chipFontSize: 12,
+                                    previewFontSize: 20,
+                                    fontListItemInfoStyle: TextStyle(
+                                      fontSize: 11,
+                                      fontStyle: FontStyle.italic,
+                                      color: Colors.white54,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              child: FontPicker(
+                                onFontChanged: (font) {
+                                  setState(() {
+                                    _selectedFont = font.fontFamily;
+                                    _selectedFontTextStyle = font.toTextStyle();
+                                  });
+                                  debugPrint(
+                                    "${font.fontFamily} with font weight ${font.fontWeight} and font style ${font.fontStyle}. FontSpec: ${font.toFontSpec()}",
+                                  );
+                                },
+                                googleFonts: _myGoogleFonts,
+                              ),
                             ),
                           ),
                         );
