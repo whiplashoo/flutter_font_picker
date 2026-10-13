@@ -13,6 +13,7 @@ class FontSearch extends StatefulWidget {
 class _FontSearchState extends State<FontSearch> {
   bool _isSearchFocused = false;
   TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return FocusScope(

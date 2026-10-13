@@ -47,6 +47,8 @@ class _FontPickerUIState extends State<FontPickerUI> {
   FontWeight _selectedFontWeight = FontWeight.w400;
   FontStyle _selectedFontStyle = FontStyle.normal;
   String _selectedFontLanguage = 'all';
+  String _searchText = '';
+  List<String> _selectedFontCategories = [];
 
   @override
   void initState() {
@@ -308,37 +310,37 @@ class _FontPickerUIState extends State<FontPickerUI> {
   void onFontLanguageSelected(String? newValue) {
     setState(() {
       _selectedFontLanguage = newValue!;
-      _shownFonts = newValue == 'all'
-          ? _allFonts
-          : _allFonts.where((f) => f.subsets.contains(newValue)).toList();
+      _applyFilters();
     });
   }
 
   void onFontCategoriesUpdated(List<String> selectedFontCategories) {
     setState(() {
-      _shownFonts = _allFonts
-          .where((f) => selectedFontCategories.contains(f.category))
-          .toList();
+      _selectedFontCategories = selectedFontCategories;
+      _applyFilters();
     });
   }
 
   void onSearchTextChanged(String text) {
-    if (text.isEmpty) {
-      setState(() {
-        _shownFonts = _allFonts;
-      });
+    setState(() {
+      _searchText = text;
+      _applyFilters();
+    });
+  }
 
-      return;
-    } else {
-      setState(() {
-        _shownFonts = _allFonts
-            .where(
-              (f) => f.fontFamily.toLowerCase().contains(
-                    text.toLowerCase(),
-                  ),
-            )
-            .toList();
-      });
-    }
+  /// Applies search, category, and language filters together (AND).
+  /// Empty category selection means no category filter (show all categories).
+  void _applyFilters() {
+    final search = _searchText.toLowerCase();
+    _shownFonts = _allFonts.where((f) {
+      final matchesSearch =
+          search.isEmpty || f.fontFamily.toLowerCase().contains(search);
+      final matchesCategory = _selectedFontCategories.isEmpty ||
+          _selectedFontCategories.contains(f.category);
+      final matchesLanguage = _selectedFontLanguage == 'all' ||
+          f.subsets.contains(_selectedFontLanguage);
+
+      return matchesSearch && matchesCategory && matchesLanguage;
+    }).toList();
   }
 }

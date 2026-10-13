@@ -12,7 +12,8 @@ class FontCategories extends StatefulWidget {
 }
 
 class _FontCategoriesState extends State<FontCategories> {
-  final List<String> _selectedFontCategories = List.from(googleFontCategories);
+  /// Empty means no category filter (show all). Selecting chips narrows to those categories.
+  final List<String> _selectedFontCategories = [];
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +44,16 @@ class _FontCategoriesState extends State<FontCategories> {
                 ),
               ),
               onPressed: () {
-                _selectedFontCategories.contains(fontCategory)
-                    ? _selectedFontCategories.remove(fontCategory)
-                    : _selectedFontCategories.add(fontCategory);
-                widget.onFontCategoriesUpdated(_selectedFontCategories);
+                setState(() {
+                  if (_selectedFontCategories.contains(fontCategory)) {
+                    _selectedFontCategories.remove(fontCategory);
+                  } else {
+                    _selectedFontCategories.add(fontCategory);
+                  }
+                });
+                widget.onFontCategoriesUpdated(
+                  List.from(_selectedFontCategories),
+                );
               },
             ),
           ),

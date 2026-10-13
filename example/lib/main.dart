@@ -12,9 +12,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Font Picker Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
       home: const MyHomePage(title: 'Font Picker Demo'),
     );
   }
