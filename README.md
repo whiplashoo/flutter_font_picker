@@ -49,11 +49,13 @@ Text('This will be styled with the font: $_selectedFont.fontFamily',
 Check the example project for more usages.
 
 <p align="center">
-  <img width="40%" src="https://github.com/user-attachments/assets/6cda01f3-4135-4f37-9e4b-f0ab0f4f8034"/>
+  <img width="40%" src="https://github.com/user-attachments/assets/77804f9d-cb4b-44f6-b6c7-8615ff62506d"/>
   &nbsp;&nbsp;&nbsp;
   <img width="40%" src="https://github.com/user-attachments/assets/af8bd747-da85-40af-8a10-c2442546d524"/>
   &nbsp;&nbsp;&nbsp;
-  <img width="40%" src="https://github.com/user-attachments/assets/77804f9d-cb4b-44f6-b6c7-8615ff62506d"/>
+  <img width="40%" src="https://github.com/user-attachments/assets/6cda01f3-4135-4f37-9e4b-f0ab0f4f8034"/>
+  &nbsp;&nbsp;&nbsp;
+  <img width="40%" src="https://github.com/user-attachments/assets/193f4d79-4670-472a-988c-9dfa0a996a92"/>
 </p>
 
 ## FontPicker settings
