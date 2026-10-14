@@ -1,3 +1,13 @@
+## 2.1.0
+
+* Added `FontPickerTheme` (`ThemeExtension`) to customize chips, list items, search, language dropdown, preview, empty state, and select button. Pass via `FontPicker.theme` or `ThemeData.extensions`.
+* Improved picker UI — restyled search and language controls, filter chips, and preview; more compact layout in dialogs (icon language menu, horizontally scrollable categories).
+* Show a localized empty-state message when filters match no fonts.
+* Category filters are now inclusive (tap to select categories; none selected shows all fonts).
+* Search, category, and language filters now compose together (AND) instead of overwriting each other.
+* AppBar title is now localized with the rest of the UI.
+* Updated example demo and README screenshots.
+
 ## 2.0.0
 
 * Updated font variant buttons to always fit inside their container.

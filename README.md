@@ -46,7 +46,7 @@ Text('This will be styled with the font: $_selectedFont.fontFamily',
       style: selectedFont.toTextStyle()),
 ```
 
-Check the example project for more usages.
+Check the example project for more usages (route, dialog, and themed pickers).
 
 <p align="center">
   <img width="40%" src="https://github.com/user-attachments/assets/77804f9d-cb4b-44f6-b6c7-8615ff62506d"/>
@@ -60,13 +60,48 @@ Check the example project for more usages.
 ## FontPicker settings
 
 - `onFontChanged`: (required) the callback that returns a PickerFont object with all the details and methods for the user's selected font.
-- `googleFonts`: A list of Google fonts to use in the font picker. By default it contains all 975 fonts included in constants.dart. **You should only use a limited number of them for performance and data saving**, as each font is downloaded and stored to the app's storage when it comes into view. Using up to 100-200 fonts should work fine.
+- `googleFonts`: A list of Google fonts to use in the font picker. By default it contains all fonts included in `constants.dart` (~1453). **You should only use a limited number of them for performance and data saving**, as each font is downloaded and stored to the app's storage when it comes into view. Using up to 100-200 fonts should work fine.
 - `initialFontFamily`: The font family to use initially in the font picker. Defaults to 'Roboto'.
 - `showFontInfo`: Whether to show font details (category, number of variants) next to each font tile in the list.
 - `showFontVariants`: Whether to show font variants (weights and styles) in the font picker. If set to false, user will only be able to select the default variant of each font.
 - `showInDialog`: Set this to true if you want to use the font picker inside an AlertDialog (check examples).
 - `recentsCount`: Fonts that the user selected before are saved to be shown at the start of the list. Sets how many you want saved as recents.
-- `lang`: The language in which to show the UI. Defaults to English (`'en'`). Other options are 🇪🇸🇩🇪🇮🇹🇵🇹🇫🇷🇵🇱🇳🇱🇯🇵 (`'es'`, `'de'`, `'it'`, `'pt'`, `'fr', 'pl', 'nl', 'ja'`). If you need a translation in another language: take a look at the `dictionary` variable in `translations.dart`, and send me (or fix) the translations for your language . 
+- `lang`: The language in which to show the UI. Defaults to English (`'en'`). Other options are 🇪🇸🇩🇪🇮🇹🇵🇹🇫🇷🇵🇱🇳🇱🇯🇵 (`'es'`, `'de'`, `'it'`, `'pt'`, `'fr'`, `'pl'`, `'nl'`, `'ja'`). If you need a translation in another language: take a look at the `dictionary` variable in `translations.dart`, and send me (or fix) the translations for your language.
+- `theme`: Optional `FontPickerTheme` overrides for this picker (see below).
+
+## Theming (`FontPickerTheme`)
+
+Customize colors and text styles via `FontPickerTheme`, a `ThemeExtension`. Pass it to a single picker, or register it on your app `ThemeData` for defaults everywhere.
+
+**Per picker:**
+
+```dart
+FontPicker(
+  theme: FontPickerTheme(
+    activeChipBackgroundColor: Colors.teal,
+    chipFontSize: 12,
+    previewFontSize: 18,
+  ),
+  onFontChanged: (font) { /* ... */ },
+)
+```
+
+**App-wide:**
+
+```dart
+ThemeData(
+  extensions: [
+    FontPickerTheme(
+      activeChipBackgroundColor: Colors.teal,
+      fontListItemInfoStyle: TextStyle(fontSize: 12, color: Colors.blueGrey),
+    ),
+  ],
+)
+```
+
+Resolution order: `FontPicker.theme` → `ThemeData.extensions` → Material theme defaults.
+
+Notable fields: `activeChipBackgroundColor`, `activeChipForegroundColor`, `inactiveChipForegroundColor`, `chipFontSize`, `fontListItemStyle`, `fontListItemInfoStyle`, `selectedTileColor`, `searchHintStyle`, `languageDropdownStyle`, `previewFontSize`, `emptyStateStyle`, `selectButtonStyle`.
 
 ## FontPicker features
 
@@ -74,7 +109,7 @@ The user can:
 
 - Browse a list of any Google fonts you want.
 - Select a variant (font weight and/or style) for each font.
-- Filter the fonts by category (serif, sans-serif, handwriting, etc.) or available font glyphs (Latin, Greek, Cyrillic, etc.).
+- Filter the fonts by category (serif, sans-serif, handwriting, etc.) or available font glyphs (Latin, Greek, Cyrillic, etc.). Filters can be combined with search.
 - Search the fonts by name.
 - See the most recently used fonts at the top of the list.
 
