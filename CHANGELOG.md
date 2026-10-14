@@ -1,3 +1,7 @@
+## 2.1.1
+
+* Update screenshots and recording in README.md.
+
 ## 2.1.0
 
 * Added `FontPickerTheme` (`ThemeExtension`) to customize chips, list items, search, language dropdown, preview, empty state, and select button. Pass via `FontPicker.theme` or `ThemeData.extensions`.
