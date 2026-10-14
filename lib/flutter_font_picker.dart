@@ -33,7 +33,7 @@
 /// Text('This will be styled with the font: $_selectedFont.fontFamily',
 ///       style: selectedFont.toTextStyle()),
 /// ```
-library flutter_font_picker;
+library;
 
 export 'package:flutter_font_picker/src/models/font_picker_theme.dart';
 export 'package:flutter_font_picker/src/models/picker_font.dart';

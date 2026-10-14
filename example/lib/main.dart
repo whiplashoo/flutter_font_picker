@@ -83,6 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
     "Work Sans",
     "Zilla Slab",
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,6 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 16.0,
             children: [
               ElevatedButton(
                 child: const Text('Pick a font (with a screen)'),
@@ -155,8 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Expanded(
                     child: Padding(
@@ -168,15 +169,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
+                  const SizedBox(width: 8),
                   Expanded(
-                    child: TextField(
-                      readOnly: true,
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        suffixIcon: const Icon(Icons.arrow_drop_down_sharp),
-                        hintText: _selectedFont,
-                        border: InputBorder.none,
-                      ),
+                    child: InkWell(
                       onTap: () {
                         Navigator.push(
                           context,
@@ -217,6 +212,17 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         );
                       },
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              _selectedFont,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const Icon(Icons.arrow_drop_down_sharp),
+                        ],
+                      ),
                     ),
                   ),
                 ],

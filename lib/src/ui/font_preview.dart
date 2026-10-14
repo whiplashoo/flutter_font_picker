@@ -9,6 +9,7 @@ class FontPreview extends StatelessWidget {
   final FontWeight fontWeight;
   final FontStyle fontStyle;
   final bool compact;
+
   const FontPreview({
     super.key,
     required this.fontFamily,
