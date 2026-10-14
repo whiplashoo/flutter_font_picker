@@ -1,0 +1,3 @@
+# Keep screenshots in git for README raw.githubusercontent.com URLs,
+# but exclude them from the published package archive.
+screenshots/
