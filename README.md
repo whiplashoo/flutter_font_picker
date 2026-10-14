@@ -4,7 +4,7 @@
 
 
 <p align="center">
-<img width="40%" src="https://user-images.githubusercontent.com/9117427/129091647-549ab203-501b-4654-9d1c-da74f494cb07.gif"/>
+<img width="40%" src="https://raw.githubusercontent.com/whiplashoo/flutter_font_picker/main/screenshots/recording.gif"/>
 </p>
 
 Provides a `FontPicker` widget that can be used in a route or dialog as a UI for choosing a font from Google Fonts.
