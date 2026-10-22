@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_font_picker/src/constants/translations.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts_lite.dart';
 
 import '../models/font_picker_theme.dart';
 
@@ -22,7 +22,7 @@ class FontPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final pickerTheme = FontPickerTheme.of(context);
     final colorScheme = Theme.of(context).colorScheme;
-    final previewStyle = GoogleFonts.getFont(
+    final previewStyle = GoogleFontsLite.getFont(
       fontFamily,
       fontWeight: fontWeight,
       fontStyle: fontStyle,

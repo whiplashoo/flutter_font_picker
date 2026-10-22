@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts_lite.dart';
 
 import '../constants/constants.dart';
 import '../constants/fontweights_map.dart';
@@ -69,7 +69,7 @@ class PickerFont {
 
   /// Provides a [TextStyle] object that can be used to style any [Text] with the selected Google font.
   TextStyle toTextStyle() {
-    return GoogleFonts.getFont(
+    return GoogleFontsLite.getFont(
       fontFamily,
       fontWeight: fontWeight,
       fontStyle: fontStyle,

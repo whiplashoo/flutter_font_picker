@@ -1,7 +1,7 @@
 library;
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts_lite.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/constants.dart';
@@ -60,12 +60,13 @@ class _FontPickerUIState extends State<FontPickerUI> {
   Future _prepareShownFonts() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var recents = prefs.getStringList(prefsRecentsKey) ?? [];
-    final supportedFonts = GoogleFonts.asMap()
+    final supportedFonts = GoogleFontsLite.fontsMap
         .keys
         .where((e) => widget.googleFonts.contains(e))
         .toList();
     setState(() {
       _recentFonts = recents.reversed
+          .where((recentFont) => supportedFonts.contains(recentFont))
           .map((fontFamily) =>
               PickerFont(fontFamily: fontFamily, isRecent: true))
           .toList();
@@ -182,7 +183,7 @@ class _FontPickerUIState extends State<FontPickerUI> {
                             text: TextSpan(
                               text: f.fontFamily,
                               style: pickerTheme.fontListItemStyle?.copyWith(
-                                fontFamily: GoogleFonts.getFont(f.fontFamily)
+                                fontFamily: GoogleFontsLite.getFont(f.fontFamily)
                                     .fontFamily,
                               ),
                               children: [
